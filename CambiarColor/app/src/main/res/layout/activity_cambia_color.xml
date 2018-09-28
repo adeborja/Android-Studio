@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="AZUL"
         android:textSize="20dp"
+        android:onClick="pintarAzul"
         />
 
     <Button
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:text="ROJO"
         android:textSize="20dp"
+        android:onClick="pintarRojo"
         />
 
     <Button
@@ -40,6 +42,7 @@
         android:layout_height="wrap_content"
         android:text="VERDE"
         android:textSize="20dp"
+        android:onClick="pintarVerde"
         />
 
 

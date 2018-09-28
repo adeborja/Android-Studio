@@ -1,5 +1,8 @@
 package com.example.adeborja.cambiarcolor;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +29,16 @@ public class CambiaColor extends AppCompatActivity {
 
     public void pintarAzul(View V)
     {
+        palabra.setTextColor(Color.BLUE);
+    }
 
+    public void pintarRojo(View V)
+    {
+        palabra.setTextColor(Color.RED);
+    }
+
+    public void pintarVerde(View V)
+    {
+        palabra.setTextColor(Color.GREEN);
     }
 }

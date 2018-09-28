@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlineaTextos"
+    android:orientation="vertical"
+    >
+
+    <EditText
+        android:id="@+id/cajaTexto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Texto introducido"
+
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/btnIzquierda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Izquierda" />
+
+    <Button
+        android:id="@+id/btnDerecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Derecha" />
+
+</LinearLayout>

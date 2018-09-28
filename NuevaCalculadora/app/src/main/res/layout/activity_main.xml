@@ -47,8 +47,9 @@
         android:layout_height="wrap_content"
         android:text="CALCULAR"
         android:textSize="45dp"
-        android:onClick="calcularSuma"
+
         />
+    <!--android:onClick="calcularSuma"-->
 
     <TextView
         android:id="@+id/cajaResultado"
