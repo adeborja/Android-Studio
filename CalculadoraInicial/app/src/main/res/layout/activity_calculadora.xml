@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.adeborja.calculadorainicial.Calculadora">
+
+
+    <LinearLayout
+        android:layout_width="372dp"
+        android:layout_height="110dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="173dp">
+
+        <EditText
+            android:id="@+id/numero1"
+            android:layout_width="158dp"
+            android:layout_height="match_parent"
+            android:digits="0123456789"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text=""
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="200dp" />
+
+        <TextView
+            android:id="@+id/plusSign"
+            android:layout_width="18dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="+"
+            android:textSize="100" />
+
+        <EditText
+            android:id="@+id/numero2"
+            android:layout_width="104dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:digits="0123456789"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text=""
+
+            />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/botonCalcular"
+        android:layout_width="165dp"
+        android:layout_height="97dp"
+        android:text="CALCULAR"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="325dp" />
+
+
+    <!--   <TextView
+           android:id="@+id/numero1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Numero 1"
+           android:digits="0123456789"
+           />
+
+       <Button
+           android:id="@+id/boton1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+
+           />
+
+       <EditText
+           android:id="@+id/dato1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+
+           />
+   -->
+</android.support.constraint.ConstraintLayout>

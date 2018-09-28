@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+
+
+
+
+    <EditText
+        android:id="@+id/cajaNumero1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:text="1"
+        android:textSize="70dp"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/plusSign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="70dp"
+        android:textAlignment="center"
+        />
+
+    <EditText
+        android:id="@+id/cajaNumero2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:text="2"
+        android:textSize="70dp"
+        android:textAlignment="center"
+        />
+
+    <Button
+        android:id="@+id/btnCalcular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CALCULAR"
+        android:textSize="45dp"
+        android:onClick="calcularSuma"
+        />
+
+    <TextView
+        android:id="@+id/cajaResultado"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Resultado"
+        android:textSize="65dp"
+        android:textAlignment="center"
+        />
+
+
+</LinearLayout>
