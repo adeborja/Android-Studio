@@ -28,6 +28,11 @@ public class TextoCheckboxes extends AppCompatActivity implements CompoundButton
         btnPequenio = (CheckBox) findViewById(R.id.btnChiquitita);
         btnGrande = (CheckBox) findViewById(R.id.btnGrandecita);
 
+        btnNegrito.setChecked(false);
+        btnRojito.setChecked(false);
+        btnPequenio.setChecked(false);
+        btnGrande.setChecked(false);
+
         /*btnNegrito.setOnClickListener(this);
         btnRojito.setOnClickListener(this);
         btnPequenio.setOnClickListener(this);
@@ -42,7 +47,19 @@ public class TextoCheckboxes extends AppCompatActivity implements CompoundButton
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+        switch (buttonView.getId())
+        {
+            case R.id.btnNegrita:
+                if(!isChecked)
+                {
+                    cuadro.setTypeface(cuadro.getTypeface(), Typeface.BOLD);
+                }
+                else
+                {
+                    cuadro.setTypeface(cuadro.getTypeface(), Typeface.DEFAULT_BOLD); //investigar como poner texto bold a normal
+                }
+                break;
+        }
     }
 
     /*

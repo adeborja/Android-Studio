@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TextoConCheckboxes</string>
+    <string name="app_name">TextWithCheckboxes</string>
+    <string name="negrita">Bold</string>
+    <string name="rojita">Red</string>
+    <string name="chiquitita">Small</string>
+    <string name="grandecita">Big</string>
 </resources>
