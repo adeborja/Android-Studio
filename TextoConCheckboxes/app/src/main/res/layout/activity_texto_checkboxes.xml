@@ -8,12 +8,14 @@
 
     <TextView
         android:id="@+id/cuadroTexto"
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
+        android:layout_width="261dp"
+        android:layout_height="62dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         android:text="TextoooOOoo"
+        android:textAlignment="center"
+        android:textColor="#190707"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +47,7 @@
 
     <CheckBox
         android:id="@+id/btnChiquitita"
-        android:layout_width="wrap_content"
+        android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="25dp"
@@ -53,11 +55,13 @@
         android:text="@string/chiquitita"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRojita" />
+        app:layout_constraintTop_toBottomOf="@+id/btnRojita"
+        android:onClick="onCheckBoxClicked"
+        />
 
     <CheckBox
         android:id="@+id/btnGrandecita"
-        android:layout_width="wrap_content"
+        android:layout_width="87dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="25dp"
@@ -65,7 +69,49 @@
         android:text="@string/grandecita"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnChiquitita" />
+        app:layout_constraintTop_toBottomOf="@+id/btnChiquitita"
+        android:onClick="onCheckBoxClicked"
+        />
 
+<!--
+    <RadioGroup
+        android:id="@+id/CajitaTamanios"
+        android:layout_width="344dp"
+        android:layout_height="141dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="8dp"
+        android:checkedButton="1"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRojita">
+
+        <CheckBox
+            android:id="@+id/btnChiquitita"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/chiquitita"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRojita" />
+
+        <CheckBox
+            android:id="@+id/btnGrandecita"
+            android:layout_width="87dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/grandecita"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnChiquitita" />
+
+    </RadioGroup>
+-->
 
 </android.support.constraint.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -45,18 +46,65 @@ public class TextoCheckboxes extends AppCompatActivity implements CompoundButton
 
     }
 
+    public void onCheckBoxClicked(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.btnChiquitita:
+                btnGrande.setChecked(false);
+                break;
+
+            case R.id.btnGrandecita:
+                btnPequenio.setChecked(false);
+                break;
+        }
+    }
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId())
         {
             case R.id.btnNegrita:
-                if(!isChecked)
+                if(isChecked)
                 {
                     cuadro.setTypeface(cuadro.getTypeface(), Typeface.BOLD);
                 }
                 else
                 {
-                    cuadro.setTypeface(cuadro.getTypeface(), Typeface.DEFAULT_BOLD); //investigar como poner texto bold a normal
+                    cuadro.setTypeface(Typeface.create(cuadro.getTypeface(), Typeface.NORMAL)); //investigar como poner texto bold a normal
+                }
+                break;
+
+            case R.id.btnRojita:
+                if(isChecked)
+                {
+                    cuadro.setTextColor(Color.RED);
+                }
+                else
+                {
+                    cuadro.setTextColor(Color.BLACK);
+                }
+                break;
+
+            case R.id.btnChiquitita:
+                if(isChecked)
+                {
+                    cuadro.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cuadro.getTextSize()-15);
+                }
+                else
+                {
+                    cuadro.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cuadro.getTextSize()+15);
+                }
+                break;
+
+            case R.id.btnGrandecita:
+                if(isChecked)
+                {
+                    cuadro.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cuadro.getTextSize()+15);
+                }
+                else
+                {
+                    cuadro.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cuadro.getTextSize()-15);
                 }
                 break;
         }
