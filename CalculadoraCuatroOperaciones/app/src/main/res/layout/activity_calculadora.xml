@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Calculadora">
+
+    <EditText
+        android:id="@+id/edtxtNumero1"
+        android:layout_width="100dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:digits="012345679"
+        android:textSize="24dp"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtxtNumero2"
+        android:layout_width="100dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:digits="012345679"
+        android:textSize="24dp"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtvwSimbolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:text="+"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toStartOf="@+id/edtxtNumero2"
+        app:layout_constraintStart_toEndOf="@+id/edtxtNumero1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/grupoOperaciones"
+        android:checkedButton="@id/rdbtnSumar"
+        android:layout_width="110dp"
+        android:layout_height="195dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvwSimbolo">
+
+        <RadioButton
+            android:id="@+id/rdbtnSumar"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_weight="25"
+            android:text="Sumar" />
+
+        <RadioButton
+            android:id="@+id/rdbtnRestar"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_weight="25"
+            android:text="Restar" />
+
+        <RadioButton
+            android:id="@+id/rdbtnMultiplicar"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_weight="25"
+            android:text="Multiplicar" />
+
+        <RadioButton
+            android:id="@+id/rdbtnDividir"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_weight="25"
+            android:text="Dividir" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnCalcular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:text="CALCULAR"
+        android:textSize="24dp"
+        android:onClick="calcularResultado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grupoOperaciones" />
+
+    <TextView
+        android:id="@+id/txtvwResultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Resultado"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCalcular" />
+
+
+</android.support.constraint.ConstraintLayout>
