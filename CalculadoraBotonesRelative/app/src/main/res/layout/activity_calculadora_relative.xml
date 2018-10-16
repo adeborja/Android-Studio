@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalculadoraBotones"
-    android:orientation="vertical">
+    tools:context=".CalculadoraRelative"
+    android:id="@+id/panelCompleto"
+    >
 
     <TextView
         android:id="@+id/txvTeclasPulsadas"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:text="Prueba de texto"
         android:textSize="35dp"
         android:textColor="@android:color/darker_gray"
@@ -20,13 +21,12 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_weight="20"
         />
 
     <TextView
         android:id="@+id/txvResultado"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="120dp"
         android:text="CajaResultad"
         android:textSize="50dp"
         android:autoSizeTextType="uniform"
@@ -37,15 +37,17 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_weight="20"
+        android:layout_below="@+id/txvTeclasPulsadas"
         />
 
     <LinearLayout
         android:id="@+id/lnlCajaBotones"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="60">
+        android:layout_height="30dp"
+        android:layout_below="@+id/txvResultado"
+        android:layout_alignParentBottom="true"
+        >
 
         <LinearLayout
             android:id="@+id/lnlLinea0"
@@ -299,4 +301,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
