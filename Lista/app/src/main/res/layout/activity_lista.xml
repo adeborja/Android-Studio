@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Lista"
+    android:id="@+id/listaPrincipal"
+    >
+
+    <TextView
+        android:id="@+id/barrita"
+        android:textColor="@android:color/white"
+        android:padding="6dp"
+        android:textSize="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
+        android:text="" />
+
+    <ListView
+        android:id="@+id/listita"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        app:layout_constraintTop_toBottomOf="@+id/barrita"/>
+
+</android.support.constraint.ConstraintLayout>
