@@ -34,8 +34,8 @@ public class Lista extends AppCompatActivity implements AdapterView.OnItemClickL
         //String item = ((TextView)view.findViewById(R.id.listita)).getText().toString();
         TextView item = view.findViewById(R.id.lineaBarraTexto);
         String s = item.getText().toString();
-        //barra.setText(s);
-        Toast toast = Toast.makeText(this,s + " pulsado",Toast.LENGTH_SHORT);
-        toast.show();
+        barra.setText(s);
+        //Toast toast = Toast.makeText(this,s + " pulsado",Toast.LENGTH_SHORT);
+        //toast.show();
     }
 }
