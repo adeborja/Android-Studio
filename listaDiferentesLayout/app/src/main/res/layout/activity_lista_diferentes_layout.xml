@@ -15,7 +15,7 @@
 
     <!-- el id de lista DEBE SER SIEMPRE list, ya que si no da error en ejecucion, PUES NO ES ESO -->
     <ListView
-        android:id="@+id/list"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawSelectorOnTop="false"

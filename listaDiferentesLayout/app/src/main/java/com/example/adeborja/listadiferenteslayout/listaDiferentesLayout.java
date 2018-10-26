@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //necesario cambiar la clase de la que hereda
 public class listaDiferentesLayout extends ListActivity {
@@ -20,8 +21,8 @@ public class listaDiferentesLayout extends ListActivity {
     TextView txvCajaTexto;
     //ListView lista;
 
-    //ArrayList<clsEquipo> listaEquipos;
-    static clsEquipo[] listaEquipos;
+    List<clsEquipo> listaEquipos;
+    //clsEquipo[] listaEquipos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +40,14 @@ public class listaDiferentesLayout extends ListActivity {
 
     public void onListItemClick(ListView padre, View vista, int posicion, long id)
     {
-        txvCajaTexto.setText(listaEquipos[posicion].getNombre());
+        txvCajaTexto.setText(listaEquipos.get(posicion).getNombre());
+        //txvCajaTexto.setText(listaEquipos[posicion].getNombre());
     }
 
     //Metodo para rellenar un array de equipos
     public void rellenarLista()
     {
-        /*listaEquipos = new ArrayList<clsEquipo>(0);
+        listaEquipos = new ArrayList<clsEquipo>(0);
 
         listaEquipos.add(new clsEquipo(0,"Sevilla FC",""));
         listaEquipos.add(new clsEquipo(1,"FC Barcelona",""));
@@ -66,13 +68,13 @@ public class listaDiferentesLayout extends ListActivity {
         listaEquipos.add(new clsEquipo(16,"Levante",""));
         listaEquipos.add(new clsEquipo(17,"Rayo Vallecano",""));
         listaEquipos.add(new clsEquipo(18,"Real Sociedad",""));
-        listaEquipos.add(new clsEquipo(19,"Valladolid",""));*/
+        listaEquipos.add(new clsEquipo(19,"Valladolid",""));
 
-        listaEquipos = new clsEquipo[3];
+        /*listaEquipos = new clsEquipo[3];
 
         listaEquipos[0] = new clsEquipo(0,"Sevilla FC","");
         listaEquipos[1] = new clsEquipo(1,"FC Barcelona","");
-        listaEquipos[2] = new clsEquipo(2,"Real Madrid","");
+        listaEquipos[2] = new clsEquipo(2,"Real Madrid","");*/
 
 
     }
@@ -84,7 +86,7 @@ public class listaDiferentesLayout extends ListActivity {
     //Creacion de la clase interna
     class IconicAdapter<T> extends ArrayAdapter<T>
     {
-        IconicAdapter(Context contexto, int idRecurso, int idTexto, T[] objetos)
+        IconicAdapter(Context contexto, int idRecurso, int idTexto, List<T> objetos)
         {
             super(contexto,idRecurso,idTexto,objetos);
         }
@@ -94,6 +96,10 @@ public class listaDiferentesLayout extends ListActivity {
             LayoutInflater inflador;
             TextView label;
             ImageView icono;
+            int idDisenoFila; //Aqui se guarda el id del diseño de fila a utilizar
+            int txvFila; //Aqui se escoge el textview del diseño de fila a utilizar
+            int imgUno; //Aqui se coge la primera imagen del diseño de fila que tenga al menos una imagen
+            int imgDos; //Como el anterior, pero para la segunda imagen
 
             View fila = convertView;
 
@@ -106,17 +112,17 @@ public class listaDiferentesLayout extends ListActivity {
             }
 
             //Elegir donde se va a escribir el nombre del equipo
-            label = (TextView)findViewById(R.id.filaSimple);
+            label = (TextView)fila.findViewById(R.id.txvFilaConImagen);
 
             //Coger el nombre del equipo
-            //label.setText(listaEquipos.get(posicion).getNombre());
-            label.setText(listaEquipos[posicion].getNombre());
+            label.setText(listaEquipos.get(posicion).getNombre());
+            //label.setText(listaEquipos[posicion].getNombre());
 
             //Elegir el icono a mostrar en la fila
-            icono = (ImageView)findViewById(R.id.imgFilaConImagen);
+            icono = (ImageView)fila.findViewById(R.id.imgFilaConImagen);
 
-            //if(listaEquipos.get(posicion).getId()==0)
-            if(listaEquipos[posicion].getId()==0)
+            if(listaEquipos.get(posicion).getId()==0)
+            //if(listaEquipos[posicion].getId()==0)
             {
                 icono.setImageResource(R.mipmap.ic_launcher);
             }
