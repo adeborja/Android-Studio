@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".listaDiferentesLayout">
+    tools:context=".ListaViewHolder">
 
     <TextView
         android:id="@+id/txvCajaTexto"
-        android:background="@android:color/holo_blue_bright"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="asd"
+        android:textSize="22dp"
+        android:padding="8dp"
+        android:background="@android:color/holo_blue_bright"
+        />
 
-    <!-- el id de lista DEBE SER SIEMPRE list, ya que si no da error en ejecucion, Y EN EL FINDVIEWBYID HAY QUE ESPECIFICAR QUE BUSQUE EN LA FILA -->
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawSelectorOnTop="false"
         app:layout_constraintTop_toBottomOf="@id/txvCajaTexto"
         android:choiceMode="singleChoice"
-    />
+        android:drawSelectorOnTop="false"
+        android:paddingBottom="40dp"
+        />
+    <!-- Se come el borde de abajo   -->
+    <!--android:layout_marginBottom="?attr/actionBarSize"-->
 
 </android.support.constraint.ConstraintLayout>
