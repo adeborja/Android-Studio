@@ -1,0 +1,1 @@
+hacer una lista heterogenea con un array de objetos de distinto tipo, como juego de rol, que incluya armas, armaduras, pociones, etc, y cada una tenga su diseño de fila propio
