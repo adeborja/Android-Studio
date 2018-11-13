@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
+import android.widget.AutoCompleteTextView;
 
-public class AutoCompleteTextView extends Activity {
+public class AutoCompleteTextViewUno extends Activity {
 
     private static final String[] PALABRAS = {hola, halo, helado, hilado, hondo, holograma, hololens, hiniesta, hilo, humo, hoja, hojaldre, hijo, hija, hipopotamo};
 
-    AutoCompleteTextView cajaTexto;
+    private AutoCompleteTextView lista;
+    private TextView cajaTexto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +21,8 @@ public class AutoCompleteTextView extends Activity {
 
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, PALABRAS);
 
-        cajaTexto = (AutoCompleteTextView)findViewById(R.id.actvLista);
+        cajaTexto = (TextView)findViewById(R.id.txvTexto);
+        lista = (AutoCompleteTextView)findViewById(R.id.actvLista);
 
         //https://www.journaldev.com/9574/android-autocompletetextview-example-tutorial
     }
