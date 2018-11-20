@@ -19,8 +19,8 @@ public class SpinnerDos extends Activity implements Spinner.OnItemSelectedListen
     private Spinner spin;
     private TextView cajaTexto;
     private String[] equipos = {"Mercedes", "Ferrari", "Red Bull", "Renault"};
-    //private int[] logos = {R.drawable.mercedes, R.drawable.ferrari, R.drawable.redbull, R.drawable.renault};
-    private int[] logos = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_background, R.drawable.ic_launcher_foreground};
+    private int[] logos = {R.drawable.mercedes, R.drawable.ferrari, R.drawable.redbull, R.drawable.renault};
+    //private int[] logos = {R.mipmap.ic_launcher, R.mipmap.ic_launcher_round, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +155,7 @@ public class SpinnerDos extends Activity implements Spinner.OnItemSelectedListen
 
         public ViewHolder(View fila)
         {
-            tv = (TextView)findViewById(R.id.fila);
+            tv = (TextView)fila.findViewById(R.id.fila);
         }
 
         public TextView getTv()
