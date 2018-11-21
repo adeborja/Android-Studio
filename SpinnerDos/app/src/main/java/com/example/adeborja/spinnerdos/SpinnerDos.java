@@ -19,7 +19,7 @@ public class SpinnerDos extends Activity implements Spinner.OnItemSelectedListen
     private Spinner spin;
     private TextView cajaTexto;
     private String[] equipos = {"Mercedes", "Ferrari", "Red Bull", "Renault"};
-    private int[] logos = {R.drawable.mercedes, R.drawable.ferrari, R.drawable.redbull, R.drawable.renault};
+    private int[] logos = {R.drawable.mercedes_dos, R.drawable.ferrari_dos, R.drawable.redbull_dos, R.drawable.renault_dos};
     //private int[] logos = {R.mipmap.ic_launcher, R.mipmap.ic_launcher_round, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round};
 
     @Override
