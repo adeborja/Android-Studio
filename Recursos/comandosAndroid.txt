@@ -1,0 +1,3 @@
+Comandos:
+
+ctrl+Q: abre el cuadro de texto con informacion de una clase, interfaz, etc
