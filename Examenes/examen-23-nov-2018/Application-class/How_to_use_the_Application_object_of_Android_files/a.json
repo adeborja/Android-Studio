@@ -1,0 +1,14 @@
+/**/ _ate.cbs.rcb_gn3p0({
+   "share": {
+      "comment_count": 0,
+      "share_count": 3
+   },
+   "og_object": {
+      "id": "937208766315615",
+      "description": "How to use the Application object of Android | We know there is an Application class in the Android api and according to the class name, it's used for global settings or running entrance. What does it to do for an application? I will dive into it in this blog post.  In the Android reference it describes the Application class: \"Base class for those who need to maintain global application state. You can provide your own implementation by specifying its name in your AndroidManifest.xml's 'application' tag, which will cause that class to be instantiated for you when the process for your application/package is created.\" | May 24, 2011",
+      "title": "How to use the Application object of Android |",
+      "type": "article",
+      "updated_time": "2017-05-15T23:29:35+0000"
+   },
+   "id": "https://www.mobomo.com/2011/05/how-to-use-application-object-of-android/"
+});
