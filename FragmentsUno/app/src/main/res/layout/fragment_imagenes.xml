@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ImagenesFragment">
+
+    <!-- Aqui se mostrarian las imagenes. Poner abajo controles
+     para salir de esa imagen en caso de estar en movil. Usar
+     viewPager para solo tener que deslizar a los lados para
+     cambiar de imagenes guardadas de ese personaje. Un
+     personaje tendrá mas de una imagen para mostrar
+     -->
+
+    <TextView
+        android:id="@+id/textoImagenes"
+        android:textSize="30dp"
+        android:text="ejemplo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Añadir un estilo que tenga la izquierda una imagen
+     como retrato del personaje, en el centro el nombre del
+     personaje y a la derecha el numero de imagenes  que
+     se pueden ver de dicho personaje
+     -->
+
+</android.support.constraint.ConstraintLayout>
