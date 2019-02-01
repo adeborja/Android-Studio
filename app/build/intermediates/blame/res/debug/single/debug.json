@@ -204,6 +204,10 @@
         "source": "/home/adeborja/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/72d08c61443c63dfc6a5e5ef9ffad09c/res/drawable-mdpi-v4/abc_popup_background_mtrl_mult.9.png"
     },
     {
+        "merged": "/home/adeborja/Escritorio/Github/Repositorios/Android-Studio/Android-Studio/app/build/intermediates/res/merged/debug/layout_activity_main.xml.flat",
+        "source": "/home/adeborja/Escritorio/Github/Repositorios/Android-Studio/Android-Studio/app/src/main/res/layout/activity_main.xml"
+    },
+    {
         "merged": "/home/adeborja/Escritorio/Github/Repositorios/Android-Studio/Android-Studio/app/build/intermediates/res/merged/debug/drawable-xxxhdpi-v4_abc_ic_star_black_16dp.png.flat",
         "source": "/home/adeborja/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/72d08c61443c63dfc6a5e5ef9ffad09c/res/drawable-xxxhdpi-v4/abc_ic_star_black_16dp.png"
     },
@@ -682,10 +686,6 @@
     {
         "merged": "/home/adeborja/Escritorio/Github/Repositorios/Android-Studio/Android-Studio/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_btn_switch_to_on_mtrl_00001.9.png.flat",
         "source": "/home/adeborja/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/72d08c61443c63dfc6a5e5ef9ffad09c/res/drawable-hdpi-v4/abc_btn_switch_to_on_mtrl_00001.9.png"
-    },
-    {
-        "merged": "/home/adeborja/Escritorio/Github/Repositorios/Android-Studio/Android-Studio/app/build/intermediates/res/merged/debug/layout_activity_spinner_basico.xml.flat",
-        "source": "/home/adeborja/Escritorio/Github/Repositorios/Android-Studio/Android-Studio/app/src/main/res/layout/activity_spinner_basico.xml"
     },
     {
         "merged": "/home/adeborja/Escritorio/Github/Repositorios/Android-Studio/Android-Studio/app/build/intermediates/res/merged/debug/drawable-xxxhdpi-v4_abc_switch_track_mtrl_alpha.9.png.flat",
