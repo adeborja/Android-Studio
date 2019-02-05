@@ -52,9 +52,8 @@ public class ImagenesFragment extends Fragment {
 
         //TextView txvImagenes = v.findViewById(R.id.textoImagenes);
         //TODO: implementar las imagenes para probar si se ven
-        TextView txvImagenes = v.findViewById(R.id.textoImagenes);
-        txvImagenes.setText(miTextoImagenes);
-
+        /*TextView txvImagenes = v.findViewById(R.id.textoImagenes);
+        txvImagenes.setText(miTextoImagenes);*/
         return v;
     }
 

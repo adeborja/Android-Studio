@@ -1,4 +1,4 @@
-package com.example.adeborja.fragmentsuno;
+/*package com.example.adeborja.fragmentsuno;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ public class Navegacion2 extends Fragment implements View.OnClickListener{
     * se comunique con la actividad y potencialmente con otros fragments
     *incluidos en esa actividad.
     */
-    public interface OnFragmentInteractionListener {
+    /*public interface OnFragmentInteractionListener {
 
         void onFragmentInteraction(View v);
     }
@@ -105,4 +105,4 @@ public class Navegacion2 extends Fragment implements View.OnClickListener{
     }
 
 
-}
+}*/

@@ -24,11 +24,11 @@ public class Datos extends Application {
     private void rellenarLista() {
 
         Personaje p;
-        int[] imagenes = {R.drawable.goku01, R.drawable.goku01, R.drawable.goku01};
+        int[] imagenes = {R.drawable.goku01, R.drawable.goku02, R.drawable.goku03};
 
         for(int i=0;i<10;i++)
         {
-            p = new Personaje("Son Goku", "Goku 0"+i, "El prota de la serie", R.drawable.goku, imagenes);
+            p = new Personaje("Son Goku", "Goku 0"+i, "El prota de la serie", R.drawable.goku, imagenes, i);
         }
 
     }

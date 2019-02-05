@@ -68,10 +68,10 @@ public class Navegacion extends Fragment implements View.OnClickListener{
         //En este view va a ir una listview que saldran los nombres y una foto del personaje
         //TODO: listview
         //En el ejemplo, se pone los findviewbyid de los elementos y se les pone su setonclicklistener
-        Button b1 = v.findViewById(R.id.boton1);
+        /*Button b1 = v.findViewById(R.id.boton1);
         Button b2 = v.findViewById(R.id.boton2);
         b1.setOnClickListener(this);
-        b2.setOnClickListener(this);
+        b2.setOnClickListener(this);*/
 
         return v;
     }

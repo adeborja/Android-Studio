@@ -1,20 +1,24 @@
 package com.example.adeborja.fragmentsuno;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Personaje {
+public class Personaje implements Parcelable {
 
     private String nombre;
     private String alias;
     private String descripcion;
     private int retrato;
     private int[] imagenes;
+    private long id;
 
-    public Personaje(String nombre, String alias, String descripcion, int retrato, int[] imagenes) {
+    public Personaje(String nombre, String alias, String descripcion, int retrato, int[] imagenes, long nId) {
         this.nombre = nombre;
         this.alias = alias;
         this.descripcion = descripcion;
         this.retrato=retrato;
+        this.id=nId;
         if(imagenes==null)
         {
             this.imagenes = new int[0];
@@ -65,6 +69,14 @@ public class Personaje {
         this.retrato = retrato;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void anadirImagen(int imagen)
     {
         int[] nuevoImagenes = new int[imagenes.length+1];
@@ -80,5 +92,45 @@ public class Personaje {
     public int getCantidadImagenes()
     {
         return this.imagenes.length;
+    }
+
+
+
+    protected Personaje(Parcel in)
+    {
+        this.nombre = in.readString();
+        this.alias = in.readString();
+        this.descripcion = in.readString();
+        this.retrato=in.readInt();
+        //this.imagenes = in.readIntArray(); //TODO
+        this.imagenes = in.createIntArray();
+        this.id = in.readLong();
+    }
+
+    public static final Creator<Personaje> CREATOR = new Creator<Personaje>() {
+        @Override
+        public Personaje createFromParcel(Parcel source) {
+            return new Personaje(source);
+        }
+
+        @Override
+        public Personaje[] newArray(int size) {
+            return new Personaje[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nombre);
+        dest.writeString(alias);
+        dest.writeString(descripcion);
+        dest.writeInt(retrato);
+        dest.writeIntArray(imagenes);
+        dest.writeLong(id);
     }
 }

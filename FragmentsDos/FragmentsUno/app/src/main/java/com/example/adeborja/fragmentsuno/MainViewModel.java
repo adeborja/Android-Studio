@@ -7,8 +7,8 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
 
     private boolean tablet;
-    private List<Personaje> listaPersonajes;
-    private static Datos datos = new Datos();
+    //private List<Personaje> listaPersonajes;
+    //private static Datos datos = new Datos();
 
     public boolean isTablet() {
         return tablet;
@@ -18,11 +18,14 @@ public class MainViewModel extends ViewModel {
         this.tablet = tablet;
     }
 
-    public List<Personaje> getListaPersonajes() {
+    /*public List<Personaje> getListaPersonajes(Datos d)
+    {
+        this.listaPersonajes=d.getListaPersonajes();
+
         return listaPersonajes;
     }
 
     public void setListaPersonajes(List<Personaje> listaPersonajes) {
         this.listaPersonajes = listaPersonajes;
-    }
+    }*/
 }
