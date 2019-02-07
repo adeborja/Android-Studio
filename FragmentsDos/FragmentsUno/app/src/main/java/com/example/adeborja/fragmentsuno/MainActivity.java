@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //TODO: todo lo de aquí que sea del listview FUERA, tiene que estar en la clase Navegacion
+
         //misDatos = (Datos) getApplicationContext();
         misDatos = new Datos();
 

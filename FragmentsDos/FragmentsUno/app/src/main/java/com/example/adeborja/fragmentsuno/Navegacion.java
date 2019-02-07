@@ -66,12 +66,14 @@ public class Navegacion extends Fragment implements View.OnClickListener{
         View v = inflador.inflate(R.layout.fragment_navegacion, contenedor, false); //TODO: layout de este fragment
 
         //En este view va a ir una listview que saldran los nombres y una foto del personaje
-        //TODO: listview
+        //TODO: listview. Aquí debe colocarse todo el codigo para crear la lista (adaptador, bindeos, etc)
         //En el ejemplo, se pone los findviewbyid de los elementos y se les pone su setonclicklistener
         /*Button b1 = v.findViewById(R.id.boton1);
         Button b2 = v.findViewById(R.id.boton2);
         b1.setOnClickListener(this);
         b2.setOnClickListener(this);*/
+
+        //TODO: todo lo que hay que hacer para que aparezca la lista en el programa de la lista hay que meterlo en esta clase, ya que pertenece al fragment y es aquí donde debe estar creado y asignado. El main activity simplemente tiene que usar esta clase.
 
         return v;
     }
