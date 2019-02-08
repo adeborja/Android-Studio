@@ -1,18 +1,29 @@
 package com.example.adeborja.fragmentsuno;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.List;
 
 public class Navegacion extends Fragment implements View.OnClickListener{
 
     private static final String TEXTO_BOTON1 = "boton1";
     private static final String TEXTO_BOTON2 = "boton2";
     private String miBoton1, miBoton2;
+
+    private Datos misDatos;
+    private List<Personaje> listaPersonajes;
+    private ListView listView;
 
     private OnFragmentInteractionListener miListener;
 
@@ -58,6 +69,16 @@ public class Navegacion extends Fragment implements View.OnClickListener{
             miBoton1 = getArguments().getString(TEXTO_BOTON1);
             miBoton2 = getArguments().getString(TEXTO_BOTON2);
         }
+
+        misDatos = (Datos) getApplicationContext();
+
+        listaPersonajes = misDatos.getListaPersonajes();
+
+        //ListAdapter
+
+        listView = (ListView)findViewById(R.id.list);
+        listView.setAdapter(new Navegacion.PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
+
     }
 
     @Override
@@ -74,6 +95,16 @@ public class Navegacion extends Fragment implements View.OnClickListener{
         b2.setOnClickListener(this);*/
 
         //TODO: todo lo que hay que hacer para que aparezca la lista en el programa de la lista hay que meterlo en esta clase, ya que pertenece al fragment y es aquí donde debe estar creado y asignado. El main activity simplemente tiene que usar esta clase.
+
+        misDatos = (Datos) getApplicationContext();
+
+        listaPersonajes = misDatos.getListaPersonajes();
+
+        //ListAdapter
+
+        listView = (ListView)findViewById(R.id.list);
+        listView.setAdapter(new Navegacion.PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
+
 
         return v;
     }
@@ -106,5 +137,118 @@ public class Navegacion extends Fragment implements View.OnClickListener{
         miListener.onFragmentInteraction(v);
     }
 
+    public void onListItemClick(ListView padre, View vista, int posicion, long id)
+    {
+        Intent i;
+        Personaje p;
+
+        p = (Personaje) listaPersonajes.get(posicion);
+        i = new Intent(this, ImagenesFragment.class);
+        i.putExtra("personaje", p);
+        startActivity(i);
+    }
+
+    class ViewHolderPersonaje
+    {
+        TextView alias;
+        ImageView retrato;
+        TextView cantidadImagenes;
+
+        ViewHolderPersonaje(){}
+
+        ViewHolderPersonaje (TextView nAlias, ImageView nRetrato, TextView nCantidadImagenes)
+        {
+            this.alias=nAlias;
+            this.retrato=nRetrato;
+            this.cantidadImagenes=nCantidadImagenes;
+        }
+
+        public TextView getAlias()
+        {
+            return this.alias;
+        }
+
+        public TextView getCantidadImagenes()
+        {
+            return this.cantidadImagenes;
+        }
+
+        public ImageView getRetrato()
+        {
+            return this.retrato;
+        }
+
+    }
+
+    public class PersonajesAdapter extends BaseAdapter
+    {
+        public PersonajesAdapter()
+        {
+            super();
+        }
+
+        @Override
+        public int getCount() {
+            return listaPersonajes.size();
+        }
+
+        @Override
+        public int getViewTypeCount()
+        {
+            return 1;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return listaPersonajes.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+
+            long id = ((Personaje) listaPersonajes.get(position)).getId();
+
+            return id;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View fila = convertView;
+
+            Personaje p;
+
+            TextView alias, cantidadImagenes;
+            ImageView retrato;
+
+            ViewHolderPersonaje holderPersonaje = new ViewHolderPersonaje();
+
+            if(fila == null)
+            {
+                LayoutInflater inflater = getLayoutInflater();
+
+                fila = inflater.inflate(R.layout.estilo_fila, parent, false);
+
+                alias = (TextView)fila.findViewById(R.id.txvAlias);
+                cantidadImagenes = (TextView)fila.findViewById(R.id.txvCantidadImagenes);
+                retrato = (ImageView)fila.findViewById(R.id.imgRetrato);
+
+                holderPersonaje = new ViewHolderPersonaje(alias, retrato, cantidadImagenes);
+
+                fila.setTag(holderPersonaje);
+            }
+            else
+            {
+                holderPersonaje = (ViewHolderPersonaje) fila.getTag();
+            }
+
+            p = (Personaje)listaPersonajes.get(position);
+            holderPersonaje.getAlias().setText(p.getAlias());
+            holderPersonaje.getCantidadImagenes().setText(p.getCantidadImagenes());
+            holderPersonaje.getRetrato().setImageResource(p.getRetrato());
+
+            return fila;
+        }
+    }
 
 }

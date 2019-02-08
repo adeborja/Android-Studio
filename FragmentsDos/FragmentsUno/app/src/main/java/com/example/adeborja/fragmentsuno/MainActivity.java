@@ -18,9 +18,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener {
 
     private ViewModel mainViewModel;
-    private Datos misDatos;
-    private List<Personaje> listaPersonajes;
-    private ListView listView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +27,6 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         //TODO: todo lo de aquí que sea del listview FUERA, tiene que estar en la clase Navegacion
 
-        //misDatos = (Datos) getApplicationContext();
-        misDatos = new Datos();
-
-        listaPersonajes = misDatos.getListaPersonajes();
-
-        //ListAdapter
-
-        listView = (ListView)findViewById(R.id.list);
-        listView.setAdapter(new PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
 
 
         View contenedorPantallaCompleta;
@@ -102,117 +91,5 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
     }
 
-    public void onListItemClick(ListView padre, View vista, int posicion, long id)
-    {
-        Intent i;
-        Personaje p;
 
-        p = (Personaje) listaPersonajes.get(posicion);
-        i = new Intent(this, ImagenesFragment.class);
-        i.putExtra("personaje", p);
-        startActivity(i);
-    }
-
-    class ViewHolderPersonaje
-    {
-        TextView alias;
-        ImageView retrato;
-        TextView cantidadImagenes;
-
-        ViewHolderPersonaje(){}
-
-        ViewHolderPersonaje (TextView nAlias, ImageView nRetrato, TextView nCantidadImagenes)
-        {
-            this.alias=nAlias;
-            this.retrato=nRetrato;
-            this.cantidadImagenes=nCantidadImagenes;
-        }
-
-        public TextView getAlias()
-        {
-            return this.alias;
-        }
-
-        public TextView getCantidadImagenes()
-        {
-            return this.cantidadImagenes;
-        }
-
-        public ImageView getRetrato()
-        {
-            return this.retrato;
-        }
-
-    }
-
-    public class PersonajesAdapter extends BaseAdapter
-    {
-        public PersonajesAdapter()
-        {
-            super();
-        }
-
-        @Override
-        public int getCount() {
-            return listaPersonajes.size();
-        }
-
-        @Override
-        public int getViewTypeCount()
-        {
-            return 1;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return listaPersonajes.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-
-            long id = ((Personaje) listaPersonajes.get(position)).getId();
-
-            return id;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            View fila = convertView;
-
-            Personaje p;
-
-            TextView alias, cantidadImagenes;
-            ImageView retrato;
-
-            ViewHolderPersonaje holderPersonaje = new ViewHolderPersonaje();
-
-            if(fila == null)
-            {
-                LayoutInflater inflater = getLayoutInflater();
-
-                fila = inflater.inflate(R.layout.estilo_fila, parent, false);
-
-                alias = (TextView)fila.findViewById(R.id.txvAlias);
-                cantidadImagenes = (TextView)fila.findViewById(R.id.txvCantidadImagenes);
-                retrato = (ImageView)fila.findViewById(R.id.imgRetrato);
-
-                holderPersonaje = new ViewHolderPersonaje(alias, retrato, cantidadImagenes);
-
-                fila.setTag(holderPersonaje);
-            }
-            else
-            {
-                holderPersonaje = (ViewHolderPersonaje) fila.getTag();
-            }
-
-            p = (Personaje)listaPersonajes.get(position);
-            holderPersonaje.getAlias().setText(p.getAlias());
-            holderPersonaje.getCantidadImagenes().setText(p.getCantidadImagenes());
-            holderPersonaje.getRetrato().setImageResource(p.getRetrato());
-
-            return fila;
-        }
-    }
 }
