@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class Navegacion extends Fragment implements View.OnClickListener{
+public class Navegacion extends ListFragment implements View.OnClickListener{
 
     private static final String TEXTO_BOTON1 = "boton1";
     private static final String TEXTO_BOTON2 = "boton2";
@@ -70,15 +71,15 @@ public class Navegacion extends Fragment implements View.OnClickListener{
             miBoton2 = getArguments().getString(TEXTO_BOTON2);
         }
 
-        misDatos = (Datos) getApplicationContext();
+        /*misDatos = (Datos) getActivity().getApplicationContext();
 
         listaPersonajes = misDatos.getListaPersonajes();
 
         //ListAdapter
 
-        listView = (ListView)findViewById(R.id.list);
+        listView = (ListView)getListView().findViewById(android.R.id.list);
         listView.setAdapter(new Navegacion.PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
-
+*/
     }
 
     @Override
@@ -96,17 +97,50 @@ public class Navegacion extends Fragment implements View.OnClickListener{
 
         //TODO: todo lo que hay que hacer para que aparezca la lista en el programa de la lista hay que meterlo en esta clase, ya que pertenece al fragment y es aquí donde debe estar creado y asignado. El main activity simplemente tiene que usar esta clase.
 
-        misDatos = (Datos) getApplicationContext();
+        /*misDatos = (Datos) getActivity().getApplicationContext();
 
         listaPersonajes = misDatos.getListaPersonajes();
 
         //ListAdapter
 
-        listView = (ListView)findViewById(R.id.list);
+        listView = (ListView)getListView().findViewById(android.R.id.list);
         listView.setAdapter(new Navegacion.PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
-
+*/
 
         return v;
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        /*misDatos = (Datos) getActivity().getApplicationContext();
+
+        listaPersonajes = misDatos.getListaPersonajes();
+
+        //ListAdapter
+
+        listView = (ListView)getListView().findViewById(android.R.id.list);
+        listView.setAdapter(new PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
+*/
+    }
+
+    @Override
+    public void onActivityCreated(Bundle bundle)
+    {
+        super.onActivityCreated(bundle);
+
+        misDatos = (Datos) getActivity().getApplicationContext();
+
+        listaPersonajes = misDatos.getListaPersonajes();
+
+        //ListAdapter
+
+        listView = (ListView)getListView().findViewById(android.R.id.list);
+        PersonajesAdapter personajesAdapter = new PersonajesAdapter();
+        setListAdapter(personajesAdapter);//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
+
     }
 
     @Override
@@ -143,7 +177,7 @@ public class Navegacion extends Fragment implements View.OnClickListener{
         Personaje p;
 
         p = (Personaje) listaPersonajes.get(posicion);
-        i = new Intent(this, ImagenesFragment.class);
+        i = new Intent(getActivity(), ImagenesFragment.class);
         i.putExtra("personaje", p);
         startActivity(i);
     }
@@ -189,6 +223,7 @@ public class Navegacion extends Fragment implements View.OnClickListener{
 
         @Override
         public int getCount() {
+            //return 10;
             return listaPersonajes.size();
         }
 
@@ -215,13 +250,14 @@ public class Navegacion extends Fragment implements View.OnClickListener{
         public View getView(int position, View convertView, ViewGroup parent) {
 
             View fila = convertView;
+            ViewHolderPersonaje holderPersonaje;
 
             Personaje p;
 
             TextView alias, cantidadImagenes;
             ImageView retrato;
 
-            ViewHolderPersonaje holderPersonaje = new ViewHolderPersonaje();
+            holderPersonaje = new ViewHolderPersonaje();
 
             if(fila == null)
             {
@@ -242,7 +278,7 @@ public class Navegacion extends Fragment implements View.OnClickListener{
                 holderPersonaje = (ViewHolderPersonaje) fila.getTag();
             }
 
-            p = (Personaje)listaPersonajes.get(position);
+            p = listaPersonajes.get(position);
             holderPersonaje.getAlias().setText(p.getAlias());
             holderPersonaje.getCantidadImagenes().setText(p.getCantidadImagenes());
             holderPersonaje.getRetrato().setImageResource(p.getRetrato());

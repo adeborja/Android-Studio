@@ -89,9 +89,11 @@ public class Personaje implements Parcelable {
         nuevoImagenes[imagenes.length] = imagen;
     }
 
-    public int getCantidadImagenes()
+    public String getCantidadImagenes()
     {
-        return this.imagenes.length;
+        String cantidad = String.valueOf(this.imagenes.length);
+
+        return cantidad;
     }
 
 

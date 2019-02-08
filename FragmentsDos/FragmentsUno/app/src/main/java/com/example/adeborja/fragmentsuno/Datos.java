@@ -29,6 +29,8 @@ public class Datos extends Application {
         for(int i=0;i<10;i++)
         {
             p = new Personaje("Son Goku", "Goku 0"+i, "El prota de la serie", R.drawable.goku, imagenes, i);
+
+            listaPersonajes.add(p);
         }
 
     }

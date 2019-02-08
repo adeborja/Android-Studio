@@ -21,7 +21,7 @@ public class ImagenesFragment extends Fragment {
         //Constructor vacio
     }
 
-    public static ImagenesFragment newInstance(String miTextoImagenes)
+    public static ImagenesFragment newInstance()
     {
         ImagenesFragment fragment = new ImagenesFragment();
 
