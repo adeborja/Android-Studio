@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -56,6 +57,28 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     @Override
     public void onFragmentInteraction(View v)
     {
+
+        String nombre = "", alias = "", desc = "", retrato = String.valueOf(R.drawable.ic_launcher_background);
+
+        DetallesFragment frag = DetallesFragment.newInstance(nombre,alias, desc, retrato);
+
+        if(((MainViewModel) mainViewModel).isTablet())
+        {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.barraImagenes, frag)
+                    .addToBackStack(null)
+                    .commit();
+        }
+        else
+        {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contenedorPantallaCompleta, frag)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+
+        //Toast.makeText(this,"onFragmentInteraction MAIN", Toast.LENGTH_SHORT);
 
         //Añadir aqui lo que tiene que aparecer al entrar en el fragment de las imagenes
 

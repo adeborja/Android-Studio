@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -138,8 +139,8 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
         //ListAdapter
 
         listView = (ListView)getListView().findViewById(android.R.id.list);
-        PersonajesAdapter personajesAdapter = new PersonajesAdapter();
-        setListAdapter(personajesAdapter);//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
+        //PersonajesAdapter personajesAdapter = new PersonajesAdapter();
+        listView.setAdapter(new PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
 
     }
 
@@ -168,18 +169,24 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
     @Override
     public void onClick(View v)
     {
+        //Toast.makeText(getActivity(),"onClick", Toast.LENGTH_SHORT);
         miListener.onFragmentInteraction(v);
     }
 
+    @Override
     public void onListItemClick(ListView padre, View vista, int posicion, long id)
     {
-        Intent i;
+        /*Intent i;
         Personaje p;
 
         p = (Personaje) listaPersonajes.get(posicion);
         i = new Intent(getActivity(), ImagenesFragment.class);
         i.putExtra("personaje", p);
-        startActivity(i);
+        startActivity(i);*/
+
+        //Toast.makeText(getActivity(),"onListItemClick", Toast.LENGTH_SHORT);
+
+        //TODO: al clicar en una fila, se viene aquí
     }
 
     class ViewHolderPersonaje
