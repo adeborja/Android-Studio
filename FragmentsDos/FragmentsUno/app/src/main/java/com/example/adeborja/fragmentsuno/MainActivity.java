@@ -18,7 +18,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener {
 
-    private ViewModel mainViewModel;
+    public static ViewModel mainViewModel;
 
 
     @Override
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     public void onFragmentInteraction(View v)
     {
 
-        String nombre = "", alias = "", desc = "", retrato = String.valueOf(R.drawable.ic_launcher_background);
+        String nombre = "pNombre", alias = "pAlias", desc = "pDesc", retrato = String.valueOf(R.drawable.ic_launcher_background);
 
         DetallesFragment frag = DetallesFragment.newInstance(nombre,alias, desc, retrato);
 

@@ -1,5 +1,7 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +21,9 @@ import java.util.List;
 
 public class Navegacion extends ListFragment implements View.OnClickListener{
 
-    private static final String TEXTO_BOTON1 = "boton1";
+    /*private static final String TEXTO_BOTON1 = "boton1";
     private static final String TEXTO_BOTON2 = "boton2";
-    private String miBoton1, miBoton2;
+    private String miBoton1, miBoton2;*/
 
     private Datos misDatos;
     private List<Personaje> listaPersonajes;
@@ -52,10 +54,10 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
         Navegacion fragment = new Navegacion();
 
         //Aquí se añadirian los parametros que hubiera, por ejemplo:
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putString(TEXTO_BOTON1, miBoton1);
         args.putString(TEXTO_BOTON2, miBoton2);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
 
         return fragment;
     }
@@ -66,11 +68,11 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         //Aquí se añadirian los parametros que hubiera, por ejemplo:
-        if(getArguments() != null)
+        /*if(getArguments() != null)
         {
             miBoton1 = getArguments().getString(TEXTO_BOTON1);
             miBoton2 = getArguments().getString(TEXTO_BOTON2);
-        }
+        }*/
 
         /*misDatos = (Datos) getActivity().getApplicationContext();
 
@@ -96,17 +98,6 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
         b1.setOnClickListener(this);
         b2.setOnClickListener(this);*/
 
-        //TODO: todo lo que hay que hacer para que aparezca la lista en el programa de la lista hay que meterlo en esta clase, ya que pertenece al fragment y es aquí donde debe estar creado y asignado. El main activity simplemente tiene que usar esta clase.
-
-        /*misDatos = (Datos) getActivity().getApplicationContext();
-
-        listaPersonajes = misDatos.getListaPersonajes();
-
-        //ListAdapter
-
-        listView = (ListView)getListView().findViewById(android.R.id.list);
-        listView.setAdapter(new Navegacion.PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
-*/
 
         return v;
     }
@@ -115,16 +106,6 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
     public void onStart()
     {
         super.onStart();
-
-        /*misDatos = (Datos) getActivity().getApplicationContext();
-
-        listaPersonajes = misDatos.getListaPersonajes();
-
-        //ListAdapter
-
-        listView = (ListView)getListView().findViewById(android.R.id.list);
-        listView.setAdapter(new PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
-*/
     }
 
     @Override
@@ -140,7 +121,7 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
 
         listView = (ListView)getListView().findViewById(android.R.id.list);
         //PersonajesAdapter personajesAdapter = new PersonajesAdapter();
-        listView.setAdapter(new PersonajesAdapter());//TODO: peta, no castea arriba, y aqui dice que la referencia del objeto es null
+        listView.setAdapter(new PersonajesAdapter());
 
     }
 
@@ -184,9 +165,47 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
         i.putExtra("personaje", p);
         startActivity(i);*/
 
-        //Toast.makeText(getActivity(),"onListItemClick", Toast.LENGTH_SHORT);
+        //Toast.makeText(getActivity(),"onListItemClick", Toast.LENGTH_SHORT).show();
+
+
 
         //TODO: al clicar en una fila, se viene aquí
+        getActivity().setContentView(R.layout.activity_main);
+
+        Personaje personajeClicado = (Personaje) padre.getItemAtPosition(posicion);
+
+        //MainViewModel vm = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+
+        View contenedorPantallaCompleta = getActivity().findViewById(R.id.contenedorPantallaCompleta); //android.R.id.list
+
+        ViewModel vm = MainActivity.mainViewModel;
+
+        boolean esTablet = ((MainViewModel) vm).isTablet();
+
+        if(esTablet)
+        {
+            //vm.setTablet(true);
+            //DetallesFragment frag = (DetallesFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.);
+
+        }
+        else
+        {
+            DetallesFragment frag = new DetallesFragment();
+            Bundle b = new Bundle();
+            b.putString("NOMBRE",personajeClicado.getNombre());
+            b.putString("ALIAS",personajeClicado.getAlias());
+            b.putString("DESCRIPCION",personajeClicado.getDescripcion());
+            b.putString("RETRATO",String.valueOf(personajeClicado.getRetrato()));
+            frag.setArguments(b);
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.contenedorPantallaCompleta, frag)
+                    .addToBackStack(null)
+                    .commit();
+
+            //vm.setTablet(false);
+        }
+
     }
 
     class ViewHolderPersonaje
