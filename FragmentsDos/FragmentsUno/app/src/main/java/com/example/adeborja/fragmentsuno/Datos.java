@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Datos extends Application {
 
-    private List<Personaje> listaPersonajes;
+    /*private List<Personaje> listaPersonajes;
 
     @Override
     public void onCreate()
@@ -56,6 +56,6 @@ public class Datos extends Application {
     public void onTerminate()
     {
         super.onTerminate();
-    }
+    }*/
 
 }

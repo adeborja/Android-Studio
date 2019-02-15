@@ -16,18 +16,26 @@ public class ImagenesFragment extends Fragment {
     private static final String IMAGEN = "imagen";
     private static int imagenMostrada;
 
+    private static final String ARRAY_IMAGENES = "array_imagenes";
+    private static int[] imagenes;
+
+    private OnFragmentInteractionListener mListener;
+
     public ImagenesFragment()
     {
         //Constructor vacio
     }
 
-    public static ImagenesFragment newInstance()
+    //TODO: hay que implementar bien los metodos de viewPager en esta clase
+
+    public static ImagenesFragment newInstance(int[] arrayImagenes)
     {
         ImagenesFragment fragment = new ImagenesFragment();
 
         Bundle args = new Bundle();
         //args.putString(TEXTO_IMAGENES, miTextoImagenes);
-        args.putInt(IMAGEN, imagenMostrada);
+        //args.putInt(IMAGEN, imagenMostrada);
+        args.putIntArray(ARRAY_IMAGENES, arrayImagenes);
         fragment.setArguments(args);
 
         return fragment;
@@ -54,6 +62,9 @@ public class ImagenesFragment extends Fragment {
         //TODO: implementar las imagenes para probar si se ven
         /*TextView txvImagenes = v.findViewById(R.id.textoImagenes);
         txvImagenes.setText(miTextoImagenes);*/
+
+
+
         return v;
     }
 
@@ -61,12 +72,26 @@ public class ImagenesFragment extends Fragment {
     public void onAttach(Context context)
     {
         super.onAttach(context);
+
+        if(context instanceof OnFragmentInteractionListener)
+        {
+            mListener = (OnFragmentInteractionListener) context;
+        }
+        else
+        {
+            throw new RuntimeException(context.toString() + "debe implementarse OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach()
     {
         super.onDetach();
+    }
+
+    public interface OnFragmentInteractionListener
+    {
+        void OnImagFragmentInteraction(int posicion);
     }
 
 }

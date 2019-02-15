@@ -7,20 +7,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
 
 public class DetallesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String NOMBRE = "param1";
-    private static final String ALIAS = "param2";
-    private static final String DESCRIPCION = "param2";
-    private static final String RETRATO = "0";
+    //el valor asignado es su clave. Si dos parametros tienen la misma clave, se sobreescriben.
+    private static final String NOMBRE = "nombre";
+    private static final String ALIAS = "alias";
+    private static final String DESCRIPCION = "descripcion";
+    private static final String RETRATO = "retrato";
 
-    // TODO: Rename and change types of parameters
     private static String nombre;
     private static String alias;
     private static String descripcion;
@@ -33,15 +32,14 @@ public class DetallesFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static DetallesFragment newInstance(String nNombre, String nAlias, String nDesc, String nRetrato) {
+    public static DetallesFragment newInstance(Personaje p) {
         DetallesFragment fragment = new DetallesFragment();
 
         Bundle args = new Bundle();
-        args.putString(NOMBRE, nNombre);
-        args.putString(ALIAS, nAlias);
-        args.putString(DESCRIPCION, nDesc);
-        args.putString(RETRATO, nRetrato);
+        args.putString(NOMBRE, p.getNombre());
+        args.putString(ALIAS, p.getAlias());
+        args.putString(DESCRIPCION, p.getDescripcion());
+        args.putString(RETRATO, String.valueOf(p.getRetrato()));
         fragment.setArguments(args);
 
         return fragment;
@@ -69,13 +67,18 @@ public class DetallesFragment extends Fragment {
         TextView txvAlias = (TextView)v.findViewById(R.id.txvAliasDetalles);
         TextView txvDesctipcion = (TextView)v.findViewById(R.id.txvDescripcionDetalles);
 
-        if (getArguments() != null) {
-            nombre = getArguments().getString("NOMBRE");
-            alias = getArguments().getString("ALIAS");
-            descripcion = getArguments().getString("DESCRIPCION");
-            retrato = getArguments().getString("RETRATO");
-        }
+        imgRetrato.setImageResource(Integer.parseInt(retrato));
+        txvNombre.setText(nombre);
+        txvAlias.setText(alias);
+        txvDesctipcion.setText(descripcion);
 
+        Button btnImagenes = (Button)v.findViewById(R.id.btnImagenes);
+        btnImagenes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: aqui es donde se hace la llamada para abrir la galeria de imagenes del personaje. O quiza no. Tal vez haya que hacerlo en onfragmentinteraction
+            }
+        });
 
         return v;
     }
