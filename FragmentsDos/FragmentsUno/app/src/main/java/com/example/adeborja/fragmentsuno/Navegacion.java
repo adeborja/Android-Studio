@@ -169,7 +169,7 @@ public class Navegacion extends ListFragment implements View.OnClickListener{
 
 
 
-        //TODO: al clicar en una fila, se viene aquí
+        //TODO: modificar, aqui hay que llamar al metodo onfragmentinteraction implementado en el main. Es el main el que debe cambiar entre fragments, como un programa que llama a metodos.
         getActivity().setContentView(R.layout.activity_main);
 
         Personaje personajeClicado = (Personaje) padre.getItemAtPosition(posicion);

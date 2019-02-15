@@ -26,7 +26,7 @@ public class DetallesFragment extends Fragment {
     private static String descripcion;
     private static String retrato;
 
-    //private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
 
     public DetallesFragment() {
         // Required empty public constructor
@@ -69,32 +69,52 @@ public class DetallesFragment extends Fragment {
         TextView txvAlias = (TextView)v.findViewById(R.id.txvAliasDetalles);
         TextView txvDesctipcion = (TextView)v.findViewById(R.id.txvDescripcionDetalles);
 
+        if (getArguments() != null) {
+            nombre = getArguments().getString("NOMBRE");
+            alias = getArguments().getString("ALIAS");
+            descripcion = getArguments().getString("DESCRIPCION");
+            retrato = getArguments().getString("RETRATO");
+        }
+
 
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    /*public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @Override
+    public void onActivityCreated(Bundle b)
+    {
+        super.onActivityCreated(b);
+
+        if (getArguments() != null) {
+            nombre = getArguments().getString(NOMBRE);
+            alias = getArguments().getString(ALIAS);
+            descripcion = getArguments().getString(DESCRIPCION);
+            retrato = getArguments().getString(RETRATO);
         }
-    }*/
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(View v) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(v);
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+        mListener = null;
     }
 
     /**
@@ -107,8 +127,8 @@ public class DetallesFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    /*public interface OnFragmentInteractionListener {
+    public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
+        void onFragmentInteraction(View v);
+    }
 }

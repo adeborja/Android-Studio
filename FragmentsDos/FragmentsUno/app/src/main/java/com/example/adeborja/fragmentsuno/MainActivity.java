@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener, DetallesFragment.OnFragmentInteractionListener {
 
     public static ViewModel mainViewModel;
 
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     @Override
     public void onFragmentInteraction(View v)
     {
+
+        //TODO: modificar, llamar a cada metodo que debe implementar cada fragment de forma distinta. Se pueden modificar los parametros a pasar para incluir lo que nosotros queramos usar.
 
         String nombre = "pNombre", alias = "pAlias", desc = "pDesc", retrato = String.valueOf(R.drawable.ic_launcher_background);
 
