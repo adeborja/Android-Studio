@@ -19,11 +19,13 @@ public class DetallesFragment extends Fragment {
     private static final String ALIAS = "alias";
     private static final String DESCRIPCION = "descripcion";
     private static final String RETRATO = "retrato";
+    private static final String ID = "id";
 
     private static String nombre;
     private static String alias;
     private static String descripcion;
     private static String retrato;
+    private static String id;
 
     private OnFragmentInteractionListener mListener;
 
@@ -40,6 +42,7 @@ public class DetallesFragment extends Fragment {
         args.putString(ALIAS, p.getAlias());
         args.putString(DESCRIPCION, p.getDescripcion());
         args.putString(RETRATO, String.valueOf(p.getRetrato()));
+        args.putString(ID, String.valueOf(p.getId()));
         fragment.setArguments(args);
 
         return fragment;
@@ -53,6 +56,7 @@ public class DetallesFragment extends Fragment {
             alias = getArguments().getString(ALIAS);
             descripcion = getArguments().getString(DESCRIPCION);
             retrato = getArguments().getString(RETRATO);
+            id = getArguments().getString(ID);
         }
     }
 
@@ -77,6 +81,8 @@ public class DetallesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: aqui es donde se hace la llamada para abrir la galeria de imagenes del personaje. O quiza no. Tal vez haya que hacerlo en onfragmentinteraction
+                int idPersonaje = Integer.parseInt(id);
+                mListener.onDetFragmentInteraction(idPersonaje);
             }
         });
 
@@ -97,11 +103,11 @@ public class DetallesFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(View v) {
+    /*public void onButtonPressed(View v) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(v);
+            mListener.onDetFragmentInteraction(v);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -132,6 +138,6 @@ public class DetallesFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(View v);
+        void onDetFragmentInteraction(int id);
     }
 }

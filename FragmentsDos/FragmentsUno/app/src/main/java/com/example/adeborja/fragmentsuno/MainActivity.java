@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener, DetallesFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener, DetallesFragment.OnFragmentInteractionListener, ImagenesFragment.OnFragmentInteractionListener {
 
     public static ViewModel mainViewModel;
 
@@ -57,50 +57,17 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }
 
     @Override
-    public void onFragmentInteraction(View v)
+    public void onDetFragmentInteraction(int id)
     {
         //este habria que modificar el nombre o borrarlo, ya que cada fragment va a implementar
         //esta interface con nombre distinto, que tendra que ser implementado en esta clase
         //TODO: modificar, llamar a cada metodo que debe implementar cada fragment de forma distinta. Se pueden modificar los parametros a pasar para incluir lo que nosotros queramos usar.
 
-        /*String nombre = "pNombre", alias = "pAlias", desc = "pDesc", retrato = String.valueOf(R.drawable.ic_launcher_background);
+        //Toast.makeText(this,"Has pulsado el boton de id "+id,Toast.LENGTH_SHORT).show();
 
-        DetallesFragment frag = DetallesFragment.newInstance(nombre,alias, desc, retrato);
+        Personaje p = ((MainViewModel) mainViewModel).getPersonajePorId(id);
 
-        if(((MainViewModel) mainViewModel).isTablet())
-        {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.barraImagenes, frag)
-                    .addToBackStack(null)
-                    .commit();
-        }
-        else
-        {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenedorPantallaCompleta, frag)
-                    .addToBackStack(null)
-                    .commit();
-        }*/
-
-
-        //Toast.makeText(this,"onFragmentInteraction MAIN", Toast.LENGTH_SHORT);
-
-        //Añadir aqui lo que tiene que aparecer al entrar en el fragment de las imagenes
-
-        /*String texto = "";
-        switch (v.getId())
-        {
-            case R.id.boton1:
-                texto = "Has pulsado el boton 1";
-                break;
-            case R.id.boton2:
-                texto = "HAS PULSADO EL BOTON DOS";
-                break;
-
-        }
-
-
-        ImagenesFragment frag = ImagenesFragment.newInstance(texto);
+        ImagenesFragment frag = ImagenesFragment.newInstance(p.getImagenes());
 
         if(((MainViewModel) mainViewModel).isTablet())
         {
@@ -115,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     .replace(R.id.contenedorPantallaCompleta, frag)
                     .addToBackStack(null)
                     .commit();
-        }*/
+        }
 
     }
 
@@ -146,6 +113,11 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void OnImagFragmentInteraction(int posicion) {
 
     }
 }

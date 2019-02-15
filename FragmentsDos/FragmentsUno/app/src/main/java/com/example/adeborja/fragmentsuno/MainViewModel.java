@@ -36,6 +36,22 @@ public class MainViewModel extends ViewModel {
         return this.listaPersonajes.get(posicion);
     }
 
+    public Personaje getPersonajePorId(int id)
+    {
+        Personaje p = null;
+        boolean encontrado = false;
+        for(int i=0;!encontrado&&i<listaPersonajes.size();i++)
+        {
+            if(listaPersonajes.get(i).getId()==id)
+            {
+                encontrado = true;
+                p = listaPersonajes.get(i);
+            }
+        }
+
+        return p;
+    }
+
     /*
     public void setListaPersonajes(List<Personaje> listaPersonajes) {
         this.listaPersonajes = listaPersonajes;
@@ -53,6 +69,10 @@ public class MainViewModel extends ViewModel {
 
             this.listaPersonajes.add(p);
         }
+
+        imagenes = new int[]{R.drawable.vegeta01, R.drawable.vegeta02};
+        p = new Personaje("Vegeta", "Vegeta", "El frentelarga", R.drawable.vegeta, imagenes, 10);
+        this.listaPersonajes.add(p);
 
     }
 }
