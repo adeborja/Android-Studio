@@ -74,5 +74,9 @@ public class MainViewModel extends ViewModel {
         p = new Personaje("Vegeta", "Vegeta", "El frentelarga", R.drawable.vegeta, imagenes, 10);
         this.listaPersonajes.add(p);
 
+        imagenes = new int[]{R.drawable.ftrunks01, R.drawable.ftrunks02, R.drawable.ftrunks03, R.drawable.ftrunks04, R.drawable.ftrunks05};
+        p = new Personaje("Trunks","Trunks del futuro", "El madafaka",R.drawable.ftrunks, imagenes, 11);
+        this.listaPersonajes.add(p);
+
     }
 }

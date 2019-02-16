@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imgSlide"
-        android:src="@drawable/goku01"
-        android:background="@android:color/black"
+        android:src="@drawable/ftrunks01"
+        android:background="#5D5D5D"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
