@@ -1,0 +1,17 @@
+tutoriales android room y demás
+
+https://www.youtube.com/watch?v=Ta4pw2nUUE4&index=24&list=PLshdtb5UWjSrOJfpFOE-u55s3SnY2EO9v
+
+
+añadir imagen a roomdatabase
+
+https://stackoverflow.com/questions/46337519/how-insert-image-in-room-persistence-library
+
+
+
+room referencing data
+
+https://developer.android.com/training/data-storage/room/referencing-data#java
+
+
+
