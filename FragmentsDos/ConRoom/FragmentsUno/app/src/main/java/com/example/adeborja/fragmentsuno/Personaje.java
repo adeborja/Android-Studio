@@ -1,26 +1,27 @@
 package com.example.adeborja.fragmentsuno;
 
-import android.arch.persistence.room.ColumnInfo;
+/*import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.net.Uri;
+import android.net.Uri;*/
 import android.os.Parcel;
 import android.os.Parcelable;
 
-@Entity(tableName = "personajes")
+//@Entity(tableName = "personajes")
 public class Personaje implements Parcelable {
 
-    @ColumnInfo (name = "nombre")
+    //@ColumnInfo (name = "nombre")
     private String nombre;
-    @ColumnInfo (name = "alias")
+    //@ColumnInfo (name = "alias")
     private String alias;
-    @ColumnInfo (name = "descripcion")
+    //@ColumnInfo (name = "descripcion")
     private String descripcion;
-    @ColumnInfo (name = "retrato")
+    //@ColumnInfo (name = "retrato")
     private int retrato;
-    //?? decidir
+    //@ColumnInfo (typeAffinity = ColumnInfo.BLOB)
     private int[] imagenes;
-    @PrimaryKey
+    //@PrimaryKey
+    //@ColumnInfo (name = "id")
     private long id;
 
     public Personaje(String nombre, String alias, String descripcion, int retrato, int[] imagenes, long nId) {

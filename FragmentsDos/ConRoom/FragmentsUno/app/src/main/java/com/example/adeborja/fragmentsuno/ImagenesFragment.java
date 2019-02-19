@@ -28,7 +28,7 @@ public class ImagenesFragment extends Fragment {
     private ViewPager viewPager;
     private SlideAdapter slideAdapter;
 
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
 
     public ImagenesFragment()
     {
@@ -86,14 +86,14 @@ public class ImagenesFragment extends Fragment {
     {
         super.onAttach(context);
 
-        if(context instanceof OnFragmentInteractionListener)
+        /*if(context instanceof OnFragmentInteractionListener)
         {
             mListener = (OnFragmentInteractionListener) context;
         }
         else
         {
             throw new RuntimeException(context.toString() + "debe implementarse OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
@@ -102,10 +102,10 @@ public class ImagenesFragment extends Fragment {
         super.onDetach();
     }
 
-    public interface OnFragmentInteractionListener
+    /*public interface OnFragmentInteractionListener
     {
         void OnImagFragmentInteraction(int posicion);
-    }
+    }*/
 
     public class SlideAdapter extends PagerAdapter
     {
