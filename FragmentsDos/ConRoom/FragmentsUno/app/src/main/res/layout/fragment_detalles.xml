@@ -64,7 +64,7 @@
 
     <Button
         android:id="@+id/btnImagenes"
-        android:text="Ver galería"
+        android:text="@string/ver_galeria"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

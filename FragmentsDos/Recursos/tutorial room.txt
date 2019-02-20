@@ -14,4 +14,10 @@ room referencing data
 https://developer.android.com/training/data-storage/room/referencing-data#java
 
 
+hamburger menu
 
+https://www.youtube.com/watch?v=fGcMLu1GJEc
+
+
+bottom navigation view
+https://www.youtube.com/watch?v=tPV8xA7m-iw

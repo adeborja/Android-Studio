@@ -20,12 +20,14 @@ public class DetallesFragment extends Fragment {
     private static final String DESCRIPCION = "descripcion";
     private static final String RETRATO = "retrato";
     private static final String ID = "id";
+    private static final String NUMERO_IMAGENES = "numero_imagenes";
 
     private static String nombre;
     private static String alias;
     private static String descripcion;
     private static String retrato;
     private static String id;
+    private static String numero_imagenes;
 
     private OnFragmentInteractionListener mListener;
 
@@ -43,6 +45,7 @@ public class DetallesFragment extends Fragment {
         args.putString(DESCRIPCION, p.getDescripcion());
         args.putString(RETRATO, String.valueOf(p.getRetrato()));
         args.putString(ID, String.valueOf(p.getId()));
+        args.putString(NUMERO_IMAGENES, String.valueOf(p.getCantidadImagenes()));
         fragment.setArguments(args);
 
         return fragment;
@@ -57,6 +60,7 @@ public class DetallesFragment extends Fragment {
             descripcion = getArguments().getString(DESCRIPCION);
             retrato = getArguments().getString(RETRATO);
             id = getArguments().getString(ID);
+            numero_imagenes = getArguments().getString(NUMERO_IMAGENES);
         }
     }
 
@@ -77,14 +81,28 @@ public class DetallesFragment extends Fragment {
         txvDesctipcion.setText(descripcion);
 
         Button btnImagenes = (Button)v.findViewById(R.id.btnImagenes);
-        btnImagenes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: aqui es donde se hace la llamada para abrir la galeria de imagenes del personaje. O quiza no. Tal vez haya que hacerlo en onfragmentinteraction
-                int idPersonaje = Integer.parseInt(id);
-                mListener.onDetFragmentInteraction(idPersonaje);
-            }
-        });
+
+        int imagenes = Integer.parseInt(numero_imagenes);
+
+        if(imagenes==0)
+        {
+            btnImagenes.setEnabled(false);
+            btnImagenes.setText(R.string.galeria_sin_imagenes);
+        }
+        else
+        {
+            btnImagenes.setEnabled(true);
+            btnImagenes.setText(R.string.ver_galeria);
+
+            btnImagenes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int idPersonaje = Integer.parseInt(id);
+                    mListener.onDetFragmentInteraction(idPersonaje);
+                }
+            });
+        }
 
         return v;
     }

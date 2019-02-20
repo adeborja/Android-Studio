@@ -78,5 +78,9 @@ public class MainViewModel extends ViewModel {
         p = new Personaje("Trunks","Trunks del futuro", "El madafaka",R.drawable.ftrunks, imagenes, 11);
         this.listaPersonajes.add(p);
 
+        imagenes = null;
+        p = new Personaje("Son Gohan","Gohan","Hijo de goku",R.drawable.ic_launcher_background, imagenes, 12);
+        this.listaPersonajes.add(p);
+
     }
 }

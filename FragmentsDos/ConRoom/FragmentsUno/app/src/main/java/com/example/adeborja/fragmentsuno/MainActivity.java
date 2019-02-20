@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
                 Navegacion frag = Navegacion.newInstance();
 
-                btnCrear.setEnabled(true);
-                btnListar.setEnabled(false);
+                //btnCrear.setEnabled(true);
+                //btnListar.setEnabled(false);
 
                 if(contenedorPantallaCompleta == null)
                 {
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                 }
 
                 //Vuelve a la lista de personajes y borra el historial de vistas, haciendo
-                //que el el programa esté como recién ejecutado
+                //que el backstack del programa esté como cuando está recién ejecutado
                 getSupportFragmentManager().popBackStack(getSupportFragmentManager()
                         .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         }
 
         //activar botones
-        btnCrear.setEnabled(true);
+        //btnCrear.setEnabled(true);
     }
 
     @Override

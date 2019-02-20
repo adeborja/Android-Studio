@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <!-- poniendolo como single hace que solo se pueda seleccionar una opcion del menu a la vez -->
+    <!-- control+alt+L para que se autocoloquen bien -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_alert"
+            android:icon="@drawable/ic_alert"
+            android:title="Alertas" />
+
+        <item
+            android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_cart"
+            android:title="Tu carrito" />
+
+        <item
+            android:id="@+id/nav_favorite"
+            android:icon="@drawable/ic_favorite"
+            android:title="Favoritos" />
+    </group>
+
+    <!-- Otra seccion -->
+    <item android:title="Comidas">
+        <menu>
+            <item
+                android:id="@+id/nav_pizza"
+                android:icon="@drawable/ic_pizza_slice"
+                android:title="Pizzas" />
+            <item
+                android:id="@+id/nav_pedido"
+                android:icon="@drawable/ic_pedido"
+                android:title="Pedidos a domicilio" />
+        </menu>
+    </item>
+</menu>

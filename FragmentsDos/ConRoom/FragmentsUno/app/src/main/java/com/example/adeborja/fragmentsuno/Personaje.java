@@ -1,9 +1,9 @@
 package com.example.adeborja.fragmentsuno;
 
-/*import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.net.Uri;*/
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -20,7 +20,7 @@ public class Personaje implements Parcelable {
     private int retrato;
     //@ColumnInfo (typeAffinity = ColumnInfo.BLOB)
     private int[] imagenes;
-    //@PrimaryKey
+    //@PrimaryKey(autoGenerate = true)
     //@ColumnInfo (name = "id")
     private long id;
 
