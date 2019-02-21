@@ -17,11 +17,6 @@ import android.widget.TextView;
 
 public class ImagenesFragment extends Fragment {
 
-    private static final String TEXTO_IMAGENES = "texto_imagenes";
-    private String miTextoImagenes;
-    private static final String IMAGEN = "imagen";
-    private static int imagenMostrada;
-
     private static final String ARRAY_IMAGENES = "array_imagenes";
     private static int[] imagenes;
 
@@ -35,15 +30,11 @@ public class ImagenesFragment extends Fragment {
         //Constructor vacio
     }
 
-    //TODO: hay que implementar bien los metodos de viewPager en esta clase
-
     public static ImagenesFragment newInstance(int[] arrayImagenes)
     {
         ImagenesFragment fragment = new ImagenesFragment();
 
         Bundle args = new Bundle();
-        //args.putString(TEXTO_IMAGENES, miTextoImagenes);
-        //args.putInt(IMAGEN, imagenMostrada);
         args.putIntArray(ARRAY_IMAGENES, arrayImagenes);
         fragment.setArguments(args);
 
@@ -57,8 +48,6 @@ public class ImagenesFragment extends Fragment {
 
         if(getArguments() != null)
         {
-            //miTextoImagenes = getArguments().getString(TEXTO_IMAGENES);
-            //imagenMostrada = getArguments().getInt(IMAGEN);
             imagenes = getArguments().getIntArray(ARRAY_IMAGENES);
         }
     }
@@ -67,11 +56,6 @@ public class ImagenesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle b)
     {
         View v = inflador.inflate(R.layout.fragment_imagenes, contenedor, false);
-
-        //TextView txvImagenes = v.findViewById(R.id.textoImagenes);
-        //TODO: implementar las imagenes para probar si se ven
-        /*TextView txvImagenes = v.findViewById(R.id.textoImagenes);
-        txvImagenes.setText(miTextoImagenes);*/
 
         viewPager = (ViewPager)v.findViewById(R.id.miViewPager);
         slideAdapter = new SlideAdapter(getActivity());
@@ -113,14 +97,6 @@ public class ImagenesFragment extends Fragment {
         private Context contexto;
         private LayoutInflater inflador;
 
-        //Lista de imagenes
-        /*private int[] listaImagenes =
-                {
-                        R.drawable.goku,
-                        R.drawable.goku01,
-                        R.drawable.goku02,
-                        R.drawable.goku03
-                };*/
         private int[] listaImagenes = imagenes;
 
         public SlideAdapter(Context contexto)
@@ -150,7 +126,6 @@ public class ImagenesFragment extends Fragment {
             ConstraintLayout layoutSlide = (ConstraintLayout) view.findViewById(R.id.miSlide);
             ImageView imgSlide = (ImageView) view.findViewById(R.id.imgSlide);
 
-            //layoutSlide.setBackgroundColor(listaColoresFondo[position]);
             imgSlide.setImageResource(listaImagenes[position]);
 
             container.addView(view);
