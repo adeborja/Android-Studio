@@ -79,7 +79,8 @@ public class DetallesFragment extends Fragment {
         imgRetrato.setImageResource(Integer.parseInt(retrato));
         txvNombre.setText(nombre);
         txvAlias.setText(alias);
-        txvDesctipcion.setText(descripcion);
+        txvDesctipcion.setText((descripcion == "")? "sin descripción" : descripcion );
+
 
         //Para que tenga scrollbar
         txvDesctipcion.setMovementMethod(new ScrollingMovementMethod());

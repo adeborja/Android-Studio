@@ -81,7 +81,7 @@ public class MainViewModel extends ViewModel {
         this.listaPersonajes.add(p);
 
         imagenes = null;
-        p = new Personaje("Son Gohan","Gohan","Hijo de goku",R.drawable.ic_launcher_background, imagenes, 12);
+        p = new Personaje("Son Gohan","Gohan","",R.drawable.ic_launcher_background, imagenes, 12);
         this.listaPersonajes.add(p);
 
     }

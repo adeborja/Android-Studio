@@ -4,4 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ver_galeria">Ver galería</string>
     <string name="galeria_sin_imagenes">Sin imágenes</string>
+    <string name="crear_personaje">Crear personaje</string>
+    <string name="crear_vacio">Rellena casillas para crear</string>
 </resources>
