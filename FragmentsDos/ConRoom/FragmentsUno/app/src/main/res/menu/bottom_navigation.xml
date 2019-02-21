@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_crear_personaje"
+        android:icon="@drawable/ic_add_person"
+        android:title="Crear personaje" />
+
+    <item
+        android:id="@+id/nav_lista_personajes"
+        android:icon="@drawable/ic_list"
+        android:title="Lista de personajes" />
+
+    <item
+        android:id="@+id/nav_galeria"
+        android:icon="@drawable/ic_gallery"
+        android:title="Galeria del personaje" />
+
+
+
+</menu>

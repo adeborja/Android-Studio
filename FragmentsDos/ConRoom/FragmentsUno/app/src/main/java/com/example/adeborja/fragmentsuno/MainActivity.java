@@ -3,12 +3,15 @@ package com.example.adeborja.fragmentsuno;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -21,13 +24,16 @@ import android.widget.Toast;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener,
-        DetallesFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener,
-        View.OnClickListener {
+        DetallesFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener {
 
     public static ViewModel mainViewModel;
     ConstraintLayout lineaBotones;
-    Button btnCrear, btnListar;
+    //Button btnCrear, btnListar;
     View contenedorPantallaCompleta;
+
+    BottomNavigationView bottomNavigationView;
+
+    //TextView aux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +45,20 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
 
         //View contenedorPantallaCompleta;
-        lineaBotones = (ConstraintLayout) findViewById(R.id.linBotones);
+        /*lineaBotones = (ConstraintLayout) findViewById(R.id.linBotones);
         btnCrear = (Button)findViewById(R.id.btnCrear);
-        btnListar = (Button)findViewById(R.id.btnListar);
+        btnListar = (Button)findViewById(R.id.btnListar);*/
 
-        btnListar.setOnClickListener(this);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+
+        //btnListar.setOnClickListener(this);
         getSupportFragmentManager().addOnBackStackChangedListener(this);
+
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(2).setVisible(false);
 
         //para utilizar ViewModelProviders es necesario añadirlo en el gradle de module:app
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -52,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         //((MainViewModel) mainViewModel).rellenarLista();
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
+
+        //getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        //aux = findViewById(R.id.aux);
 
         if(contenedorPantallaCompleta == null)
         {
@@ -62,18 +80,102 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
             Navegacion frag = Navegacion.newInstance();
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contenedorPantallaCompleta, frag)
+                    .replace(R.id.contenedorPantallaCompleta, frag)
                     //.addToBackStack(null)
                     .commit();
 
             ((MainViewModel) mainViewModel).setTablet(false);
+
+            /*int aux = getSupportFragmentManager().getBackStackEntryCount();
+
+            if(aux>0)
+            {
+                getSupportFragmentManager().popBackStack(getSupportFragmentManager()
+                        .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }*/
+
+            //getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
+
+
 
         //desactivar botones
         //btnCrear.setEnabled(false);
+
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
-    @Override
+    BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+            //Fragment f = null;
+
+            switch (menuItem.getItemId())
+            {
+                case R.id.nav_lista_personajes:
+
+                    Navegacion frag = Navegacion.newInstance();
+
+                    if(contenedorPantallaCompleta == null)
+                    {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.barraImagenes, frag)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                    else
+                    {
+                        /*getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.contenedorPantallaCompleta, frag)
+                                //.addToBackStack(null)
+                                .commit();*/
+
+                        //Vuelve a la lista de personajes y borra el historial de vistas, haciendo
+                        //que el backstack del programa esté como cuando está recién ejecutado
+                        getSupportFragmentManager().popBackStack(getSupportFragmentManager()
+                                .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+
+                    }
+
+                    bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+
+                    break;
+
+                case R.id.nav_crear_personaje:
+
+                    CrearFragment frag2 = new CrearFragment();
+
+                    if(contenedorPantallaCompleta == null)
+                    {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.barraImagenes, frag2)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                    else
+                    {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.contenedorPantallaCompleta, frag2)
+                                .addToBackStack(null)
+                                .commit();
+
+
+                    }
+
+                    bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+
+                    break;
+            }
+
+            //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+
+            return true;
+        }
+    };
+
+    /*@Override
     public void onClick(View v)
     {
         switch (v.getId())
@@ -107,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
                 break;
         }
-    }
+    }*/
 
     @Override
     public void onBackStackChanged() {
@@ -118,14 +220,17 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         if(i<1)
         {
-            btnCrear.setEnabled(true);
-            btnListar.setEnabled(false);
+            bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+            bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+            //bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         }
         else
         {
-            btnCrear.setEnabled(false);
-            btnListar.setEnabled(true);
+            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+            //bottomNavigationView.getMenu().getItem(2).setEnabled(true);
         }
+
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     @Override
@@ -156,8 +261,11 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     .commit();
 
             //hacer desaparecer la barra de botones
-            lineaBotones.setVisibility(View.GONE);
+            //lineaBotones.setVisibility(View.GONE);
+            bottomNavigationView.setVisibility(View.GONE);
         }
+
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     @Override
@@ -167,9 +275,11 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         //if(!((MainViewModel) mainViewModel).isTablet() && lineaBotones.getVisibility()==View.GONE)
         //{
-            lineaBotones.setVisibility(View.VISIBLE);
+            //lineaBotones.setVisibility(View.VISIBLE);
+        bottomNavigationView.setVisibility(View.VISIBLE);
         //}
 
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
 
@@ -197,6 +307,8 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         //activar botones
         //btnCrear.setEnabled(true);
+
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     @Override
