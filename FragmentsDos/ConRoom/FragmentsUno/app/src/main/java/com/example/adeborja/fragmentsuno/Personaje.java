@@ -17,14 +17,14 @@ public class Personaje implements Parcelable {
     //@ColumnInfo (name = "descripcion")
     private String descripcion;
     //@ColumnInfo (name = "retrato")
-    private int retrato;
+    private Uri retrato;
     //@ColumnInfo (typeAffinity = ColumnInfo.BLOB)
-    private int[] imagenes;
+    private Uri[] imagenes;
     //@PrimaryKey(autoGenerate = true)
     //@ColumnInfo (name = "id")
     private long id;
 
-    public Personaje(String nombre, String alias, String descripcion, int retrato, int[] imagenes, long nId) {
+    public Personaje(String nombre, String alias, String descripcion, Uri retrato, Uri[] imagenes, long nId) {
         this.nombre = nombre;
         this.alias = alias;
         this.descripcion = descripcion;
@@ -32,13 +32,14 @@ public class Personaje implements Parcelable {
         this.id=nId;
         if(imagenes==null)
         {
-            this.imagenes = new int[0];
+            this.imagenes = new Uri[0];
         }
         else
         {
             this.imagenes = imagenes;
         }
     }
+
 
     public String getNombre() {
         return nombre;
@@ -64,19 +65,19 @@ public class Personaje implements Parcelable {
         this.descripcion = descripcion;
     }
 
-    public int[] getImagenes() {
+    public Uri[] getImagenes() {
         return imagenes;
     }
 
-    public void setImagenes(int[] imagenes) {
+    public void setImagenes(Uri[] imagenes) {
         this.imagenes = imagenes;
     }
 
-    public int getRetrato() {
+    public Uri getRetrato() {
         return retrato;
     }
 
-    public void setRetrato(int retrato) {
+    public void setRetrato(Uri retrato) {
         this.retrato = retrato;
     }
 
@@ -88,9 +89,9 @@ public class Personaje implements Parcelable {
         this.id = id;
     }
 
-    public void anadirImagen(int imagen)
+    public void anadirImagen(Uri imagen)
     {
-        int[] nuevoImagenes = new int[imagenes.length+1];
+        Uri[] nuevoImagenes = new Uri[imagenes.length+1];
 
         for(int i=0;i<imagenes.length;i++)
         {
@@ -109,21 +110,19 @@ public class Personaje implements Parcelable {
 
 
 
-    protected Personaje(Parcel in)
-    {
-        this.nombre = in.readString();
-        this.alias = in.readString();
-        this.descripcion = in.readString();
-        this.retrato=in.readInt();
-        //this.imagenes = in.readIntArray(); //TODO
-        this.imagenes = in.createIntArray();
-        this.id = in.readLong();
+    protected Personaje(Parcel in) {
+        nombre = in.readString();
+        alias = in.readString();
+        descripcion = in.readString();
+        retrato = in.readParcelable(Uri.class.getClassLoader());
+        imagenes = in.createTypedArray(Uri.CREATOR);
+        id = in.readLong();
     }
 
     public static final Creator<Personaje> CREATOR = new Creator<Personaje>() {
         @Override
-        public Personaje createFromParcel(Parcel source) {
-            return new Personaje(source);
+        public Personaje createFromParcel(Parcel in) {
+            return new Personaje(in);
         }
 
         @Override
@@ -142,8 +141,8 @@ public class Personaje implements Parcelable {
         dest.writeString(nombre);
         dest.writeString(alias);
         dest.writeString(descripcion);
-        dest.writeInt(retrato);
-        dest.writeIntArray(imagenes);
+        dest.writeParcelable(retrato, flags);
+        dest.writeTypedArray(imagenes, flags);
         dest.writeLong(id);
     }
 }

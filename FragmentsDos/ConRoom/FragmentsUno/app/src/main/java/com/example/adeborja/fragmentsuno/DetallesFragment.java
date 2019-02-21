@@ -76,7 +76,7 @@ public class DetallesFragment extends Fragment {
         TextView txvAlias = (TextView)v.findViewById(R.id.txvAliasDetalles);
         TextView txvDesctipcion = (TextView)v.findViewById(R.id.txvDescripcionDetalles);
 
-        imgRetrato.setImageResource(Integer.parseInt(retrato));
+        imgRetrato.setImageURI(Uri.parse(retrato));
         txvNombre.setText(nombre);
         txvAlias.setText(alias);
         txvDesctipcion.setText((descripcion == "")? "sin descripción" : descripcion );

@@ -3,7 +3,9 @@ package com.example.adeborja.fragmentsuno;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -14,11 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ImagenesFragment extends Fragment {
 
     private static final String ARRAY_IMAGENES = "array_imagenes";
-    private static int[] imagenes;
+    private static Uri[] imagenes;
 
     private ViewPager viewPager;
     private SlideAdapter slideAdapter;
@@ -30,12 +36,20 @@ public class ImagenesFragment extends Fragment {
         //Constructor vacio
     }
 
-    public static ImagenesFragment newInstance(int[] arrayImagenes)
+    public static ImagenesFragment newInstance(Uri[] arrayImagenes)
     {
         ImagenesFragment fragment = new ImagenesFragment();
 
         Bundle args = new Bundle();
-        args.putIntArray(ARRAY_IMAGENES, arrayImagenes);
+
+        String[] aux = new String[arrayImagenes.length];
+
+        for(int i=0;i<arrayImagenes.length;i++)
+        {
+            aux[i] = arrayImagenes[i].toString();
+        }
+
+        args.putStringArray(ARRAY_IMAGENES, aux);
         fragment.setArguments(args);
 
         return fragment;
@@ -48,7 +62,16 @@ public class ImagenesFragment extends Fragment {
 
         if(getArguments() != null)
         {
-            imagenes = getArguments().getIntArray(ARRAY_IMAGENES);
+            String[] aux = getArguments().getStringArray(ARRAY_IMAGENES);
+
+            Uri[] aux2 = new Uri[aux.length];
+            for(int i=0;i<aux.length;i++)
+            {
+                aux2[i]=Uri.parse(aux[i]);
+            }
+
+            imagenes = aux2;
+            //imagenes = getArguments().getParcelableArray(ARRAY_IMAGENES);
         }
     }
 
@@ -97,7 +120,7 @@ public class ImagenesFragment extends Fragment {
         private Context contexto;
         private LayoutInflater inflador;
 
-        private int[] listaImagenes = imagenes;
+        private Uri[] listaImagenes = imagenes;
 
         public SlideAdapter(Context contexto)
         {
@@ -126,7 +149,7 @@ public class ImagenesFragment extends Fragment {
             ConstraintLayout layoutSlide = (ConstraintLayout) view.findViewById(R.id.miSlide);
             ImageView imgSlide = (ImageView) view.findViewById(R.id.imgSlide);
 
-            imgSlide.setImageResource(listaImagenes[position]);
+            imgSlide.setImageURI(listaImagenes[position]);
 
             container.addView(view);
 

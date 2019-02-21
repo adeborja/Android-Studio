@@ -16,6 +16,16 @@
         android:icon="@drawable/ic_gallery"
         android:title="Galeria del personaje" />
 
+    <item
+        android:id="@+id/nav_editar_personaje"
+        android:icon="@drawable/ic_edit"
+        android:title="Editar personaje" />
+
+    <item
+        android:id="@+id/nav_borrar_personaje"
+        android:icon="@drawable/ic_delete"
+        android:title="Borrar personaje" />
+
 
 
 </menu>
