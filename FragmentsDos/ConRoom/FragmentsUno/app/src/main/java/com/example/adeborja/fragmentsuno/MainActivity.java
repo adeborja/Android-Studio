@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
     static boolean flag = true;
 
-    TextView aux;
+    //TextView aux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
 
-        aux = findViewById(R.id.aux);
+        //aux = findViewById(R.id.aux);
 
 
         if(flag)
@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
             {
                 Navegacion frag = Navegacion.newInstance();
 
-                int aux = getSupportFragmentManager().getBackStackEntryCount();
+                int aux2 = getSupportFragmentManager().getBackStackEntryCount();
 
-                if(aux>0)
+                if(aux2>0)
                 {
                     getSupportFragmentManager().popBackStack(getSupportFragmentManager()
                             .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
             bottomNavigationView.getMenu().getItem(1).setEnabled(true);
         }
 
-        aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     break;
             }
 
-            aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+            //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
 
             return true;
         }
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
             //bottomNavigationView.getMenu().getItem(2).setEnabled(true);
         }
 
-        aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     @Override
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
             bottomNavigationView.setVisibility(View.GONE);
         }
 
-        aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     @Override
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         bottomNavigationView.setVisibility(View.VISIBLE);
         //}
 
-        aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
 
@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         //activar botones
         //btnCrear.setEnabled(true);
 
-        aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     @Override
