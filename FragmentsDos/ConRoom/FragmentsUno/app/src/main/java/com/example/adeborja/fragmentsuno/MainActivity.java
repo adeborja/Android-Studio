@@ -1,5 +1,6 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
     static miBaseDatos myBaseDatos;
 
+
     static boolean flag = true;
 
     //TextView aux;
@@ -67,6 +70,22 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         ((MainViewModel) mainViewModel).setContext(getApplicationContext());
         //((MainViewModel) mainViewModel).rellenarLista();
         ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
+
+        //crear observador
+        //TODO: cambiar a livedata
+        final Observer<Integer> observadorTamanoLista = new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
+                if(getSupportFragmentManager().getBackStackEntryCount()>0)
+                {
+                    iniciarListaPrincipal(((MainViewModel) mainViewModel).getListaPersonajes());
+                }
+            }
+        };
+
+        //observar
+        ((MainViewModel) mainViewModel).getTamanoLista().observe(this, observadorTamanoLista);
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
 
@@ -116,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
+
     BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -147,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                                 .replace(R.id.contenedorPantallaCompleta, frag)
                                 .commit();*/
 
-                        iniciarListaPrincipal();
+                        iniciarListaPrincipal(null);
                     }
 
                     bottomNavigationView.getMenu().getItem(1).setEnabled(false);
@@ -376,9 +396,18 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         super.onConfigurationChanged(newConfig);
     }
 
-    public void iniciarListaPrincipal()
+    public void iniciarListaPrincipal(List<Personaje> nuevaLista)
     {
-        Navegacion frag = Navegacion.newInstance();
+        Navegacion frag = null;
+
+        if(nuevaLista == null)
+        {
+            frag = Navegacion.newInstance();
+        }
+        else
+        {
+            frag = Navegacion.newInstance(nuevaLista);
+        }
 
         getSupportFragmentManager().popBackStack(getSupportFragmentManager()
                 .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -403,12 +432,12 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
 
         //TODO: ver como funciona lo de la id autogenerada
-        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 22);
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 28);
 
         MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
 
         Toast.makeText(this,"Personaje creado", Toast.LENGTH_SHORT).show();
 
-        iniciarListaPrincipal();
+        iniciarListaPrincipal(null);
     }
 }

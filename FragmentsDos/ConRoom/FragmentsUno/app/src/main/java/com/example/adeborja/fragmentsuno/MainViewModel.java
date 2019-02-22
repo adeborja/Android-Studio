@@ -1,5 +1,6 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.net.Uri;
@@ -14,11 +15,20 @@ public class MainViewModel extends ViewModel {
     private List<Personaje> listaPersonajes;
     private Context context;
     private Personaje personajeSeleccionado;
+    private MutableLiveData<Integer> tamanoLista;
 
     public MainViewModel()
     {
         super();
         //rellenarLista();
+    }
+
+    public MutableLiveData<Integer> getTamanoLista()
+    {
+        this.tamanoLista = new MutableLiveData<Integer>();
+        this.tamanoLista.setValue(listaPersonajes.size());
+
+        return this.tamanoLista;
     }
 
     public Personaje getPersonajeSeleccionado() {

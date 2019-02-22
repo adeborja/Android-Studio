@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Navegacion extends ListFragment {
 
-    private List<Personaje> listaPersonajes;
+    private static List<Personaje> listaPersonajes;
     private ListView listView;
 
     private OnFragmentInteractionListener miListener;
@@ -47,6 +47,15 @@ public class Navegacion extends ListFragment {
     public static Navegacion newInstance()
     {
         Navegacion fragment = new Navegacion();
+
+        return fragment;
+    }
+
+    public static Navegacion newInstance(List<Personaje> nuevaLista)
+    {
+        Navegacion fragment = new Navegacion();
+
+        listaPersonajes = nuevaLista;
 
         return fragment;
     }
