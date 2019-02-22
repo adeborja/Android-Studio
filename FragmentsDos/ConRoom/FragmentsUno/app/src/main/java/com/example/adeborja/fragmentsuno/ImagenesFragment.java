@@ -24,7 +24,7 @@ import java.io.IOException;
 public class ImagenesFragment extends Fragment {
 
     private static final String ARRAY_IMAGENES = "array_imagenes";
-    private static Uri[] imagenes;
+    private static ListaImagenes imagenes;
 
     private ViewPager viewPager;
     private SlideAdapter slideAdapter;
@@ -36,20 +36,22 @@ public class ImagenesFragment extends Fragment {
         //Constructor vacio
     }
 
-    public static ImagenesFragment newInstance(Uri[] arrayImagenes)
+    public static ImagenesFragment newInstance(ListaImagenes arrayImagenes)
     {
         ImagenesFragment fragment = new ImagenesFragment();
 
         Bundle args = new Bundle();
 
-        String[] aux = new String[arrayImagenes.length];
+        /*String[] aux = new String[arrayImagenes.length];
 
         for(int i=0;i<arrayImagenes.length;i++)
         {
             aux[i] = arrayImagenes[i].toString();
         }
 
-        args.putStringArray(ARRAY_IMAGENES, aux);
+        args.putStringArray(ARRAY_IMAGENES, aux);*/
+
+        args.putParcelable(ARRAY_IMAGENES, arrayImagenes);
         fragment.setArguments(args);
 
         return fragment;
@@ -62,7 +64,7 @@ public class ImagenesFragment extends Fragment {
 
         if(getArguments() != null)
         {
-            String[] aux = getArguments().getStringArray(ARRAY_IMAGENES);
+            /*String[] aux = getArguments().getStringArray(ARRAY_IMAGENES);
 
             Uri[] aux2 = new Uri[aux.length];
             for(int i=0;i<aux.length;i++)
@@ -70,8 +72,9 @@ public class ImagenesFragment extends Fragment {
                 aux2[i]=Uri.parse(aux[i]);
             }
 
-            imagenes = aux2;
-            //imagenes = getArguments().getParcelableArray(ARRAY_IMAGENES);
+            imagenes = aux2;*/
+
+            imagenes = getArguments().getParcelable(ARRAY_IMAGENES);
         }
     }
 
@@ -120,7 +123,7 @@ public class ImagenesFragment extends Fragment {
         private Context contexto;
         private LayoutInflater inflador;
 
-        private Uri[] listaImagenes = imagenes;
+        private ListaImagenes listaImagenes = imagenes;
 
         public SlideAdapter(Context contexto)
         {
@@ -130,7 +133,7 @@ public class ImagenesFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return listaImagenes.length;
+            return listaImagenes.getSize();
         }
 
         @Override
@@ -149,7 +152,7 @@ public class ImagenesFragment extends Fragment {
             ConstraintLayout layoutSlide = (ConstraintLayout) view.findViewById(R.id.miSlide);
             ImageView imgSlide = (ImageView) view.findViewById(R.id.imgSlide);
 
-            imgSlide.setImageURI(listaImagenes[position]);
+            imgSlide.setImageURI(listaImagenes.getImagenDeLista(position));
 
             container.addView(view);
 

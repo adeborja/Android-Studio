@@ -1,30 +1,41 @@
 package com.example.adeborja.fragmentsuno;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-//@Entity(tableName = "personajes")
+import java.util.ArrayList;
+
+@Entity(tableName = "personajes")
 public class Personaje implements Parcelable {
 
-    //@ColumnInfo (name = "nombre")
+    @ColumnInfo (name = "nombre")
     private String nombre;
-    //@ColumnInfo (name = "alias")
+    @ColumnInfo (name = "alias")
     private String alias;
-    //@ColumnInfo (name = "descripcion")
+    @ColumnInfo (name = "descripcion")
     private String descripcion;
-    //@ColumnInfo (name = "retrato")
+    @ColumnInfo (name = "retrato")
     private Uri retrato;
-    //@ColumnInfo (typeAffinity = ColumnInfo.BLOB)
-    private Uri[] imagenes;
-    //@PrimaryKey(autoGenerate = true)
-    //@ColumnInfo (name = "id")
+    @ColumnInfo (name = "imagenes")
+    @TypeConverters({ListaImagenesConverter.class})
+    //@Embedded
+    private ListaImagenes imagenes;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo (name = "id")
     private long id;
 
-    public Personaje(String nombre, String alias, String descripcion, Uri retrato, Uri[] imagenes, long nId) {
+
+    public Personaje() {
+
+    }
+
+    public Personaje(String nombre, String alias, String descripcion, Uri retrato, ListaImagenes imagenes, long nId) {
         this.nombre = nombre;
         this.alias = alias;
         this.descripcion = descripcion;
@@ -32,7 +43,7 @@ public class Personaje implements Parcelable {
         this.id=nId;
         if(imagenes==null)
         {
-            this.imagenes = new Uri[0];
+            this.imagenes = new ListaImagenes(new ArrayList<Uri>(0));
         }
         else
         {
@@ -65,11 +76,11 @@ public class Personaje implements Parcelable {
         this.descripcion = descripcion;
     }
 
-    public Uri[] getImagenes() {
+    public ListaImagenes getImagenes() {
         return imagenes;
     }
 
-    public void setImagenes(Uri[] imagenes) {
+    public void setImagenes(ListaImagenes imagenes) {
         this.imagenes = imagenes;
     }
 
@@ -91,22 +102,16 @@ public class Personaje implements Parcelable {
 
     public void anadirImagen(Uri imagen)
     {
-        Uri[] nuevoImagenes = new Uri[imagenes.length+1];
-
-        for(int i=0;i<imagenes.length;i++)
-        {
-            nuevoImagenes[i]=imagenes[i];
-        }
-
-        nuevoImagenes[imagenes.length] = imagen;
+        this.imagenes.anadirImagen(imagen);
     }
 
     public String getCantidadImagenes()
     {
-        String cantidad = String.valueOf(this.imagenes.length);
+        String cantidad = String.valueOf(this.imagenes.getSize());
 
         return cantidad;
     }
+
 
 
 
@@ -115,7 +120,7 @@ public class Personaje implements Parcelable {
         alias = in.readString();
         descripcion = in.readString();
         retrato = in.readParcelable(Uri.class.getClassLoader());
-        imagenes = in.createTypedArray(Uri.CREATOR);
+        imagenes = in.readParcelable(ListaImagenes.class.getClassLoader());
         id = in.readLong();
     }
 
@@ -142,7 +147,7 @@ public class Personaje implements Parcelable {
         dest.writeString(alias);
         dest.writeString(descripcion);
         dest.writeParcelable(retrato, flags);
-        dest.writeTypedArray(imagenes, flags);
+        dest.writeParcelable(imagenes, flags);
         dest.writeLong(id);
     }
 }

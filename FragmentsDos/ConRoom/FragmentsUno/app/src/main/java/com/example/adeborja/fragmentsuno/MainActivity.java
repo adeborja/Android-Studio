@@ -2,6 +2,7 @@ package com.example.adeborja.fragmentsuno;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener,
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     View contenedorPantallaCompleta;
 
     BottomNavigationView bottomNavigationView;
+
+    static miBaseDatos myBaseDatos;
 
     static boolean flag = true;
 
@@ -55,10 +60,13 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         bottomNavigationView.getMenu().getItem(4).setEnabled(false);
         bottomNavigationView.getMenu().getItem(2).setVisible(false);
 
+        myBaseDatos = Room.databaseBuilder(getApplicationContext(), miBaseDatos.class, "personajesdb").allowMainThreadQueries().build();
+
         //para utilizar ViewModelProviders es necesario añadirlo en el gradle de module:app
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         ((MainViewModel) mainViewModel).setContext(getApplicationContext());
-        ((MainViewModel) mainViewModel).rellenarLista();
+        //((MainViewModel) mainViewModel).rellenarLista();
+        ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
 
@@ -175,7 +183,16 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     break;
 
                 case R.id.nav_editar_personaje:
-                    Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
+
+                    Personaje p = ((MainViewModel) mainViewModel).getPersonajePorId(1);
+                    Gson gson = new Gson();
+                    String json = gson.toJson(p);
+
+                    Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+
+
+                    //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.nav_borrar_personaje:
@@ -359,13 +376,22 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }
 
     @Override
-    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, Uri[] imagenes)
+    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes)
     {
-        int id = ((MainViewModel) mainViewModel).getListaPersonajes().size();
+        /*int id = ((MainViewModel) mainViewModel).getListaPersonajes().size();
 
         Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, id);
 
         ((MainViewModel) mainViewModel).getListaPersonajes().add(p);
+
+        Toast.makeText(this,"Personaje creado", Toast.LENGTH_SHORT).show();
+
+        iniciarListaPrincipal();*/
+
+
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 20);
+
+        MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
 
         Toast.makeText(this,"Personaje creado", Toast.LENGTH_SHORT).show();
 

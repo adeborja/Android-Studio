@@ -73,8 +73,10 @@ public class MainViewModel extends ViewModel {
         Personaje p;
         listaPersonajes = new ArrayList<Personaje>();
         Uri retrato = Utilidades.getUriToDrawable(this.context,R.drawable.goku);
-        Uri[] imagenes = {Utilidades.getUriToDrawable(this.context, R.drawable.goku01), Utilidades.getUriToDrawable(this.context, R.drawable.goku02), Utilidades.getUriToDrawable(this.context, R.drawable.goku03)};
-        //int[] imagenes = {R.drawable.goku01, R.drawable.goku02, R.drawable.goku03};
+        ListaImagenes imagenes = new ListaImagenes(new ArrayList<Uri>(0));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku01));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku02));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku03));
 
         for(int i=0;i<10;i++)
         {
@@ -84,12 +86,20 @@ public class MainViewModel extends ViewModel {
         }
 
         retrato = Utilidades.getUriToDrawable(this.context, R.drawable.vegeta);
-        imagenes = new Uri[]{Utilidades.getUriToDrawable(this.context, R.drawable.dragon_ball_vegeta), Utilidades.getUriToDrawable(this.context, R.drawable.vegeta01), Utilidades.getUriToDrawable(this.context, R.drawable.vegeta02)};
+        imagenes = new ListaImagenes(new ArrayList<Uri>(0));
+        //imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.dragon_ball_vegeta));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.vegeta01));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.vegeta02));
         p = new Personaje("Vegeta", "Vegeta", "El frentelarga", retrato, imagenes, 10);
         this.listaPersonajes.add(p);
 
         retrato = Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks);
-        imagenes = new Uri[]{Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks01), Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks02), Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks03), Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks04), Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks05)};
+        imagenes = new ListaImagenes(new ArrayList<Uri>(0));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks01));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks02));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks03));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks04));
+        imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.ftrunks05));
         p = new Personaje("Trunks","Trunks del futuro", "Trunks del Futuro Alternativo (未来トランクス Mirai Torankusu), también conocido como Trunks del futuro, es un guerrero mestizo Saiyan/terrícola, hijo de las contrapartes de Bulma y Vegeta, Bulma del futuro y Vegeta del futuro, así como alumno de Gohan del futuro y aprendiz de Kaio-shin quien, con ayuda de su Máquina del tiempo, consigue viajar al tiempo de Son Goku proveniente de una línea de tiempo apocalíptica.\n" +
                 "\n" +
                 "Como el único bastión de los Guerreros Z del Futuro Alternativo, es sin duda uno de los personajes más recurrentes en la historia de Dragon Ball, sea como un protagonista o como apoyo, como se vio en su rol de Patrullero del Tiempo. ",retrato, imagenes, 11);
@@ -100,5 +110,13 @@ public class MainViewModel extends ViewModel {
         p = new Personaje("Son Gohan","Gohan","",retrato, imagenes, 12);
         this.listaPersonajes.add(p);
 
+    }
+
+
+    public void obtenerPersonajesDeBaseDatos()
+    {
+        List<Personaje> lista = MainActivity.myBaseDatos.miDao().obtenerPersonajes();
+
+        listaPersonajes = lista;
     }
 }

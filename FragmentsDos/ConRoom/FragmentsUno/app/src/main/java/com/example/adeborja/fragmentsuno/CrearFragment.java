@@ -108,8 +108,6 @@ public class CrearFragment extends Fragment
 
                     //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
 
-                    //int idPersonaje = Integer.parseInt(id);
-                    //mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), imgRetrato.getId(), null);
                     mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), Uri.fromFile(fRetrato), null);
                 }
             });
@@ -175,7 +173,7 @@ public class CrearFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, Uri[] imagenes);
+        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes);
     }
 
     @Override
