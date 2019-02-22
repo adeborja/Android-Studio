@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                 case R.id.nav_editar_personaje:
                     //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
 
-                    Personaje p = ((MainViewModel) mainViewModel).getPersonajePorId(1);
+                    Personaje p = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
                     Gson gson = new Gson();
                     String json = gson.toJson(p);
 
@@ -196,7 +196,18 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     break;
 
                 case R.id.nav_borrar_personaje:
-                    Toast.makeText(getApplicationContext(), "Has pulsado borrar", Toast.LENGTH_SHORT).show();
+
+                    Personaje p2 = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
+                    Gson gson2 = new Gson();
+                    String json2 = "";
+                    ListaImagenes img = p2.getImagenes();
+
+                    json2 = gson2.toJson(img);
+
+                    Toast.makeText(getApplicationContext(), json2, Toast.LENGTH_LONG).show();
+
+
+                    //Toast.makeText(getApplicationContext(), "Has pulsado borrar", Toast.LENGTH_SHORT).show();
                     break;
             }
 
@@ -321,6 +332,8 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     {
         Personaje p = ((MainViewModel) mainViewModel).getPersonaje(posicion);
 
+        ((MainViewModel) mainViewModel).setPersonajeSeleccionado(p);
+
         DetallesFragment frag = DetallesFragment.newInstance(p);
 
         if(((MainViewModel) mainViewModel).isTablet())
@@ -389,7 +402,8 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         iniciarListaPrincipal();*/
 
 
-        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 20);
+        //TODO: ver como funciona lo de la id autogenerada
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 22);
 
         MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
 

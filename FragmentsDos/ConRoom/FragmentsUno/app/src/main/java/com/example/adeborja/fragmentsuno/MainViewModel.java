@@ -13,11 +13,20 @@ public class MainViewModel extends ViewModel {
     private boolean tablet;
     private List<Personaje> listaPersonajes;
     private Context context;
+    private Personaje personajeSeleccionado;
 
     public MainViewModel()
     {
         super();
         //rellenarLista();
+    }
+
+    public Personaje getPersonajeSeleccionado() {
+        return personajeSeleccionado;
+    }
+
+    public void setPersonajeSeleccionado(Personaje personajeSeleccionado) {
+        this.personajeSeleccionado = personajeSeleccionado;
     }
 
     public Context getContext() {

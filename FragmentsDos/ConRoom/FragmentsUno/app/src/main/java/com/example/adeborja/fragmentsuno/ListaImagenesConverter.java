@@ -36,8 +36,9 @@ public class ListaImagenesConverter
         return value == null ? null : listaFinal;*/
 
 
+        //https://stackoverflow.com/questions/17037340/converting-jsonarray-to-arraylist
 
-        Gson gson = new Gson();
+        /*Gson gson = new Gson();
         Type tipo = new TypeToken<List<String>>(){}.getType();
         List<String> lista1 = gson.fromJson(value, tipo);
 
@@ -63,7 +64,16 @@ public class ListaImagenesConverter
         ListaImagenes listaFinal = new ListaImagenes();
         listaFinal.setImagenes(listdata2);
 
-        return value == null ? null : listaFinal;
+        return value == null ? null : listaFinal;*/
+
+        Gson gson = new Gson();
+        Type tipo = new TypeToken<ListaImagenes>(){}.getType();
+        ListaImagenes lista1 = gson.fromJson(value, tipo);
+        /*List<Uri> lista2 = (List<Uri>) lista1;
+        ListaImagenes listaFinal = new ListaImagenes();
+        listaFinal.setImagenes(lista2);*/
+
+        return value == null ? null : lista1;
     }
 
     @TypeConverter
