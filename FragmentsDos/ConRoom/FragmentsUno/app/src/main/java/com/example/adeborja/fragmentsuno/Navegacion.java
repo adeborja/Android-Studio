@@ -24,6 +24,8 @@ public class Navegacion extends ListFragment {
     private static List<Personaje> listaPersonajes;
     private ListView listView;
 
+    public static PersonajesAdapter mAdapter;
+
     private OnFragmentInteractionListener miListener;
 
     //Es obligatorio incluir un constructor vacío
@@ -51,14 +53,14 @@ public class Navegacion extends ListFragment {
         return fragment;
     }
 
-    public static Navegacion newInstance(List<Personaje> nuevaLista)
+    /*public static Navegacion newInstance(List<Personaje> nuevaLista)
     {
         Navegacion fragment = new Navegacion();
 
         listaPersonajes = nuevaLista;
 
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -85,13 +87,15 @@ public class Navegacion extends ListFragment {
     {
         super.onActivityCreated(bundle);
 
+        mAdapter = new PersonajesAdapter();
+
         ViewModel vm = MainActivity.mainViewModel;
 
         listaPersonajes = ((MainViewModel) vm).getListaPersonajes();
 
         listView = (ListView)getListView().findViewById(android.R.id.list);
 
-        listView.setAdapter(new PersonajesAdapter());
+        listView.setAdapter(mAdapter);
 
     }
 
@@ -172,6 +176,12 @@ public class Navegacion extends ListFragment {
         public PersonajesAdapter()
         {
             super();
+        }
+
+        public void actualizarListaPersonajes(List<Personaje> lista)
+        {
+            listaPersonajes = lista;
+            notifyDataSetChanged();
         }
 
         @Override

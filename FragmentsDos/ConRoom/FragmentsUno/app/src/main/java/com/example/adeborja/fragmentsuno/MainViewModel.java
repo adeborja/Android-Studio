@@ -16,6 +16,7 @@ public class MainViewModel extends ViewModel {
     private Context context;
     private Personaje personajeSeleccionado;
     private MutableLiveData<Integer> tamanoLista;
+    private MutableLiveData<List<Personaje>> MLD_lista;
 
     public MainViewModel()
     {
@@ -30,6 +31,15 @@ public class MainViewModel extends ViewModel {
 
         return this.tamanoLista;
     }
+
+    public MutableLiveData<List<Personaje>> getLista()
+    {
+        this.MLD_lista = new MutableLiveData<List<Personaje>>();
+        this.MLD_lista.setValue(listaPersonajes);
+
+        return this.MLD_lista;
+    }
+
 
     public Personaje getPersonajeSeleccionado() {
         return personajeSeleccionado;

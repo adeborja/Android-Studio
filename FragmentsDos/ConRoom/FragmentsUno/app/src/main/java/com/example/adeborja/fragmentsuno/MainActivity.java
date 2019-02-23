@@ -73,19 +73,28 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         //crear observador
         //TODO: cambiar a livedata
-        final Observer<Integer> observadorTamanoLista = new Observer<Integer>() {
+        Observer<Integer> observadorTamanoLista = new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
                 ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
                 if(getSupportFragmentManager().getBackStackEntryCount()>0)
                 {
                     iniciarListaPrincipal(((MainViewModel) mainViewModel).getListaPersonajes());
+                    Toast.makeText(getApplicationContext(),"Lista actualizada",Toast.LENGTH_LONG).show();
                 }
             }
         };
 
         //observar
         ((MainViewModel) mainViewModel).getTamanoLista().observe(this, observadorTamanoLista);
+
+        /*((MainViewModel) mainViewModel).getLista().observe(this, new Observer<List<Personaje>>() {
+            @Override
+            public void onChanged(@Nullable List<Personaje> personajes) {
+                Navegacion.mAdapter.actualizarListaPersonajes(personajes);
+                Toast.makeText(getApplicationContext(),"Lista actualizada",Toast.LENGTH_LONG).show();
+            }
+        });*/
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
 
@@ -406,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         }
         else
         {
-            frag = Navegacion.newInstance(nuevaLista);
+            frag = Navegacion.newInstance();//nuevaLista);
         }
 
         getSupportFragmentManager().popBackStack(getSupportFragmentManager()
@@ -432,12 +441,17 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
 
         //TODO: ver como funciona lo de la id autogenerada
-        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 28);
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 5);
 
         MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
 
-        Toast.makeText(this,"Personaje creado", Toast.LENGTH_SHORT).show();
-
         iniciarListaPrincipal(null);
+
+        int num = ((MainViewModel) mainViewModel).getListaPersonajes().size();
+
+        //Toast.makeText(this,"Personaje creado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Personajes: "+num, Toast.LENGTH_SHORT).show();
+
+        //iniciarListaPrincipal(null);
     }
 }
