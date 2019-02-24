@@ -186,6 +186,11 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
 
                     Personaje p = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
+
+                    bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+                    bottomNavigationView.getMenu().getItem(3).setEnabled(false);
+                    bottomNavigationView.getMenu().getItem(4).setEnabled(false);
+
                     /*Gson gson = new Gson();
                     String json = gson.toJson(p);
 
@@ -371,6 +376,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     .commit();
         }
 
+        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
         bottomNavigationView.getMenu().getItem(3).setEnabled(true);
         bottomNavigationView.getMenu().getItem(4).setEnabled(true);
 

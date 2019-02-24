@@ -1,12 +1,16 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +47,8 @@ public class EditarFragment extends Fragment
 
     ImageView imgRetrato;
     File fRetrato = null;
+
+    private int PERMISO_LEER_GALERIA = 1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -118,14 +124,28 @@ public class EditarFragment extends Fragment
             btnRetrato.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
 
-                    startActivityForResult(intent, PICK_IMAGE);
+                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                    {
+                        pedirPermisoGaleria();
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+
+                        startActivityForResult(intent, PICK_IMAGE);
+                    }
+
                 }
             });
         //}
 
         return v;
+    }
+
+    private void pedirPermisoGaleria()
+    {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
     }
 
     @Override
