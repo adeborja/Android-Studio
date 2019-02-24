@@ -29,3 +29,9 @@ https://www.youtube.com/watch?v=-YCUrHFUxlA
 
 Request permission
 https://www.youtube.com/watch?v=SMrB97JuIoM
+
+
+problema con galeria en room
+https://stackoverflow.com/questions/46031104/android-failed-to-invoke-private-android-net-uri-with-no-args
+
+https://stackoverflow.com/questions/22533432/create-object-from-gson-string-doesnt-work/22535258
