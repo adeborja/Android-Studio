@@ -3,13 +3,9 @@ package com.example.adeborja.fragmentsuno;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CrearFragment extends Fragment
+public class EditarFragment extends Fragment
 {
     //el valor asignado es su clave. Si dos parametros tienen la misma clave, se sobreescriben.
     private static final String NOMBRE = "nombre";
@@ -41,20 +34,27 @@ public class CrearFragment extends Fragment
     private static String retrato;
     private static String id;
     private static String numero_imagenes;
-    private static final int PICK_IMAGE = 100;
+    private static final int PICK_IMAGE = 101;
+
+    private static Personaje personajeEditable;
+
+    private boolean retratoCambiado = false;
+    private Uri retratoOriginal;
 
     ImageView imgRetrato;
     File fRetrato = null;
 
     private OnFragmentInteractionListener mListener;
 
-    public CrearFragment() {
+    public EditarFragment() {
         // Required empty public constructor
     }
 
 
-    public static CrearFragment newInstance() {
-        CrearFragment fragment = new CrearFragment();
+    public static EditarFragment newInstance(Personaje p) {
+        EditarFragment fragment = new EditarFragment();
+
+        personajeEditable = p;
 
         return fragment;
     }
@@ -68,49 +68,50 @@ public class CrearFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_crear_personaje, container, false);
+        View v = inflater.inflate(R.layout.fragment_editar_personaje, container, false);
 
         //ImageView imgRetrato = (ImageView)v.findViewById(R.id.imgRetratoDetalles);
-        final EditText etxNombre = (EditText) v.findViewById(R.id.etxCrearNombre);
-        final EditText etxAlias = (EditText)v.findViewById(R.id.etxCrearAlias);
-        final EditText etxDesctipcion = (EditText)v.findViewById(R.id.etxCrearDesc);
+        final EditText etxNombre = (EditText) v.findViewById(R.id.etxEditarNombre);
+        final EditText etxAlias = (EditText)v.findViewById(R.id.etxEditarAlias);
+        final EditText etxDesctipcion = (EditText)v.findViewById(R.id.etxEditarDesc);
+        imgRetrato = (ImageView) v.findViewById(R.id.imgEditarElegirPerfil);
 
-        //imgRetrato.setImageResource(Integer.parseInt(retrato));
-        /*txvNombre.setText(nombre);
-        txvAlias.setText(alias);
-        txvDesctipcion.setText(descripcion);*/
+        etxNombre.setText(personajeEditable.getNombre());
+        etxAlias.setText(personajeEditable.getAlias());
+        etxDesctipcion.setText(personajeEditable.getDescripcion());
+        imgRetrato.setImageURI(personajeEditable.getRetrato());
+        fRetrato = new File(personajeEditable.getRetrato().toString());
+        retratoOriginal = personajeEditable.getRetrato();
 
-        //Para que tenga scrollbar
-        //txvDesctipcion.setMovementMethod(new ScrollingMovementMethod());
+        Button btnEditar = (Button)v.findViewById(R.id.btnEditarAceptar);
+        Button btnRetrato = (Button) v.findViewById(R.id.btnEditarElegirPerfil);
 
-        Button btnCrear = (Button)v.findViewById(R.id.btnCrearAceptar);
-        Button btnRetrato = (Button) v.findViewById(R.id.btnElegirPerfil);
-        imgRetrato = (ImageView) v.findViewById(R.id.imgElegirPerfil);
+        btnEditar.setEnabled(true);
+        btnEditar.setText("Editar personaje");
 
-        //int imagenes = Integer.parseInt(numero_imagenes);
-
-
-        //TODO: Esto hay que cambiarlo, quizas quitarlo, para hacer que el boton de crear
-        // solo este activo cuando se haya introducido al menos nombre y alias
-        /*if(nombre == "" || alias == "")
-        {
-            btnCrear.setEnabled(false);
-            btnCrear.setText(R.string.crear_vacio);
-        }
-        else
-        {*/
-            btnCrear.setEnabled(true);
-            btnCrear.setText(R.string.crear_personaje);
-
-            btnCrear.setOnClickListener(new View.OnClickListener() {
+        btnEditar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
 
-                    Uri retrato = Uri.fromFile(fRetrato);
+                    String nombre = etxNombre.getText().toString();
+                    String alias = etxAlias.getText().toString();
+                    String desc = etxDesctipcion.getText().toString();
 
-                    mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), retrato, null);
+                    Uri retrato;
+                    if(retratoCambiado)
+                    {
+                        retrato = Uri.fromFile(fRetrato);
+                    }
+                    else
+                    {
+                        retrato = retratoOriginal;
+                    }
+
+
+
+                    mListener.onEditPersFragmentInteraction(nombre, alias, desc, retrato, null, personajeEditable.getId());
                 }
             });
 
@@ -175,7 +176,7 @@ public class CrearFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes);
+        void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes, long id);
     }
 
     @Override
@@ -196,6 +197,8 @@ public class CrearFragment extends Fragment
             //try
             //{
                 imgRetrato.setImageURI(Uri.fromFile(fRetrato));
+
+                retratoCambiado = true;
             /*}
             catch (FileNotFoundException e)
             {

@@ -30,7 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener,
         DetallesFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener,
-        CrearFragment.OnFragmentInteractionListener {
+        CrearFragment.OnFragmentInteractionListener, EditarFragment.OnFragmentInteractionListener {
 
     public static ViewModel mainViewModel;
     View contenedorPantallaCompleta;
@@ -186,10 +186,27 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
 
                     Personaje p = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
-                    Gson gson = new Gson();
+                    /*Gson gson = new Gson();
                     String json = gson.toJson(p);
 
-                    Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();*/
+
+                    EditarFragment frag3 = EditarFragment.newInstance(p);
+
+                    if(contenedorPantallaCompleta == null)
+                    {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.barraImagenes, frag3)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                    else
+                    {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.contenedorPantallaCompleta, frag3)
+                                .addToBackStack(null)
+                                .commit();
+                    }
 
 
                     //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
@@ -198,14 +215,17 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                 case R.id.nav_borrar_personaje:
 
                     Personaje p2 = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
-                    Gson gson2 = new Gson();
+                    /*Gson gson2 = new Gson();
                     String json2 = "";
                     ListaImagenes img = p2.getImagenes();
 
                     json2 = gson2.toJson(img);
 
-                    Toast.makeText(getApplicationContext(), json2, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), json2, Toast.LENGTH_LONG).show();*/
 
+                    borrarPersonaje(p2);
+
+                    iniciarListaPrincipal();
 
                     //Toast.makeText(getApplicationContext(), "Has pulsado borrar", Toast.LENGTH_SHORT).show();
                     break;
@@ -402,12 +422,42 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         iniciarListaPrincipal();*/
 
 
-        //TODO: ver como funciona lo de la id autogenerada
-        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 22);
+
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 0); //Dejar id en 0 para que se autogenere
 
         MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
 
         Toast.makeText(this,"Personaje creado", Toast.LENGTH_SHORT).show();
+
+        iniciarListaPrincipal();
+    }
+
+    public void borrarPersonaje(Personaje p)
+    {
+        MainActivity.myBaseDatos.miDao().borrarPersonaje(p);
+
+        Toast.makeText(this,""+p.getAlias()+" ha sido borrado", Toast.LENGTH_SHORT).show();
+    }
+
+    /*public void actualizarPersonaje(Personaje p)
+    {
+        MainActivity.myBaseDatos.miDao().actualizarPersonaje(p);
+
+        Toast.makeText(this,""+p.getAlias()+" ha sido actualizado", Toast.LENGTH_SHORT).show();
+    }*/
+
+    @Override
+    public void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes, long id)
+    {
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, id);
+
+        MainActivity.myBaseDatos.miDao().actualizarPersonaje(p);
+
+        Toast.makeText(this,""+p.getAlias()+" ha sido actualizado", Toast.LENGTH_SHORT).show();
+
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(3).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(4).setEnabled(false);
 
         iniciarListaPrincipal();
     }
