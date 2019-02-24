@@ -24,4 +24,7 @@ public interface miDao
     @Update
     public void actualizarPersonaje(Personaje p);
 
+    @Query("select count(*) from personajes")
+    public int obtenerCantidadPersonajes();
+
 }

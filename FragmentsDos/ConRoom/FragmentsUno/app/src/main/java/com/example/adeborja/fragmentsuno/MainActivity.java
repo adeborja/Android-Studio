@@ -3,6 +3,7 @@ package com.example.adeborja.fragmentsuno;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -64,9 +66,11 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         //para utilizar ViewModelProviders es necesario añadirlo en el gradle de module:app
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        ((MainViewModel) mainViewModel).setContext(getApplicationContext());
+        ((MainViewModel) mainViewModel).setContext(this);
         //((MainViewModel) mainViewModel).rellenarLista();
         ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
+        //((MainViewModel) mainViewModel).rellenarLista();
+
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
 
@@ -219,7 +223,31 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
                 case R.id.nav_borrar_personaje:
 
-                    Personaje p2 = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
+
+                    new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.cuadro_borrar_personaje_titulo)
+                        .setMessage(R.string.cuadro_borrar_personaje_desc)
+                        .setPositiveButton(R.string.cuadro_borrar_personaje_aceptar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Personaje p2 = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
+
+                                borrarPersonaje(p2);
+
+                                iniciarListaPrincipal();
+                            }
+                        })
+                        .setNegativeButton(R.string.cuadro_borrar_personaje_cancelar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+
+
                     /*Gson gson2 = new Gson();
                     String json2 = "";
                     ListaImagenes img = p2.getImagenes();
@@ -227,10 +255,6 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     json2 = gson2.toJson(img);
 
                     Toast.makeText(getApplicationContext(), json2, Toast.LENGTH_LONG).show();*/
-
-                    borrarPersonaje(p2);
-
-                    iniciarListaPrincipal();
 
                     //Toast.makeText(getApplicationContext(), "Has pulsado borrar", Toast.LENGTH_SHORT).show();
                     break;

@@ -6,4 +6,8 @@
     <string name="galeria_sin_imagenes">Sin imágenes</string>
     <string name="crear_personaje">Crear personaje</string>
     <string name="crear_vacio">Rellena casillas para crear</string>
+    <string name="cuadro_borrar_personaje_titulo">Borrar personaje</string>
+    <string name="cuadro_borrar_personaje_desc">¿Seguro que quieres borrar este personaje?</string>
+    <string name="cuadro_borrar_personaje_aceptar">Aceptar</string>
+    <string name="cuadro_borrar_personaje_cancelar">Cancelar</string>
 </resources>
