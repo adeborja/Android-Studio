@@ -1,6 +1,8 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,14 +13,36 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
 
     private boolean tablet;
-    private List<Personaje> listaPersonajes;
+    //private List<Personaje> listaPersonajes;
     private Context context;
     private Personaje personajeSeleccionado;
+
+    private LiveData<List<Personaje>> listaLiveData;
+    private miBaseDatos bd;
 
     public MainViewModel()
     {
         super();
     }
+
+    public void setBd(miBaseDatos bd) {
+        this.bd = bd;
+    }
+
+    public LiveData<List<Personaje>> getListaLiveData()
+    {
+        //if(listaLiveData == null)
+        //{
+            //listaLiveData = MainActivity.myBaseDatos.miDao().obtenerPersonajesLiveData();
+            listaLiveData = bd.miDao().obtenerPersonajesLiveData();
+
+            List<Personaje> aux = listaLiveData.getValue();
+        //}
+
+        return listaLiveData;
+    }
+
+
 
     public Personaje getPersonajeSeleccionado() {
         return personajeSeleccionado;
@@ -45,26 +69,35 @@ public class MainViewModel extends ViewModel {
         this.tablet = tablet;
     }
 
-    public List<Personaje> getListaPersonajes()
+    /*public List<Personaje> getListaPersonajes()
     {
         return listaPersonajes;
-    }
+    }*/
 
     public Personaje getPersonaje(int posicion)
     {
-        return this.listaPersonajes.get(posicion);
+        //return this.listaPersonajes.get(posicion);
+        return this.listaLiveData.getValue().get(posicion);
     }
 
     public Personaje getPersonajePorId(int id)
     {
         Personaje p = null;
         boolean encontrado = false;
-        for(int i=0;!encontrado&&i<listaPersonajes.size();i++)
+        /*for(int i=0;!encontrado&&i<listaPersonajes.size();i++)
         {
             if(listaPersonajes.get(i).getId()==id)
             {
                 encontrado = true;
                 p = listaPersonajes.get(i);
+            }
+        }*/
+        for(int i=0;!encontrado&&i<listaLiveData.getValue().size();i++)
+        {
+            if(listaLiveData.getValue().get(i).getId()==id)
+            {
+                encontrado = true;
+                p = listaLiveData.getValue().get(i);
             }
         }
 
@@ -78,7 +111,7 @@ public class MainViewModel extends ViewModel {
 
     public void rellenarLista() {
 
-        if(context != null && MainActivity.myBaseDatos.miDao().obtenerCantidadPersonajes() == 0)
+        /*if(context != null && MainActivity.myBaseDatos.miDao().obtenerCantidadPersonajes() == 0)
         {
             Personaje p;
             listaPersonajes = new ArrayList<Personaje>();
@@ -94,7 +127,7 @@ public class MainViewModel extends ViewModel {
 
                 //this.listaPersonajes.add(p);
                 MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
-            }
+            }*/
 
             /*retrato = Utilidades.getUriToDrawable(this.context, R.drawable.vegeta);
             imagenes = new ListaImagenes(new ArrayList<Uri>(0));
@@ -120,15 +153,15 @@ public class MainViewModel extends ViewModel {
             imagenes = null;
             p = new Personaje("Son Gohan","Gohan","",retrato, imagenes, 12);
             this.listaPersonajes.add(p);*/
-        }
+        //}
 
     }
 
 
-    public void obtenerPersonajesDeBaseDatos()
+    /*public void obtenerPersonajesDeBaseDatos()
     {
         List<Personaje> lista = MainActivity.myBaseDatos.miDao().obtenerPersonajes();
 
         listaPersonajes = lista;
-    }
+    }*/
 }

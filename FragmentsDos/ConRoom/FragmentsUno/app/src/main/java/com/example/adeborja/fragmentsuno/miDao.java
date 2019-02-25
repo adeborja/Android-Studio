@@ -1,5 +1,6 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -15,8 +16,8 @@ public interface miDao
     @Insert
     public void anadirPersonaje(Personaje p);
 
-    @Query("select * from personajes")
-    public List<Personaje> obtenerPersonajes();
+    /*@Query("select * from personajes")
+    public List<Personaje> obtenerPersonajes();*/
 
     @Delete
     public void borrarPersonaje(Personaje p);
@@ -26,5 +27,8 @@ public interface miDao
 
     @Query("select count(*) from personajes")
     public int obtenerCantidadPersonajes();
+
+    @Query("select * from personajes")
+    public LiveData<List<Personaje>> obtenerPersonajesLiveData();
 
 }

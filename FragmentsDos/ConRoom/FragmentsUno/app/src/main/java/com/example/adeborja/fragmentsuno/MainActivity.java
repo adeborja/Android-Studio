@@ -1,5 +1,6 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -62,15 +64,22 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         bottomNavigationView.getMenu().getItem(4).setEnabled(false);
         bottomNavigationView.getMenu().getItem(2).setVisible(false);
 
-        myBaseDatos = Room.databaseBuilder(getApplicationContext(), miBaseDatos.class, "personajesdb").allowMainThreadQueries().build();
+        //myBaseDatos = Room.databaseBuilder(getApplicationContext(), miBaseDatos.class, "personajesdb").allowMainThreadQueries().build();
+        myBaseDatos = miBaseDatos.getInstance(this);
 
         //para utilizar ViewModelProviders es necesario añadirlo en el gradle de module:app
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         ((MainViewModel) mainViewModel).setContext(this);
+        ((MainViewModel) mainViewModel).setBd(myBaseDatos);
         //((MainViewModel) mainViewModel).rellenarLista();
-        ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
-        //((MainViewModel) mainViewModel).rellenarLista();
+        //((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
 
+        ((MainViewModel) mainViewModel).getListaLiveData().observe(this, new Observer<List<Personaje>>() {
+            @Override
+            public void onChanged(@Nullable List<Personaje> personajes) {
+                Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
 

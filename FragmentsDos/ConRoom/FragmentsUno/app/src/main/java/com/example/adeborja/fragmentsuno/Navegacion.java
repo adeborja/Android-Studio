@@ -1,5 +1,6 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -21,8 +22,10 @@ import java.util.List;
 
 public class Navegacion extends ListFragment {
 
-    private List<Personaje> listaPersonajes;
+    //private List<Personaje> listaPersonajes;
     private ListView listView;
+    private LiveData<List<Personaje>> listLiveData;
+
 
     private OnFragmentInteractionListener miListener;
 
@@ -78,10 +81,15 @@ public class Navegacion extends ListFragment {
 
         ViewModel vm = MainActivity.mainViewModel;
 
-        listaPersonajes = ((MainViewModel) vm).getListaPersonajes();
+        //listaPersonajes = ((MainViewModel) vm).getListaPersonajes();
+        listLiveData = ((MainViewModel) vm).getListaLiveData();
+
+        List<Personaje> tam = listLiveData.getValue();
 
         listView = (ListView)getListView().findViewById(android.R.id.list);
 
+        //poner aqui el observador para la lista, y en el metodo onChanged tiene que ir
+        //la asignacion de la lista y el set del adaptador
         listView.setAdapter(new PersonajesAdapter());
 
     }
@@ -168,7 +176,11 @@ public class Navegacion extends ListFragment {
         @Override
         public int getCount() {
             //return 10;
-            return listaPersonajes.size();
+            //return listaPersonajes.size();
+
+            //int tam = listLiveData.getValue().size();
+
+            return listLiveData.getValue().size();
         }
 
         @Override
@@ -179,13 +191,15 @@ public class Navegacion extends ListFragment {
 
         @Override
         public Object getItem(int position) {
-            return listaPersonajes.get(position);
+            //return listaPersonajes.get(position);
+            return listLiveData.getValue().get(position);
         }
 
         @Override
         public long getItemId(int position) {
 
-            long id = ((Personaje) listaPersonajes.get(position)).getId();
+            //long id = ((Personaje) listaPersonajes.get(position)).getId();
+            long id = listLiveData.getValue().get(position).getId();
 
             return id;
         }
@@ -222,7 +236,9 @@ public class Navegacion extends ListFragment {
                 holderPersonaje = (ViewHolderPersonaje) fila.getTag();
             }
 
-            p = listaPersonajes.get(position);
+            //p = listaPersonajes.get(position);
+            p = listLiveData.getValue().get(position);
+
             holderPersonaje.getAlias().setText(p.getAlias());
             holderPersonaje.getCantidadImagenes().setText(p.getCantidadImagenes());
             holderPersonaje.getRetrato().setImageURI(p.getRetrato());
