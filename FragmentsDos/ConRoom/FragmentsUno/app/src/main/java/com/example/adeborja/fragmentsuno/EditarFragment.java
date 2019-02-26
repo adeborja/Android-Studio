@@ -38,7 +38,6 @@ public class EditarFragment extends Fragment
     private static String retrato;
     private static String id;
     private static String numero_imagenes;
-    private static final int PICK_IMAGE = 101;
 
     private static Personaje personajeEditable;
 
@@ -47,8 +46,6 @@ public class EditarFragment extends Fragment
 
     ImageView imgRetrato;
     File fRetrato = null;
-
-    private int PERMISO_LEER_GALERIA = 1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -116,7 +113,6 @@ public class EditarFragment extends Fragment
                     }
 
 
-
                     mListener.onEditPersFragmentInteraction(nombre, alias, desc, retrato, null, personajeEditable.getId());
                 }
             });
@@ -127,13 +123,14 @@ public class EditarFragment extends Fragment
 
                     if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                     {
-                        pedirPermisoGaleria();
+                        //pedirPermisoGaleria();
+                        Utilidades.pedirPermisoGaleria(getActivity());
                     }
                     else
                     {
                         Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
 
-                        startActivityForResult(intent, PICK_IMAGE);
+                        startActivityForResult(intent, Utilidades.PICK_IMAGE);
                     }
 
                 }
@@ -141,11 +138,6 @@ public class EditarFragment extends Fragment
         //}
 
         return v;
-    }
-
-    private void pedirPermisoGaleria()
-    {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
     }
 
     @Override
@@ -203,7 +195,7 @@ public class EditarFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode==RESULT_OK && requestCode==PICK_IMAGE)
+        if(resultCode==RESULT_OK && requestCode==Utilidades.PICK_IMAGE)
         {
             Uri uri = data.getData();
             String aux = getPath(uri);

@@ -31,4 +31,7 @@ public interface miDao
     @Query("select * from personajes")
     public LiveData<List<Personaje>> obtenerPersonajesLiveData();
 
+    @Query("select * from personajes where id = :id")
+    public LiveData<Personaje> obtenerPersonajePorId(long id);
+
 }

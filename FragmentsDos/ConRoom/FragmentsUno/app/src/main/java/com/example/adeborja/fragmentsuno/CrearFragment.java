@@ -52,7 +52,7 @@ public class CrearFragment extends Fragment
     ImageView imgRetrato;
     File fRetrato = null;
 
-    private int PERMISO_LEER_GALERIA = 1;
+    //private int PERMISO_LEER_GALERIA = 1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -128,13 +128,14 @@ public class CrearFragment extends Fragment
 
                     if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                     {
-                        pedirPermisoGaleria();
+                        //pedirPermisoGaleria();
+                        Utilidades.pedirPermisoGaleria(getActivity());
                     }
                     else
                     {
                         Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
 
-                        startActivityForResult(intent, PICK_IMAGE);
+                        startActivityForResult(intent, Utilidades.PICK_IMAGE);
                     }
 
                     /*Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
@@ -147,33 +148,10 @@ public class CrearFragment extends Fragment
         return v;
     }
 
-    private void pedirPermisoGaleria()
+    /*private void pedirPermisoGaleria()
     {
-        /*if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
-        {
-            new AlertDialog.Builder(getContext())
-                    .setTitle("Necesario permiso")
-                    .setMessage("Este permiso es necesario para seleccionar imagenes de tu galería")
-                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
-                        }
-                    })
-                    .setNegativeButton("no ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create()
-                    .show();
-        }
-        else
-        {*/
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
-        //}
-    }
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
+    }*/
 
     /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -1,16 +1,19 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends AndroidViewModel {
 
     private boolean tablet;
     //private List<Personaje> listaPersonajes;
@@ -18,28 +21,58 @@ public class MainViewModel extends ViewModel {
     private Personaje personajeSeleccionado;
 
     private LiveData<List<Personaje>> listaLiveData;
-    private miBaseDatos bd;
+    //private miBaseDatos bd;
+    private PersonajeRepository repository;
+    private LiveData<Personaje> personajeLiveData;
 
-    public MainViewModel()
+    public MainViewModel(@NonNull Application application)
     {
-        super();
+        super(application);
+        repository = new PersonajeRepository(application);
+        //getListaLiveData();
+        listaLiveData = repository.obtenerPersonajesLiveData();
+        personajeLiveData = null;
     }
 
-    public void setBd(miBaseDatos bd) {
+    /*public void setBd(miBaseDatos bd) {
         this.bd = bd;
-    }
+    }*/
 
     public LiveData<List<Personaje>> getListaLiveData()
     {
         //if(listaLiveData == null)
         //{
             //listaLiveData = MainActivity.myBaseDatos.miDao().obtenerPersonajesLiveData();
-            listaLiveData = bd.miDao().obtenerPersonajesLiveData();
 
-            List<Personaje> aux = listaLiveData.getValue();
+        //esto va al constructor y se deja solo el return, de momento se deja aqui por testeo
+            //listaLiveData = repository.obtenerPersonajesLiveData();
+
+            //List<Personaje> aux = listaLiveData.getValue();
         //}
 
         return listaLiveData;
+    }
+
+    public LiveData<Personaje> getPersonajeLiveData(long id)
+    {
+        personajeLiveData = repository.obtenerPersonajePorId(id);
+
+        return personajeLiveData;
+    }
+
+    public void insert(Personaje p)
+    {
+        repository.insert(p);
+    }
+
+    public void update(Personaje p)
+    {
+        repository.update(p);
+    }
+
+    public void delete(Personaje p)
+    {
+        repository.delete(p);
     }
 
 
@@ -77,7 +110,9 @@ public class MainViewModel extends ViewModel {
     public Personaje getPersonaje(int posicion)
     {
         //return this.listaPersonajes.get(posicion);
-        return this.listaLiveData.getValue().get(posicion);
+        Personaje p = listaLiveData.getValue().get(posicion);
+
+        return p;
     }
 
     public Personaje getPersonajePorId(int id)
