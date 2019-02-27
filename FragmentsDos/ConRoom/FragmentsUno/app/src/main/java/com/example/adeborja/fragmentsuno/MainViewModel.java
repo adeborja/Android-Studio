@@ -152,10 +152,12 @@ public class MainViewModel extends AndroidViewModel {
             PersonajeRepository r = new PersonajeRepository(getApplication());
             //listaPersonajes = new ArrayList<Personaje>();
             Uri retrato = Utilidades.getUriToDrawable(this.context,R.drawable.goku);
-            ListaImagenes imagenes = null; /*new ListaImagenes(new ArrayList<Uri>(0));
+            /*ListaImagenes imagenes = new ListaImagenes(new ArrayList<Uri>(0));
             imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku01));
             imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku02));
             imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku03));*/
+
+            List<Uri> imagenes = null;
 
             for(int i=0;i<10;i++)
             {

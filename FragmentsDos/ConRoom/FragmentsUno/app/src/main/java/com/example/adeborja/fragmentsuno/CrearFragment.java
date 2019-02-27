@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,7 +48,7 @@ public class CrearFragment extends Fragment
     private static String retrato;
     private static String id;
     private static String numero_imagenes;
-    private static final int PICK_IMAGE = 100;
+    //private static final int PICK_IMAGE = 100;
 
     ImageView imgRetrato;
     File fRetrato = null;
@@ -221,14 +222,14 @@ public class CrearFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes);
+        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<Uri> imagenes);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode==RESULT_OK && requestCode==PICK_IMAGE)
+        if(resultCode==RESULT_OK && requestCode==Utilidades.PICK_IMAGE)
         {
             Uri uri = data.getData();
             String aux = getPath(uri);

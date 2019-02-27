@@ -36,11 +36,11 @@ public abstract class miBaseDatos extends RoomDatabase
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            new rellenarDbAsyncTask(instance).execute();
+            //new rellenarDbAsyncTask(instance).execute();
         }
     };
 
-    private static class rellenarDbAsyncTask extends AsyncTask<Context, Void, Void>
+    /*private static class rellenarDbAsyncTask extends AsyncTask<Context, Void, Void>
     {
         private miDao miDao;
 
@@ -57,8 +57,8 @@ public abstract class miBaseDatos extends RoomDatabase
             imagenes.anadirImagen(Utilidades.getUriToDrawable(contexts[0], R.drawable.goku02));
             imagenes.anadirImagen(Utilidades.getUriToDrawable(contexts[0], R.drawable.goku03));*/
 
-            this.miDao.anadirPersonaje(new Personaje("Son Goku", "Goku", "El prota de la serie", Utilidades.getUriToDrawable(contexts[0],R.drawable.goku), null, 0));
+            /*this.miDao.anadirPersonaje(new Personaje("Son Goku", "Goku", "El prota de la serie", Utilidades.getUriToDrawable(contexts[0],R.drawable.goku), null, 0));
             return null;
         }
-    }
+    }*/
 }

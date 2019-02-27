@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     {
         Personaje p = mainViewModel.getPersonajePorId(id);
 
-        ImagenesFragment frag = ImagenesFragment.newInstance(p.getImagenes());
+        ImagenesFragment frag = ImagenesFragment.newInstance(p.getListImagenes()); //getImagenes());
 
         if(mainViewModel.isTablet())
         {
@@ -435,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     .replace(R.id.barraImagenes, frag)
                     .addToBackStack(null)
                     .commit();
+            bottomNavigationView.getMenu().getItem(0).setEnabled(true);
         }
         else
         {
@@ -547,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }
 
     @Override
-    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes)
+    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<Uri> imagenes)
     {
         /*int id = ((MainViewModel) mainViewModel).getListaPersonajes().size();
 
@@ -587,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }*/
 
     @Override
-    public void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes, long id)
+    public void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<Uri> imagenes, long id)
     {
         Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, id);
 

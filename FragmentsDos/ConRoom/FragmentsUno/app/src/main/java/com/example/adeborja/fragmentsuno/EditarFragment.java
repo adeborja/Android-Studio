@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -188,7 +189,7 @@ public class EditarFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes, long id);
+        void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<Uri> imagenes, long id);
     }
 
     @Override

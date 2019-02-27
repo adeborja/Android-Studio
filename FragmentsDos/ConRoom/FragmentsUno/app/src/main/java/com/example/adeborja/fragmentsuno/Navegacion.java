@@ -86,15 +86,18 @@ public class Navegacion extends ListFragment {
 
         //ViewModel vm = MainActivity.mainViewModel;
         vm = ViewModelProviders.of(this).get(MainViewModel.class);
+        vm.setContext(getContext());
 
         listView = (ListView)getListView().findViewById(android.R.id.list);
-        adapter = new PersonajesAdapter();
-        listView.setAdapter(adapter);
+        //adapter = new PersonajesAdapter();
+        //listView.setAdapter(adapter);
 
         vm.getListaLiveData().observe(this, new Observer<List<Personaje>>() {
             @Override
             public void onChanged(@Nullable List<Personaje> personajes) {
-                adapter.setListaAdapter(personajes);
+                //adapter.setListaAdapter(personajes);
+                adapter = new PersonajesAdapter(personajes);
+                if(adapter.getCount()==0) vm.rellenarLista();
                 listView.setAdapter(adapter);
                 //Toast.makeText(getContext(), "onChanged: "+personajes.size(), Toast.LENGTH_SHORT).show();
             }

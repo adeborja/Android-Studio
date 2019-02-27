@@ -110,10 +110,10 @@ public class PersonajeRepository
         }
     }
 
-    private static class CantidadPersonajeAsyncTask extends AsyncTask<Personaje, Void, Void>
+    /*private static class CantidadPersonajeAsyncTask extends AsyncTask<Personaje, Void, Void>
     {
         private miDao miDao;
-//todo: sigue por el video del viewmodel (5)
+
         private CantidadPersonajeAsyncTask(miDao miDao)
         {
             this.miDao = miDao;
@@ -124,11 +124,11 @@ public class PersonajeRepository
             this.miDao.borrarPersonaje(personajes[0]);
             return null;
         }
-    }
+    }*/
 
     //TODO: añadir aqui el metodo que meta en la base de datos los datos de prueba en caso de estar sin datos
 
-    private static class rellenarBdAsyncTask extends AsyncTask<Personaje, Void, Void>
+    /*private static class rellenarBdAsyncTask extends AsyncTask<Personaje, Void, Void>
     {
         private miDao miDao;
         @Override
@@ -139,6 +139,6 @@ public class PersonajeRepository
             }
             return null;
         }
-    }
+    }*/
 
 }
