@@ -23,7 +23,7 @@ public class MainViewModel extends AndroidViewModel {
     private LiveData<List<Personaje>> listaLiveData;
     //private miBaseDatos bd;
     private PersonajeRepository repository;
-    private LiveData<Personaje> personajeLiveData;
+    //private LiveData<Personaje> personajeLiveData;
 
     public MainViewModel(@NonNull Application application)
     {
@@ -31,7 +31,7 @@ public class MainViewModel extends AndroidViewModel {
         repository = new PersonajeRepository(application);
         //getListaLiveData();
         listaLiveData = repository.obtenerPersonajesLiveData();
-        personajeLiveData = null;
+        //personajeLiveData = null;
     }
 
     /*public void setBd(miBaseDatos bd) {
@@ -53,12 +53,12 @@ public class MainViewModel extends AndroidViewModel {
         return listaLiveData;
     }
 
-    public LiveData<Personaje> getPersonajeLiveData(long id)
+    /*public LiveData<Personaje> getPersonajeLiveData(long id)
     {
         personajeLiveData = repository.obtenerPersonajePorId(id);
 
         return personajeLiveData;
-    }
+    }*/
 
     public void insert(Personaje p)
     {
@@ -146,23 +146,25 @@ public class MainViewModel extends AndroidViewModel {
 
     public void rellenarLista() {
 
-        /*if(context != null && MainActivity.myBaseDatos.miDao().obtenerCantidadPersonajes() == 0)
-        {
+        //if(context != null && MainActivity.myBaseDatos.miDao().obtenerCantidadPersonajes() == 0)
+        //{
             Personaje p;
-            listaPersonajes = new ArrayList<Personaje>();
+            PersonajeRepository r = new PersonajeRepository(getApplication());
+            //listaPersonajes = new ArrayList<Personaje>();
             Uri retrato = Utilidades.getUriToDrawable(this.context,R.drawable.goku);
-            ListaImagenes imagenes = new ListaImagenes(new ArrayList<Uri>(0));
+            ListaImagenes imagenes = null; /*new ListaImagenes(new ArrayList<Uri>(0));
             imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku01));
             imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku02));
-            imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku03));
+            imagenes.anadirImagen(Utilidades.getUriToDrawable(this.context, R.drawable.goku03));*/
 
             for(int i=0;i<10;i++)
             {
                 p = new Personaje("Son Goku", "Goku 0"+i, "El prota de la serie", retrato, imagenes, 0);
 
                 //this.listaPersonajes.add(p);
-                MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
-            }*/
+                //MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
+                r.insert(p);
+            }
 
             /*retrato = Utilidades.getUriToDrawable(this.context, R.drawable.vegeta);
             imagenes = new ListaImagenes(new ArrayList<Uri>(0));

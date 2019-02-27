@@ -116,9 +116,18 @@ public class CrearFragment extends Fragment
 
                     //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
 
-                    //Uri retrato = Uri.fromFile(fRetrato);
+                    Uri retrato = null;
 
-                    mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), Uri.fromFile(fRetrato), null);
+                    try
+                    {
+                        retrato = Uri.fromFile(fRetrato);
+                    }
+                    catch (NullPointerException e)
+                    {
+                        retrato = Utilidades.getUriToDrawable(getContext(), R.drawable.ic_launcher_background);
+                    }
+
+                    mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), retrato, null);
                 }
             });
 

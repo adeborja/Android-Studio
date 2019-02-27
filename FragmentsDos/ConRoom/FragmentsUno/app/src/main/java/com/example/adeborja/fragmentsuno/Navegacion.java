@@ -47,7 +47,7 @@ public class Navegacion extends ListFragment {
     */
     public interface OnFragmentInteractionListener {
 
-        void onNavFragmentInteraction(long id);
+        void onNavFragmentInteraction(Personaje p);
     }
 
     //Factory method para crear una nueva instancia de este fragmento,
@@ -147,9 +147,12 @@ public class Navegacion extends ListFragment {
         //main el que debe cambiar entre fragments, como un programa que llama a metodos.
 
         //miListener.onNavFragmentInteraction(posicion);
-        miListener.onNavFragmentInteraction(id);
+        //miListener.onNavFragmentInteraction(id);
         //todo: al actualizar un personaje, se vuelve a cargar su perfil con la info actualizada. Ver como volver a la pantalla principal, o dejar asi.
 
+        Personaje p = (Personaje) adapter.getItem(posicion);
+
+        miListener.onNavFragmentInteraction(p);
     }
 
     class ViewHolderPersonaje
@@ -225,6 +228,7 @@ public class Navegacion extends ListFragment {
         public Object getItem(int position) {
             //return listaPersonajes.get(position);
             return listaAdapter.get(position);
+            //todo: coger de aqui el objeto
         }
 
         @Override

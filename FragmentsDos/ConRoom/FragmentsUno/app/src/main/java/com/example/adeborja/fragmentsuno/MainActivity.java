@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         //para utilizar ViewModelProviders es necesario añadirlo en el gradle de module:app
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.setContext(this);
-        //((MainViewModel) mainViewModel).rellenarLista();
+        //mainViewModel.rellenarLista();
         //((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
 
         /*((MainViewModel) mainViewModel).getListaLiveData().observe(this, new Observer<List<Personaje>>() {
@@ -388,26 +388,17 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
 
     @Override
-    public void onNavFragmentInteraction(long id)
+    public void onNavFragmentInteraction(Personaje p)
     {
-        /*iniciarObserverPersonajeLiveData();
-
-        mainViewModel.getPersonajeLiveData(id).observe(this, observerPersonajeLiveData);*/
-
-
-
-        //Personaje p = mainViewModel.getPersonaje(posicion);
-        //Personaje p = null;
-
-        mainViewModel.getPersonajeLiveData(id).observe(this, new Observer<Personaje>() {
+        /*mainViewModel.getPersonajeLiveData(id).observe(this, new Observer<Personaje>() {
             @Override
             public void onChanged(@Nullable Personaje personaje) {
                 //personajeSeleccionado = personaje;
                 //if(personaje!=null) {
                     mainViewModel.setPersonajeSeleccionado(personaje);
-                    Personaje aux = personaje;
+                    //Personaje aux = personaje;
 
-                    if (aux != null) {
+                    if (personaje != null) {
                         DetallesFragment frag = DetallesFragment.newInstance(mainViewModel.getPersonajeSeleccionado());
 
                         if (mainViewModel.isTablet()) {
@@ -430,13 +421,13 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     }
                 //}
             }
-        });
+        });*/
 
 
 
-        //mainViewModel.setPersonajeSeleccionado(p);
+        mainViewModel.setPersonajeSeleccionado(p);
 
-        /*DetallesFragment frag = DetallesFragment.newInstance(mainViewModel.getPersonajeSeleccionado());
+        DetallesFragment frag = DetallesFragment.newInstance(p);//mainViewModel.getPersonajeSeleccionado());
 
         if(mainViewModel.isTablet())
         {
@@ -451,11 +442,13 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     .replace(R.id.contenedorPantallaCompleta, frag)
                     .addToBackStack(null)
                     .commit();
+
+            bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
         }
 
-        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
         bottomNavigationView.getMenu().getItem(3).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(4).setEnabled(true);*/
+        bottomNavigationView.getMenu().getItem(4).setEnabled(true);
 
         //activar botones
         //btnCrear.setEnabled(true);
@@ -520,14 +513,37 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
     public void iniciarListaPrincipal()
     {
-        Navegacion frag = Navegacion.newInstance();
+        //Navegacion frag = Navegacion.newInstance();
 
         /*getSupportFragmentManager().popBackStack(getSupportFragmentManager()
                 .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.contenedorPantallaCompleta, frag)
-                .commit();
+
+
+        if(contenedorPantallaCompleta == null)
+        {
+            //DetallesFragment frag = DetallesFragment.newInstance()
+
+            /*getSupportFragmentManager().beginTransaction()
+                    .remove(getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getBackStackEntryCount()-1))
+                    .commit();*/
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.barraImagenes, new Fragment())
+                    .commit();
+        }
+        else
+        {
+            Navegacion frag = Navegacion.newInstance();
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contenedorPantallaCompleta, frag)
+                    .commit();
+        }
+
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(3).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(4).setEnabled(false);
     }
 
     @Override
@@ -583,15 +599,16 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         Toast.makeText(this,""+p.getAlias()+" ha sido actualizado", Toast.LENGTH_SHORT).show();
 
 
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
         bottomNavigationView.getMenu().getItem(1).setEnabled(false);
         bottomNavigationView.getMenu().getItem(3).setEnabled(false);
         bottomNavigationView.getMenu().getItem(4).setEnabled(false);
 
         //TODO: temporal, hasta solucionar lo de que no se vea la lista principal tras editar
-        getSupportFragmentManager().popBackStack(getSupportFragmentManager()
-                .getBackStackEntryAt(1).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        /*getSupportFragmentManager().popBackStack(getSupportFragmentManager()
+                .getBackStackEntryAt(1).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
 
-        //iniciarListaPrincipal();
+        iniciarListaPrincipal();
         //bottomNavigationView.setSelectedItemId(1);
         //bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
