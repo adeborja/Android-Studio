@@ -33,8 +33,8 @@ public class Personaje implements Parcelable {
     private ListaImagenes imagenes;*/
 
     @ColumnInfo (name = "listimagenes")
-    @TypeConverters({ListUriConverter.class})
-    private List<Uri> listImagenes;
+    @TypeConverters({listStringConverter.class})
+    private List<String> listImagenes;
 
 
     public Personaje() {
@@ -42,7 +42,7 @@ public class Personaje implements Parcelable {
     }
 
     //public Personaje(String nombre, String alias, String descripcion, Uri retrato, ListaImagenes imagenes, long nId) {
-    public Personaje(String nombre, String alias, String descripcion, Uri retrato, List<Uri> listimagenes, long nId) {
+    public Personaje(String nombre, String alias, String descripcion, Uri retrato, List<String> listimagenes, long nId) {
         this.nombre = nombre;
         this.alias = alias;
         this.descripcion = descripcion;
@@ -57,9 +57,9 @@ public class Personaje implements Parcelable {
             this.imagenes = imagenes;
         }*/
 
-        if(listImagenes==null)
+        if(listimagenes==null)
         {
-            this.listImagenes = new ArrayList<Uri>(0);
+            this.listImagenes = new ArrayList<>(0);
         }
         else
         {
@@ -100,11 +100,11 @@ public class Personaje implements Parcelable {
         this.imagenes = imagenes;
     }*/
 
-    public List<Uri> getListImagenes() {
+    public List<String> getListImagenes() {
         return listImagenes;
     }
 
-    public void setListImagenes(List<Uri> listImagenes) {
+    public void setListImagenes(List<String> listImagenes) {
         this.listImagenes = listImagenes;
     }
 
@@ -127,7 +127,7 @@ public class Personaje implements Parcelable {
     public void anadirImagen(Uri imagen)
     {
         //this.imagenes.anadirImagen(imagen);
-        this.listImagenes.add(imagen);
+        this.listImagenes.add(imagen.toString());
     }
 
     public String getCantidadImagenes()
@@ -139,14 +139,13 @@ public class Personaje implements Parcelable {
 
 
 
-
     protected Personaje(Parcel in) {
         nombre = in.readString();
         alias = in.readString();
         descripcion = in.readString();
         retrato = in.readParcelable(Uri.class.getClassLoader());
         id = in.readLong();
-        listImagenes = in.createTypedArrayList(Uri.CREATOR);
+        listImagenes = in.createStringArrayList();
     }
 
     public static final Creator<Personaje> CREATOR = new Creator<Personaje>() {
@@ -173,11 +172,6 @@ public class Personaje implements Parcelable {
         dest.writeString(descripcion);
         dest.writeParcelable(retrato, flags);
         dest.writeLong(id);
-        dest.writeTypedList(listImagenes);
+        dest.writeStringList(listImagenes);
     }
-
-    //constructor: imagenes = in.readParcelable(ListaImagenes.class.getClassLoader());
-    //write to parcel: dest.writeParcelable(imagenes, flags);
-
-
 }

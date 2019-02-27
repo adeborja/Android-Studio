@@ -103,8 +103,8 @@ public class DetallesFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    int idPersonaje = Integer.parseInt(id);
-                    mListener.onDetFragmentInteraction(idPersonaje);
+                    //int idPersonaje = Integer.parseInt(id);
+                    mListener.onDetFragmentInteraction();
                 }
             });
         }
@@ -160,6 +160,6 @@ public class DetallesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onDetFragmentInteraction(int id);
+        void onDetFragmentInteraction();
     }
 }

@@ -344,9 +344,9 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }
 
     @Override
-    public void onDetFragmentInteraction(int id)
+    public void onDetFragmentInteraction()
     {
-        Personaje p = mainViewModel.getPersonajePorId(id);
+        Personaje p = mainViewModel.getPersonajeSeleccionado();
 
         ImagenesFragment frag = ImagenesFragment.newInstance(p.getListImagenes()); //getImagenes());
 
@@ -548,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }
 
     @Override
-    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<Uri> imagenes)
+    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes)
     {
         /*int id = ((MainViewModel) mainViewModel).getListaPersonajes().size();
 
@@ -588,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }*/
 
     @Override
-    public void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<Uri> imagenes, long id)
+    public void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes, long id)
     {
         Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, id);
 

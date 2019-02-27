@@ -222,7 +222,7 @@ public class CrearFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<Uri> imagenes);
+        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes);
     }
 
     @Override
