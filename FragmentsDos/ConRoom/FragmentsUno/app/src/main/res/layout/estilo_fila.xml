@@ -45,7 +45,7 @@
         android:layout_marginTop="6sp"
         android:layout_marginBottom="6sp"
         android:src="@drawable/goku"
-        android:background="#D5D222"/>
+        android:background="@android:color/white"/>
 
 
     <!-- android:src="@mipmap/ic_launcher" -->
