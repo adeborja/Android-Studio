@@ -1,10 +1,13 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -17,12 +20,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Navegacion extends ListFragment {
 
-    private static List<Personaje> listaPersonajes;
+    //private List<Personaje> listaPersonajes;
     private ListView listView;
+    private LiveData<List<Personaje>> listLiveData;
+    private MainViewModel vm;
+    private PersonajesAdapter adapter;
+
 
     private OnFragmentInteractionListener miListener;
 
@@ -39,7 +47,7 @@ public class Navegacion extends ListFragment {
     */
     public interface OnFragmentInteractionListener {
 
-        void onNavFragmentInteraction(int posicion);
+        void onNavFragmentInteraction(Personaje p);
     }
 
     //Factory method para crear una nueva instancia de este fragmento,
@@ -47,15 +55,6 @@ public class Navegacion extends ListFragment {
     public static Navegacion newInstance()
     {
         Navegacion fragment = new Navegacion();
-
-        return fragment;
-    }
-
-    public static Navegacion newInstance(List<Personaje> nuevaLista)
-    {
-        Navegacion fragment = new Navegacion();
-
-        listaPersonajes = nuevaLista;
 
         return fragment;
     }
@@ -85,13 +84,33 @@ public class Navegacion extends ListFragment {
     {
         super.onActivityCreated(bundle);
 
-        ViewModel vm = MainActivity.mainViewModel;
-
-        listaPersonajes = ((MainViewModel) vm).getListaPersonajes();
+        //ViewModel vm = MainActivity.mainViewModel;
+        vm = ViewModelProviders.of(this).get(MainViewModel.class);
+        vm.setContext(getContext());
 
         listView = (ListView)getListView().findViewById(android.R.id.list);
+        //adapter = new PersonajesAdapter();
+        //listView.setAdapter(adapter);
 
-        listView.setAdapter(new PersonajesAdapter());
+        vm.getListaLiveData().observe(this, new Observer<List<Personaje>>() {
+            @Override
+            public void onChanged(@Nullable List<Personaje> personajes) {
+                //adapter.setListaAdapter(personajes);
+                adapter = new PersonajesAdapter(personajes);
+                if(adapter.getCount()==0) vm.rellenarLista();
+                listView.setAdapter(adapter);
+                //Toast.makeText(getContext(), "onChanged: "+personajes.size(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        listLiveData = vm.getListaLiveData();
+
+        List<Personaje> tam = listLiveData.getValue();
+
+
+
+        //todo: poner aqui el observador para la lista, y en el metodo onChanged tiene que ir la asignacion de la lista y el set del adaptador
+        //listView.setAdapter(new PersonajesAdapter());
 
     }
 
@@ -127,12 +146,16 @@ public class Navegacion extends ListFragment {
     @Override
     public void onListItemClick(ListView padre, View vista, int posicion, long id)
     {
-
         //aqui hay que llamar al metodo onfragmentinteraction implementado en el main. Es el
         //main el que debe cambiar entre fragments, como un programa que llama a metodos.
 
-        miListener.onNavFragmentInteraction(posicion);
+        //miListener.onNavFragmentInteraction(posicion);
+        //miListener.onNavFragmentInteraction(id);
+        //todo: al actualizar un personaje, se vuelve a cargar su perfil con la info actualizada. Ver como volver a la pantalla principal, o dejar asi.
 
+        Personaje p = (Personaje) adapter.getItem(posicion);
+
+        miListener.onNavFragmentInteraction(p);
     }
 
     class ViewHolderPersonaje
@@ -169,15 +192,33 @@ public class Navegacion extends ListFragment {
 
     public class PersonajesAdapter extends BaseAdapter
     {
+        private List<Personaje> listaAdapter;
+
         public PersonajesAdapter()
         {
             super();
+            this.listaAdapter = new ArrayList<Personaje>(0);
+        }
+
+        public PersonajesAdapter(List<Personaje> list)
+        {
+            super();
+            this.listaAdapter = list;
+        }
+
+        public void setListaAdapter(List<Personaje> list)
+        {
+            this.listaAdapter = list;
         }
 
         @Override
         public int getCount() {
             //return 10;
-            return listaPersonajes.size();
+            //return listaPersonajes.size();
+
+            //int tam = listLiveData.getValue().size();
+
+            return listaAdapter.size();
         }
 
         @Override
@@ -188,13 +229,16 @@ public class Navegacion extends ListFragment {
 
         @Override
         public Object getItem(int position) {
-            return listaPersonajes.get(position);
+            //return listaPersonajes.get(position);
+            return listaAdapter.get(position);
+            //todo: coger de aqui el objeto
         }
 
         @Override
         public long getItemId(int position) {
 
-            long id = ((Personaje) listaPersonajes.get(position)).getId();
+            //long id = ((Personaje) listaPersonajes.get(position)).getId();
+            long id = listaAdapter.get(position).getId();
 
             return id;
         }
@@ -231,7 +275,9 @@ public class Navegacion extends ListFragment {
                 holderPersonaje = (ViewHolderPersonaje) fila.getTag();
             }
 
-            p = listaPersonajes.get(position);
+            //p = listaPersonajes.get(position);
+            p = listaAdapter.get(position);
+
             holderPersonaje.getAlias().setText(p.getAlias());
             holderPersonaje.getCantidadImagenes().setText(p.getCantidadImagenes());
             holderPersonaje.getRetrato().setImageURI(p.getRetrato());

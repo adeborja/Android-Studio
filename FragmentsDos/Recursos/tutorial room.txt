@@ -25,3 +25,17 @@ https://www.youtube.com/watch?v=tPV8xA7m-iw
 
 Material design - Home Page for application
 https://www.youtube.com/watch?v=-YCUrHFUxlA
+
+
+Request permission
+https://www.youtube.com/watch?v=SMrB97JuIoM
+
+
+problema con galeria en room
+https://stackoverflow.com/questions/46031104/android-failed-to-invoke-private-android-net-uri-with-no-args
+
+https://stackoverflow.com/questions/22533432/create-object-from-gson-string-doesnt-work/22535258
+
+
+tutorial listview room livedata
+https://www.youtube.com/watch?v=0cg09tlAAQ0&list=PLrnPJCHvNZuDihTpkRs6SpZhqgBqPU118&index=3

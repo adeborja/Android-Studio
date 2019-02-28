@@ -1,7 +1,10 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +13,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +28,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,10 +48,12 @@ public class CrearFragment extends Fragment
     private static String retrato;
     private static String id;
     private static String numero_imagenes;
-    private static final int PICK_IMAGE = 100;
+    //private static final int PICK_IMAGE = 100;
 
     ImageView imgRetrato;
     File fRetrato = null;
+
+    //private int PERMISO_LEER_GALERIA = 1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -108,22 +117,62 @@ public class CrearFragment extends Fragment
 
                     //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
 
-                    mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), Uri.fromFile(fRetrato), null);
+                    Uri retrato = null;
+
+                    try
+                    {
+                        retrato = Uri.fromFile(fRetrato);
+                    }
+                    catch (NullPointerException e)
+                    {
+                        retrato = Utilidades.getUriToDrawable(getContext(), R.drawable.ic_launcher_background);
+                    }
+
+                    mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), retrato, null);
                 }
             });
 
             btnRetrato.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
 
-                    startActivityForResult(intent, PICK_IMAGE);
+                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                    {
+                        //pedirPermisoGaleria();
+                        Utilidades.pedirPermisoGaleria(getActivity());
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+
+                        startActivityForResult(intent, Utilidades.PICK_IMAGE);
+                    }
+
+                    /*Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+
+                    startActivityForResult(intent, PICK_IMAGE);*/
                 }
             });
         //}
 
         return v;
     }
+
+    /*private void pedirPermisoGaleria()
+    {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
+    }*/
+
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == PERMISO_LEER_GALERIA)
+        {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED)
+            {
+                Toast.makeText(getActivity().getApplicationContext(), "Permiso denegado. No se podrá añadir una imagen.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }*/
 
     @Override
     public void onActivityCreated(Bundle b)
@@ -173,14 +222,14 @@ public class CrearFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes);
+        void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode==RESULT_OK && requestCode==PICK_IMAGE)
+        if(resultCode==RESULT_OK && requestCode==Utilidades.PICK_IMAGE)
         {
             Uri uri = data.getData();
             String aux = getPath(uri);

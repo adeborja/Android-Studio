@@ -1,9 +1,11 @@
 package com.example.adeborja.fragmentsuno;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,17 +35,21 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Navegacion.OnFragmentInteractionListener,
         DetallesFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener,
-        CrearFragment.OnFragmentInteractionListener {
+        CrearFragment.OnFragmentInteractionListener, EditarFragment.OnFragmentInteractionListener {
 
-    public static ViewModel mainViewModel;
+    public static MainViewModel mainViewModel;
     View contenedorPantallaCompleta;
 
     BottomNavigationView bottomNavigationView;
 
     static miBaseDatos myBaseDatos;
 
-
     static boolean flag = true;
+
+    LiveData<Personaje> personajeLiveData;
+    Observer observerPersonajeLiveData;
+
+    //private static Personaje personajeSeleccionado;
 
     //TextView aux;
 
@@ -63,44 +70,36 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         bottomNavigationView.getMenu().getItem(4).setEnabled(false);
         bottomNavigationView.getMenu().getItem(2).setVisible(false);
 
-        myBaseDatos = Room.databaseBuilder(getApplicationContext(), miBaseDatos.class, "personajesdb").allowMainThreadQueries().build();
+        //myBaseDatos = Room.databaseBuilder(getApplicationContext(), miBaseDatos.class, "personajesdb").allowMainThreadQueries().build();
+        myBaseDatos = miBaseDatos.getInstance(this);
 
         //para utilizar ViewModelProviders es necesario añadirlo en el gradle de module:app
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        ((MainViewModel) mainViewModel).setContext(getApplicationContext());
-        //((MainViewModel) mainViewModel).rellenarLista();
-        ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
+        mainViewModel.setContext(this);
+        //mainViewModel.rellenarLista();
+        //((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
 
-        //crear observador
-        //TODO: cambiar a livedata
-        final Observer<Integer> observadorTamanoLista = new Observer<Integer>() {
+        /*((MainViewModel) mainViewModel).getListaLiveData().observe(this, new Observer<List<Personaje>>() {
             @Override
-            public void onChanged(@Nullable Integer integer) {
-                ((MainViewModel) mainViewModel).obtenerPersonajesDeBaseDatos();
-                if(getSupportFragmentManager().getBackStackEntryCount()>0)
-                {
-                    iniciarListaPrincipal(((MainViewModel) mainViewModel).getListaPersonajes());
-                }
+            public void onChanged(@Nullable List<Personaje> personajes) {
+                Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
             }
-        };
+        });*/
 
-        //observar
-        ((MainViewModel) mainViewModel).getTamanoLista().observe(this, observadorTamanoLista);
+
 
         contenedorPantallaCompleta = findViewById(R.id.contenedorPantallaCompleta);
 
         //aux = findViewById(R.id.aux);
 
 
-        //TODO: preguntar por permisos para coger fotos de la galeria
-        //https://www.youtube.com/watch?v=SMrB97JuIoM
 
         if(flag)
         {
 
             if(contenedorPantallaCompleta == null)
             {
-                ((MainViewModel) mainViewModel).setTablet(true);
+                mainViewModel.setTablet(true);
                 bottomNavigationView.getMenu().getItem(1).setVisible(false);
             }
             else
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                         .replace(R.id.contenedorPantallaCompleta, frag)
                         .commit();
 
-                ((MainViewModel) mainViewModel).setTablet(false);
+                mainViewModel.setTablet(false);
             }
 
             //desactivar botones
@@ -134,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
-
 
     BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -167,9 +165,10 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                                 .replace(R.id.contenedorPantallaCompleta, frag)
                                 .commit();*/
 
-                        iniciarListaPrincipal(null);
+                        iniciarListaPrincipal();
                     }
 
+                    bottomNavigationView.getMenu().getItem(0).setEnabled(true);
                     bottomNavigationView.getMenu().getItem(1).setEnabled(false);
                     bottomNavigationView.getMenu().getItem(3).setEnabled(false);
                     bottomNavigationView.getMenu().getItem(4).setEnabled(false);
@@ -205,11 +204,33 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                 case R.id.nav_editar_personaje:
                     //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
 
-                    Personaje p = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
-                    Gson gson = new Gson();
+                    Personaje p = mainViewModel.getPersonajeSeleccionado();
+
+                    bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+                    bottomNavigationView.getMenu().getItem(3).setEnabled(false);
+                    bottomNavigationView.getMenu().getItem(4).setEnabled(false);
+
+                    /*Gson gson = new Gson();
                     String json = gson.toJson(p);
 
-                    Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();*/
+
+                    EditarFragment frag3 = EditarFragment.newInstance(p);
+
+                    if(contenedorPantallaCompleta == null)
+                    {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.barraImagenes, frag3)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                    else
+                    {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.contenedorPantallaCompleta, frag3)
+                                .addToBackStack(null)
+                                .commit();
+                    }
 
 
                     //Toast.makeText(getApplicationContext(), "Has pulsado editar", Toast.LENGTH_SHORT).show();
@@ -217,15 +238,38 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
                 case R.id.nav_borrar_personaje:
 
-                    Personaje p2 = ((MainViewModel) mainViewModel).getPersonajeSeleccionado();
-                    Gson gson2 = new Gson();
+
+                    new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.cuadro_borrar_personaje_titulo)
+                        .setMessage(R.string.cuadro_borrar_personaje_desc)
+                        .setPositiveButton(R.string.cuadro_borrar_personaje_aceptar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Personaje p2 = mainViewModel.getPersonajeSeleccionado();
+
+                                borrarPersonaje(p2);
+
+                                iniciarListaPrincipal();
+                            }
+                        })
+                        .setNegativeButton(R.string.cuadro_borrar_personaje_cancelar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+                    /*Gson gson2 = new Gson();
                     String json2 = "";
                     ListaImagenes img = p2.getImagenes();
 
                     json2 = gson2.toJson(img);
 
-                    Toast.makeText(getApplicationContext(), json2, Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getApplicationContext(), json2, Toast.LENGTH_LONG).show();*/
 
                     //Toast.makeText(getApplicationContext(), "Has pulsado borrar", Toast.LENGTH_SHORT).show();
                     break;
@@ -300,17 +344,13 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     }
 
     @Override
-    public void onDetFragmentInteraction(int id)
+    public void onDetFragmentInteraction()
     {
-        //este habria que modificar el nombre o borrarlo, ya que cada fragment va a implementar
-        //esta interface con nombre distinto, que tendra que ser implementado en esta clase
-        //TODO: modificar, llamar a cada metodo que debe implementar cada fragment de forma distinta. Se pueden modificar los parametros a pasar para incluir lo que nosotros queramos usar.
+        Personaje p = mainViewModel.getPersonajeSeleccionado();
 
-        Personaje p = ((MainViewModel) mainViewModel).getPersonajePorId(id);
+        ImagenesFragment frag = ImagenesFragment.newInstance(p.getListImagenes()); //getImagenes());
 
-        ImagenesFragment frag = ImagenesFragment.newInstance(p.getImagenes());
-
-        if(((MainViewModel) mainViewModel).isTablet())
+        if(mainViewModel.isTablet())
         {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.barraImagenes, frag)
@@ -348,20 +388,54 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
 
     @Override
-    public void onNavFragmentInteraction(int posicion)
+    public void onNavFragmentInteraction(Personaje p)
     {
-        Personaje p = ((MainViewModel) mainViewModel).getPersonaje(posicion);
+        /*mainViewModel.getPersonajeLiveData(id).observe(this, new Observer<Personaje>() {
+            @Override
+            public void onChanged(@Nullable Personaje personaje) {
+                //personajeSeleccionado = personaje;
+                //if(personaje!=null) {
+                    mainViewModel.setPersonajeSeleccionado(personaje);
+                    //Personaje aux = personaje;
 
-        ((MainViewModel) mainViewModel).setPersonajeSeleccionado(p);
+                    if (personaje != null) {
+                        DetallesFragment frag = DetallesFragment.newInstance(mainViewModel.getPersonajeSeleccionado());
 
-        DetallesFragment frag = DetallesFragment.newInstance(p);
+                        if (mainViewModel.isTablet()) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.barraImagenes, frag)
+                                    .addToBackStack(null)
+                                    .commit();
+                        } else {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.contenedorPantallaCompleta, frag)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
 
-        if(((MainViewModel) mainViewModel).isTablet())
+                        mainViewModel.getPersonajeLiveData(personaje.getId()).removeObserver(this);
+
+                        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+                        bottomNavigationView.getMenu().getItem(3).setEnabled(true);
+                        bottomNavigationView.getMenu().getItem(4).setEnabled(true);
+                    }
+                //}
+            }
+        });*/
+
+
+
+        mainViewModel.setPersonajeSeleccionado(p);
+
+        DetallesFragment frag = DetallesFragment.newInstance(p);//mainViewModel.getPersonajeSeleccionado());
+
+        if(mainViewModel.isTablet())
         {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.barraImagenes, frag)
                     .addToBackStack(null)
                     .commit();
+            bottomNavigationView.getMenu().getItem(0).setEnabled(true);
         }
         else
         {
@@ -369,6 +443,9 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     .replace(R.id.contenedorPantallaCompleta, frag)
                     .addToBackStack(null)
                     .commit();
+
+            bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
         }
 
         bottomNavigationView.getMenu().getItem(3).setEnabled(true);
@@ -379,6 +456,45 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
         //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
+
+    /*public void iniciarObserverPersonajeLiveData()
+    {
+        observerPersonajeLiveData = new Observer<Personaje>()
+        {
+            @Override
+            public void onChanged(@Nullable Personaje personaje) {
+                mainViewModel.setPersonajeSeleccionado(personaje);
+                Personaje aux = personaje;
+
+                if (aux != null) {
+                    DetallesFragment frag = DetallesFragment.newInstance(mainViewModel.getPersonajeSeleccionado());
+
+                    if (mainViewModel.isTablet()) {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.barraImagenes, frag)
+                                .addToBackStack(null)
+                                .commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.contenedorPantallaCompleta, frag)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+
+                    //finalizarObserverPersonajeLiveData(aux.getId());
+
+                    bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+                    bottomNavigationView.getMenu().getItem(3).setEnabled(true);
+                    bottomNavigationView.getMenu().getItem(4).setEnabled(true);
+                }
+            }
+        };
+    }*/
+
+    /*public void finalizarObserverPersonajeLiveData(long id)
+    {
+        mainViewModel.getPersonajeLiveData(id).removeObserver(observerPersonajeLiveData);
+    }*/
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -396,29 +512,43 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         super.onConfigurationChanged(newConfig);
     }
 
-    public void iniciarListaPrincipal(List<Personaje> nuevaLista)
+    public void iniciarListaPrincipal()
     {
-        Navegacion frag = null;
+        //Navegacion frag = Navegacion.newInstance();
 
-        if(nuevaLista == null)
+        /*getSupportFragmentManager().popBackStack(getSupportFragmentManager()
+                .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
+
+
+
+        if(contenedorPantallaCompleta == null)
         {
-            frag = Navegacion.newInstance();
+            //DetallesFragment frag = DetallesFragment.newInstance()
+
+            /*getSupportFragmentManager().beginTransaction()
+                    .remove(getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getBackStackEntryCount()-1))
+                    .commit();*/
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.barraImagenes, new Fragment())
+                    .commit();
         }
         else
         {
-            frag = Navegacion.newInstance(nuevaLista);
+            Navegacion frag = Navegacion.newInstance();
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contenedorPantallaCompleta, frag)
+                    .commit();
         }
 
-        getSupportFragmentManager().popBackStack(getSupportFragmentManager()
-                .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.contenedorPantallaCompleta, frag)
-                .commit();
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(3).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(4).setEnabled(false);
     }
 
     @Override
-    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, ListaImagenes imagenes)
+    public void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes)
     {
         /*int id = ((MainViewModel) mainViewModel).getListaPersonajes().size();
 
@@ -431,13 +561,56 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         iniciarListaPrincipal();*/
 
 
-        //TODO: ver como funciona lo de la id autogenerada
-        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 28);
 
-        MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, 0); //Dejar id en 0 para que se autogenere
+
+        //MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
+        mainViewModel.insert(p);
 
         Toast.makeText(this,"Personaje creado", Toast.LENGTH_SHORT).show();
 
-        iniciarListaPrincipal(null);
+        iniciarListaPrincipal();
+    }
+
+    public void borrarPersonaje(Personaje p)
+    {
+        //MainActivity.myBaseDatos.miDao().borrarPersonaje(p);
+        mainViewModel.delete(p);
+
+        Toast.makeText(this,""+p.getAlias()+" ha sido borrado", Toast.LENGTH_SHORT).show();
+    }
+
+    /*public void actualizarPersonaje(Personaje p)
+    {
+        MainActivity.myBaseDatos.miDao().actualizarPersonaje(p);
+
+        Toast.makeText(this,""+p.getAlias()+" ha sido actualizado", Toast.LENGTH_SHORT).show();
+    }*/
+
+    @Override
+    public void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes, long id)
+    {
+        Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, id);
+
+        //MainActivity.myBaseDatos.miDao().actualizarPersonaje(p);
+        mainViewModel.update(p);
+
+        //finalizarObserverPersonajeLiveData(id);
+
+        Toast.makeText(this,""+p.getAlias()+" ha sido actualizado", Toast.LENGTH_SHORT).show();
+
+
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(3).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(4).setEnabled(false);
+
+        //TODO: temporal, hasta solucionar lo de que no se vea la lista principal tras editar
+        /*getSupportFragmentManager().popBackStack(getSupportFragmentManager()
+                .getBackStackEntryAt(1).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
+
+        iniciarListaPrincipal();
+        //bottomNavigationView.setSelectedItemId(1);
+        //bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
 }

@@ -18,13 +18,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImagenesFragment extends Fragment {
 
     private static final String ARRAY_IMAGENES = "array_imagenes";
-    private static ListaImagenes imagenes;
+    //private static ListaImagenes imagenes;
+    private static List<String> listImagenes;
 
     private ViewPager viewPager;
     private SlideAdapter slideAdapter;
@@ -36,7 +43,7 @@ public class ImagenesFragment extends Fragment {
         //Constructor vacio
     }
 
-    public static ImagenesFragment newInstance(ListaImagenes arrayImagenes)
+    public static ImagenesFragment newInstance(List<String> stringList) //ListaImagenes arrayImagenes)
     {
         ImagenesFragment fragment = new ImagenesFragment();
 
@@ -51,7 +58,13 @@ public class ImagenesFragment extends Fragment {
 
         args.putStringArray(ARRAY_IMAGENES, aux);*/
 
-        args.putParcelable(ARRAY_IMAGENES, arrayImagenes);
+        //args.putParcelable(ARRAY_IMAGENES, arrayImagenes);
+
+        Gson gson = new Gson();
+        //Type listType = new TypeToken<List<String>>() {}.getType();
+        String aux = gson.toJson(stringList); //, listType);
+
+        args.putString(ARRAY_IMAGENES, aux);
         fragment.setArguments(args);
 
         return fragment;
@@ -74,7 +87,14 @@ public class ImagenesFragment extends Fragment {
 
             imagenes = aux2;*/
 
-            imagenes = getArguments().getParcelable(ARRAY_IMAGENES);
+            //imagenes = getArguments().getParcelable(ARRAY_IMAGENES);
+
+            Gson gson = new Gson();
+            String auxString = getArguments().getString(ARRAY_IMAGENES);
+            Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+            ArrayList<String> auxList = gson.fromJson(auxString, listType);
+
+            listImagenes =  auxList;
         }
     }
 
@@ -84,7 +104,7 @@ public class ImagenesFragment extends Fragment {
         View v = inflador.inflate(R.layout.fragment_imagenes, contenedor, false);
 
         viewPager = (ViewPager)v.findViewById(R.id.miViewPager);
-        slideAdapter = new SlideAdapter(getActivity());
+        slideAdapter = new SlideAdapter(getActivity(), listImagenes);
 
         viewPager.setAdapter(slideAdapter);
 
@@ -123,17 +143,20 @@ public class ImagenesFragment extends Fragment {
         private Context contexto;
         private LayoutInflater inflador;
 
-        private ListaImagenes listaImagenes = imagenes;
+        //private ListaImagenes listaImagenes = imagenes;
+        private List<String> listaStringImagenes;
 
-        public SlideAdapter(Context contexto)
+        public SlideAdapter(Context contexto, List<String> listaStringImagenes)
         {
             this.contexto = contexto;
+            this.listaStringImagenes = listaStringImagenes;
         }
 
 
         @Override
         public int getCount() {
-            return listaImagenes.getSize();
+            //return listaImagenes.getSize();
+            return listaStringImagenes.size();
         }
 
         @Override
@@ -152,7 +175,8 @@ public class ImagenesFragment extends Fragment {
             ConstraintLayout layoutSlide = (ConstraintLayout) view.findViewById(R.id.miSlide);
             ImageView imgSlide = (ImageView) view.findViewById(R.id.imgSlide);
 
-            imgSlide.setImageURI(listaImagenes.getImagenDeLista(position));
+            //imgSlide.setImageURI(listaImagenes.getImagenDeLista(position));
+            imgSlide.setImageURI(Uri.parse(listaStringImagenes.get(position)));
 
             container.addView(view);
 
