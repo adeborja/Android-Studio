@@ -8,12 +8,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,7 +32,7 @@ import static android.app.Activity.RESULT_OK;
 public class EditarFragment extends Fragment
 {
     //el valor asignado es su clave. Si dos parametros tienen la misma clave, se sobreescriben.
-    private static final String NOMBRE = "nombre";
+    /*private static final String NOMBRE = "nombre";
     private static final String ALIAS = "alias";
     private static final String DESCRIPCION = "descripcion";
     private static final String RETRATO = "retrato";
@@ -41,7 +44,7 @@ public class EditarFragment extends Fragment
     private static String descripcion;
     private static String retrato;
     private static String id;
-    private static String numero_imagenes;
+    private static String numero_imagenes;*/
 
     private static Personaje personajeEditable;
 
@@ -51,7 +54,7 @@ public class EditarFragment extends Fragment
     ImageView imgRetrato;
     File fRetrato = null;
 
-    List<String> galeriaImagenes;
+    private List<String> galeriaImagenes;
     private RecyclerViewAdapter recyclerViewAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -82,7 +85,6 @@ public class EditarFragment extends Fragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_editar_personaje, container, false);
 
-        //ImageView imgRetrato = (ImageView)v.findViewById(R.id.imgRetratoDetalles);
         final EditText etxNombre = (EditText) v.findViewById(R.id.etxEditarNombre);
         final EditText etxAlias = (EditText)v.findViewById(R.id.etxEditarAlias);
         final EditText etxDesctipcion = (EditText)v.findViewById(R.id.etxEditarDesc);
@@ -96,6 +98,72 @@ public class EditarFragment extends Fragment
         retratoOriginal = personajeEditable.getRetrato();
 
         galeriaImagenes = personajeEditable.getListImagenes();
+
+        Button btnEditar = (Button)v.findViewById(R.id.btnEditarAceptar);
+        Button btnRetrato = (Button) v.findViewById(R.id.btnEditarElegirPerfil);
+        Button btnGaleria = (Button) v.findViewById(R.id.btnEditarElegirGaleria);
+
+        btnEditar.setEnabled(true);
+        btnEditar.setText("Editar personaje");
+
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nombre = etxNombre.getText().toString();
+                String alias = etxAlias.getText().toString();
+                String desc = etxDesctipcion.getText().toString();
+
+                Uri retrato;
+                if(retratoCambiado)
+                {
+                    retrato = Uri.fromFile(fRetrato);
+                }
+                else
+                {
+                    retrato = retratoOriginal;
+                }
+
+
+                mListener.onEditPersFragmentInteraction(nombre, alias, desc, retrato, galeriaImagenes, personajeEditable.getId());
+            }
+        });
+
+        btnRetrato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                {
+                    Utilidades.pedirPermisoGaleria(getActivity());
+                }
+                else
+                {
+                    Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+
+                    startActivityForResult(intent, Utilidades.PICK_IMAGE);
+                }
+
+            }
+        });
+
+        btnGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                {
+                    Utilidades.pedirPermisoGaleria(getActivity());
+                }
+                else
+                {
+                    Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+
+                    startActivityForResult(intent, Utilidades.PICK_GALLERY);
+                }
+            }
+        });
+
+
         this.recyclerView = v.findViewById(R.id.rvEditar);
         this.recyclerView.setHasFixedSize(true);
         this.layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -103,56 +171,27 @@ public class EditarFragment extends Fragment
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(recyclerViewAdapter);
 
-        Button btnEditar = (Button)v.findViewById(R.id.btnEditarAceptar);
-        Button btnRetrato = (Button) v.findViewById(R.id.btnEditarElegirPerfil);
+        this.recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
-        btnEditar.setEnabled(true);
-        btnEditar.setText("Editar personaje");
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
 
-        btnEditar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
-
-                    String nombre = etxNombre.getText().toString();
-                    String alias = etxAlias.getText().toString();
-                    String desc = etxDesctipcion.getText().toString();
-
-                    Uri retrato;
-                    if(retratoCambiado)
-                    {
-                        retrato = Uri.fromFile(fRetrato);
-                    }
-                    else
-                    {
-                        retrato = retratoOriginal;
-                    }
-
-
-                    mListener.onEditPersFragmentInteraction(nombre, alias, desc, retrato, null, personajeEditable.getId());
-                }
-            });
-
-            btnRetrato.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                    {
-                        //pedirPermisoGaleria();
-                        Utilidades.pedirPermisoGaleria(getActivity());
-                    }
-                    else
-                    {
-                        Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
-
-                        startActivityForResult(intent, Utilidades.PICK_IMAGE);
-                    }
-
-                }
-            });
-        //}
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                galeriaImagenes.remove(viewHolder.getAdapterPosition());
+                recyclerViewAdapter = new RecyclerViewAdapter(galeriaImagenes);
+                recyclerView.setAdapter(recyclerViewAdapter);
+            }
+        }).attachToRecyclerView(recyclerView);
 
         return v;
     }
@@ -212,56 +251,39 @@ public class EditarFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode==RESULT_OK && requestCode==Utilidades.PICK_IMAGE)
+        if(resultCode==RESULT_OK)
         {
-            Uri uri = data.getData();
-            String aux = getPath(uri);
-            //Toast.makeText(getContext(), aux, Toast.LENGTH_SHORT).show();
+            Uri uri;
+            String aux;
 
-            //Bitmap bm = BitmapFactory.decodeFile(aux);
-            //imgRetrato.setImageBitmap(bm);
-
-            fRetrato = new File(aux);
-
-            //try
-            //{
-                imgRetrato.setImageURI(Uri.fromFile(fRetrato));
-
-                retratoCambiado = true;
-            /*}
-            catch (FileNotFoundException e)
+            switch (requestCode)
             {
-                Toast.makeText(getContext(), "No tienes permisos suficientes", Toast.LENGTH_SHORT).show();
-            }*/
-        }
+                case Utilidades.PICK_IMAGE:
 
-    }
+                    uri = data.getData();
+                    aux = Utilidades.getPath(uri, getContext());
 
-    public String getPath(Uri uri)
-    {
-        String path = null;
-        String[] proyeccion = null;
-        Cursor cursor = null;
-        int columnIndex = 0;
+                    fRetrato = new File(aux);
 
-        if(uri!=null)
-        {
-            proyeccion = new String[]{MediaStore.Images.Media.DATA};
-            cursor = getContext().getContentResolver().query(uri, proyeccion, null,null,null);
+                    imgRetrato.setImageURI(Uri.fromFile(fRetrato));
 
-            if(cursor!=null)
-            {
-                columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                path = cursor.getString(columnIndex);
-                cursor.close();
-            }
-            else
-            {
-                path = uri.getPath();
+                    retratoCambiado = true;
+
+                    break;
+
+                case Utilidades.PICK_GALLERY:
+
+                    uri = data.getData();
+                    aux = Utilidades.getPath(uri, getContext());
+
+                    galeriaImagenes.add(aux);
+
+                    recyclerViewAdapter = new RecyclerViewAdapter(galeriaImagenes);
+                    recyclerView.setAdapter(recyclerViewAdapter);
+
+                    break;
             }
         }
 
-        return path;
     }
 }

@@ -56,4 +56,14 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public int getItemCount() {
         return exampleList.size();
     }
+
+    public ExampleItem getItemAt(int posicion)
+    {
+        return this.exampleList.get(posicion);
+    }
+
+    public void removeItem(int pos)
+    {
+        this.exampleList.remove(pos);
+    }
 }

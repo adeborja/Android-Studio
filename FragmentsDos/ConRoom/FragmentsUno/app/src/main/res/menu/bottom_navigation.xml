@@ -16,6 +16,11 @@
         android:icon="@drawable/ic_gallery"
         android:title="Galeria del personaje" />
 
+    <!--<item
+        android:id="@+id/nav_guardar"
+        android:icon="@drawable/ic_save"
+        android:title="Guardar" />-->
+
     <item
         android:id="@+id/nav_editar_personaje"
         android:icon="@drawable/ic_edit"

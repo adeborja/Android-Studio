@@ -10,4 +10,7 @@
     <string name="cuadro_borrar_personaje_desc">¿Seguro que quieres borrar este personaje?</string>
     <string name="cuadro_borrar_personaje_aceptar">Aceptar</string>
     <string name="cuadro_borrar_personaje_cancelar">Cancelar</string>
+    <string name="cuadro_pedir_permisos_titulo">Permiso para leer</string>
+    <string name="cuadro_pedir_permisos_desc">Es necesario que concedas permiso para poder ver las imagenes de tu galeria si quieres añadir nuevas imagenes de perfil y a la galeria de imagenes de tus personajes</string>
+    <string name="cuadro_pedir_permisos_aceptar">Entendido</string>
 </resources>

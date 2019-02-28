@@ -162,14 +162,14 @@ public class MainViewModel extends AndroidViewModel {
             listStringImagenes.add(Utilidades.getUriToDrawable(this.context, R.drawable.goku02).toString());
             listStringImagenes.add(Utilidades.getUriToDrawable(this.context, R.drawable.goku03).toString());
 
-            for(int i=0;i<10;i++)
-            {
-                p = new Personaje("Son Goku", "Goku 0"+i, "El prota de la serie", retrato, listStringImagenes, 0);
+            //for(int i=0;i<10;i++)
+            //{
+                p = new Personaje("Son Goku", "Goku", "El prota de la serie", retrato, listStringImagenes, 0);
 
                 //this.listaPersonajes.add(p);
                 //MainActivity.myBaseDatos.miDao().anadirPersonaje(p);
                 r.insert(p);
-            }
+            //}
 
             retrato = Utilidades.getUriToDrawable(this.context, R.drawable.vegeta);
             listStringImagenes = new ArrayList<>(0);

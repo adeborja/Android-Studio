@@ -130,9 +130,9 @@ public class Personaje implements Parcelable {
         this.listImagenes.add(imagen.toString());
     }
 
-    public String getCantidadImagenes()
+    public int getCantidadImagenes()
     {
-        String cantidad = String.valueOf(this.listImagenes.size()); //imagenes.getSize());
+        int cantidad = this.listImagenes.size();
 
         return cantidad;
     }

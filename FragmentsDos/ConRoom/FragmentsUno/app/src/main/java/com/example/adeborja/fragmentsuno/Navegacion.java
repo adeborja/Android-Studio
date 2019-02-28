@@ -279,7 +279,7 @@ public class Navegacion extends ListFragment {
             p = listaAdapter.get(position);
 
             holderPersonaje.getAlias().setText(p.getAlias());
-            holderPersonaje.getCantidadImagenes().setText(p.getCantidadImagenes());
+            holderPersonaje.getCantidadImagenes().setText(String.valueOf(p.getCantidadImagenes()));
             holderPersonaje.getRetrato().setImageURI(p.getRetrato());
 
             return fila;

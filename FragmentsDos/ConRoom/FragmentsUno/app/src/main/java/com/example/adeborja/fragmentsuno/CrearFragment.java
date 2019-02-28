@@ -17,7 +17,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +32,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -35,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
 public class CrearFragment extends Fragment
 {
     //el valor asignado es su clave. Si dos parametros tienen la misma clave, se sobreescriben.
-    private static final String NOMBRE = "nombre";
+    /*private static final String NOMBRE = "nombre";
     private static final String ALIAS = "alias";
     private static final String DESCRIPCION = "descripcion";
     private static final String RETRATO = "retrato";
@@ -47,13 +52,16 @@ public class CrearFragment extends Fragment
     private static String descripcion;
     private static String retrato;
     private static String id;
-    private static String numero_imagenes;
+    private static String numero_imagenes;*/
     //private static final int PICK_IMAGE = 100;
 
     ImageView imgRetrato;
     File fRetrato = null;
 
-    //private int PERMISO_LEER_GALERIA = 1;
+    private List<String> galeriaImagenes;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,66 +102,102 @@ public class CrearFragment extends Fragment
 
         Button btnCrear = (Button)v.findViewById(R.id.btnCrearAceptar);
         Button btnRetrato = (Button) v.findViewById(R.id.btnElegirPerfil);
+        Button btnGaleria = (Button) v.findViewById(R.id.btnElegirGaleria);
         imgRetrato = (ImageView) v.findViewById(R.id.imgElegirPerfil);
 
-        //int imagenes = Integer.parseInt(numero_imagenes);
+        galeriaImagenes = new ArrayList<>();
 
+        btnCrear.setEnabled(true);
+        btnCrear.setText(R.string.crear_personaje);
 
-        //TODO: Esto hay que cambiarlo, quizas quitarlo, para hacer que el boton de crear
-        // solo este activo cuando se haya introducido al menos nombre y alias
-        /*if(nombre == "" || alias == "")
-        {
-            btnCrear.setEnabled(false);
-            btnCrear.setText(R.string.crear_vacio);
-        }
-        else
-        {*/
-            btnCrear.setEnabled(true);
-            btnCrear.setText(R.string.crear_personaje);
+        btnCrear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            btnCrear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
 
-                    //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
+                Uri retrato = null;
 
-                    Uri retrato = null;
-
-                    try
-                    {
-                        retrato = Uri.fromFile(fRetrato);
-                    }
-                    catch (NullPointerException e)
-                    {
-                        retrato = Utilidades.getUriToDrawable(getContext(), R.drawable.ic_launcher_background);
-                    }
-
-                    mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), retrato, null);
+                try
+                {
+                    retrato = Uri.fromFile(fRetrato);
                 }
-            });
+                catch (NullPointerException e)
+                {
+                    retrato = Utilidades.getUriToDrawable(getContext(), R.drawable.ic_launcher_background);
+                }
 
-            btnRetrato.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                mListener.onCrearPersFragmentInteraction(etxNombre.getText().toString(), etxAlias.getText().toString(), etxDesctipcion.getText().toString(), retrato, galeriaImagenes);
+            }
+        });
 
-                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                    {
-                        //pedirPermisoGaleria();
-                        Utilidades.pedirPermisoGaleria(getActivity());
-                    }
-                    else
-                    {
-                        Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+        btnRetrato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                        startActivityForResult(intent, Utilidades.PICK_IMAGE);
-                    }
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                {
+                    //pedirPermisoGaleria();
+                    Utilidades.pedirPermisoGaleria(getActivity());
+                }
+                else
+                {
+                    Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+
+                    startActivityForResult(intent, Utilidades.PICK_IMAGE);
+                }
 
                     /*Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
 
                     startActivityForResult(intent, PICK_IMAGE);*/
+            }
+        });
+
+        btnGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                {
+                    Utilidades.pedirPermisoGaleria(getActivity());
                 }
-            });
-        //}
+                else
+                {
+                    Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
+
+                    startActivityForResult(intent, Utilidades.PICK_GALLERY);
+                }
+            }
+        });
+
+        this.recyclerView = v.findViewById(R.id.rvCrear);
+        this.recyclerView.setHasFixedSize(true);
+        this.layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        this.recyclerViewAdapter = new RecyclerViewAdapter(galeriaImagenes);
+        this.recyclerView.setLayoutManager(layoutManager);
+        this.recyclerView.setAdapter(recyclerViewAdapter);
+
+        this.recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                galeriaImagenes.remove(viewHolder.getAdapterPosition());
+                recyclerViewAdapter = new RecyclerViewAdapter(galeriaImagenes);
+                recyclerView.setAdapter(recyclerViewAdapter);
+            }
+        }).attachToRecyclerView(recyclerView);
 
         return v;
     }
@@ -229,54 +273,38 @@ public class CrearFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode==RESULT_OK && requestCode==Utilidades.PICK_IMAGE)
+        if(resultCode==RESULT_OK)
         {
-            Uri uri = data.getData();
-            String aux = getPath(uri);
-            //Toast.makeText(getContext(), aux, Toast.LENGTH_SHORT).show();
+            Uri uri;
+            String aux;
 
-            //Bitmap bm = BitmapFactory.decodeFile(aux);
-            //imgRetrato.setImageBitmap(bm);
-
-            fRetrato = new File(aux);
-
-            //try
-            //{
-                imgRetrato.setImageURI(Uri.fromFile(fRetrato));
-            /*}
-            catch (FileNotFoundException e)
+            switch (requestCode)
             {
-                Toast.makeText(getContext(), "No tienes permisos suficientes", Toast.LENGTH_SHORT).show();
-            }*/
+                case Utilidades.PICK_IMAGE:
+
+                    uri = data.getData();
+                    aux = Utilidades.getPath(uri, getContext());
+
+                    fRetrato = new File(aux);
+
+                    imgRetrato.setImageURI(Uri.fromFile(fRetrato));
+
+                    break;
+
+                case Utilidades.PICK_GALLERY:
+
+                    uri = data.getData();
+                    aux = Utilidades.getPath(uri, getContext());
+
+                    galeriaImagenes.add(aux);
+
+                    recyclerViewAdapter = new RecyclerViewAdapter(galeriaImagenes);
+                    recyclerView.setAdapter(recyclerViewAdapter);
+
+                    break;
+            }
         }
 
     }
 
-    public String getPath(Uri uri)
-    {
-        String path = null;
-        String[] proyeccion = null;
-        Cursor cursor = null;
-        int columnIndex = 0;
-
-        if(uri!=null)
-        {
-            proyeccion = new String[]{MediaStore.Images.Media.DATA};
-            cursor = getContext().getContentResolver().query(uri, proyeccion, null,null,null);
-
-            if(cursor!=null)
-            {
-                columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                path = cursor.getString(columnIndex);
-                cursor.close();
-            }
-            else
-            {
-                path = uri.getPath();
-            }
-        }
-
-        return path;
-    }
 }
