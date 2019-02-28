@@ -11,6 +11,8 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -47,6 +50,11 @@ public class EditarFragment extends Fragment
 
     ImageView imgRetrato;
     File fRetrato = null;
+
+    List<String> galeriaImagenes;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -86,6 +94,14 @@ public class EditarFragment extends Fragment
         imgRetrato.setImageURI(personajeEditable.getRetrato());
         fRetrato = new File(personajeEditable.getRetrato().toString());
         retratoOriginal = personajeEditable.getRetrato();
+
+        galeriaImagenes = personajeEditable.getListImagenes();
+        this.recyclerView = v.findViewById(R.id.rvEditar);
+        this.recyclerView.setHasFixedSize(true);
+        this.layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        this.recyclerViewAdapter = new RecyclerViewAdapter(galeriaImagenes);
+        this.recyclerView.setLayoutManager(layoutManager);
+        this.recyclerView.setAdapter(recyclerViewAdapter);
 
         Button btnEditar = (Button)v.findViewById(R.id.btnEditarAceptar);
         Button btnRetrato = (Button) v.findViewById(R.id.btnEditarElegirPerfil);
