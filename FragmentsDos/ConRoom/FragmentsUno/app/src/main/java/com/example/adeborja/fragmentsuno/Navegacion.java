@@ -25,7 +25,6 @@ import java.util.List;
 
 public class Navegacion extends ListFragment {
 
-    //private List<Personaje> listaPersonajes;
     private ListView listView;
     private LiveData<List<Personaje>> listLiveData;
     private MainViewModel vm;
@@ -84,33 +83,23 @@ public class Navegacion extends ListFragment {
     {
         super.onActivityCreated(bundle);
 
-        //ViewModel vm = MainActivity.mainViewModel;
         vm = ViewModelProviders.of(this).get(MainViewModel.class);
         vm.setContext(getContext());
 
         listView = (ListView)getListView().findViewById(android.R.id.list);
-        //adapter = new PersonajesAdapter();
-        //listView.setAdapter(adapter);
 
+        //Observador para la lista. Dentro del onChanged van la asignacion de la lista cada vez que hay un cambio y el set del adaptador
         vm.getListaLiveData().observe(this, new Observer<List<Personaje>>() {
             @Override
             public void onChanged(@Nullable List<Personaje> personajes) {
-                //adapter.setListaAdapter(personajes);
+
                 adapter = new PersonajesAdapter(personajes);
                 if(adapter.getCount()==0) vm.rellenarLista();
                 listView.setAdapter(adapter);
-                //Toast.makeText(getContext(), "onChanged: "+personajes.size(), Toast.LENGTH_SHORT).show();
             }
         });
 
         listLiveData = vm.getListaLiveData();
-
-        List<Personaje> tam = listLiveData.getValue();
-
-
-
-        //todo: poner aqui el observador para la lista, y en el metodo onChanged tiene que ir la asignacion de la lista y el set del adaptador
-        //listView.setAdapter(new PersonajesAdapter());
 
     }
 
@@ -136,22 +125,11 @@ public class Navegacion extends ListFragment {
         miListener = null;
     }
 
-    /*@Override
-    public void onClick(View v)
-    {
-        //Toast.makeText(getActivity(),"onClick", Toast.LENGTH_SHORT);
-        miListener.onNavFragmentInteraction(v);
-    }*/
-
     @Override
     public void onListItemClick(ListView padre, View vista, int posicion, long id)
     {
         //aqui hay que llamar al metodo onfragmentinteraction implementado en el main. Es el
         //main el que debe cambiar entre fragments, como un programa que llama a metodos.
-
-        //miListener.onNavFragmentInteraction(posicion);
-        //miListener.onNavFragmentInteraction(id);
-        //todo: al actualizar un personaje, se vuelve a cargar su perfil con la info actualizada. Ver como volver a la pantalla principal, o dejar asi.
 
         Personaje p = (Personaje) adapter.getItem(posicion);
 
@@ -213,10 +191,6 @@ public class Navegacion extends ListFragment {
 
         @Override
         public int getCount() {
-            //return 10;
-            //return listaPersonajes.size();
-
-            //int tam = listLiveData.getValue().size();
 
             return listaAdapter.size();
         }
@@ -229,15 +203,12 @@ public class Navegacion extends ListFragment {
 
         @Override
         public Object getItem(int position) {
-            //return listaPersonajes.get(position);
             return listaAdapter.get(position);
-            //todo: coger de aqui el objeto
         }
 
         @Override
         public long getItemId(int position) {
 
-            //long id = ((Personaje) listaPersonajes.get(position)).getId();
             long id = listaAdapter.get(position).getId();
 
             return id;
@@ -275,7 +246,6 @@ public class Navegacion extends ListFragment {
                 holderPersonaje = (ViewHolderPersonaje) fila.getTag();
             }
 
-            //p = listaPersonajes.get(position);
             p = listaAdapter.get(position);
 
             holderPersonaje.getAlias().setText(p.getAlias());

@@ -7,16 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!--<TextView
-        android:text="Main_Activity"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
-
     <FrameLayout
         android:id="@+id/contenedorPantallaCompleta"
         android:layout_width="0dp"
@@ -26,16 +16,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
 
-    <!--<TextView
-        android:id="@+id/aux"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="asd"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="90sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
-
     <android.support.design.widget.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,26 +23,5 @@
         app:menu="@menu/bottom_navigation"
         android:background="?android:attr/windowBackground"
         android:id="@+id/bottom_navigation"/>
-
-    <!--<android.support.constraint.ConstraintLayout
-        android:id="@+id/linBotones"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btnCrear"
-            android:text="Crear personaje"
-            app:layout_constraintStart_toStartOf="@id/linBotones"
-            android:enabled="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btnListar"
-            android:text="Lista personajes"
-            app:layout_constraintEnd_toEndOf="@id/linBotones"
-            android:enabled="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </android.support.constraint.ConstraintLayout>-->
 
 </android.support.constraint.ConstraintLayout>

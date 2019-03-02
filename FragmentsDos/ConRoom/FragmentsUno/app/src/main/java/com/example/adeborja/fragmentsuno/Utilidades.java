@@ -20,6 +20,7 @@ public class Utilidades
     public static final int PICK_GALLERY = 101;
     public static int PERMISO_LEER_GALERIA = 1;
 
+    //Convierte la direccion de una imagen dentro de la carpeta drawable en una uri y la devuelve
     public static final Uri getUriToDrawable(@NonNull Context context,
                                              @AnyRes int drawableId) {
         Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
@@ -29,6 +30,7 @@ public class Utilidades
         return imageUri;
     }
 
+    //Muestra al usuario un mensaje de por qué se necesita este permiso, y lo pide
     public static void pedirPermisoGaleria(Activity activity)
     {
         final Activity mActivity = activity;
@@ -44,10 +46,9 @@ public class Utilidades
                 })
                 .create()
                 .show();
-
-        //ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
     }
 
+    //convierte en cadena la direccion en la que esta guardada una uri, en este caso una imagen elegida de la galeria de imagenes del dispositivo
     public static String getPath(Uri uri, Context context)
     {
         String path = null;

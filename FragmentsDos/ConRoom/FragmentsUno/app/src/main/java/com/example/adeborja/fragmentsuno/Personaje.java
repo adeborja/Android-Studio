@@ -26,12 +26,6 @@ public class Personaje implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo (name = "id")
     private long id;
-
-    /*@ColumnInfo (name = "imagenes")
-    @TypeConverters({ListaImagenesConverter.class})
-    //@Embedded
-    private ListaImagenes imagenes;*/
-
     @ColumnInfo (name = "listimagenes")
     @TypeConverters({listStringConverter.class})
     private List<String> listImagenes;
@@ -41,21 +35,12 @@ public class Personaje implements Parcelable {
 
     }
 
-    //public Personaje(String nombre, String alias, String descripcion, Uri retrato, ListaImagenes imagenes, long nId) {
     public Personaje(String nombre, String alias, String descripcion, Uri retrato, List<String> listimagenes, long nId) {
         this.nombre = nombre;
         this.alias = alias;
         this.descripcion = descripcion;
         this.retrato=retrato;
         this.id=nId;
-        /*if(imagenes==null)
-        {
-            this.imagenes = new ListaImagenes(new ArrayList<Uri>(0));
-        }
-        else
-        {
-            this.imagenes = imagenes;
-        }*/
 
         if(listimagenes==null)
         {
@@ -92,14 +77,6 @@ public class Personaje implements Parcelable {
         this.descripcion = descripcion;
     }
 
-    /*public ListaImagenes getImagenes() {
-        return imagenes;
-    }
-
-    public void setImagenes(ListaImagenes imagenes) {
-        this.imagenes = imagenes;
-    }*/
-
     public List<String> getListImagenes() {
         return listImagenes;
     }
@@ -126,7 +103,6 @@ public class Personaje implements Parcelable {
 
     public void anadirImagen(Uri imagen)
     {
-        //this.imagenes.anadirImagen(imagen);
         this.listImagenes.add(imagen.toString());
     }
 

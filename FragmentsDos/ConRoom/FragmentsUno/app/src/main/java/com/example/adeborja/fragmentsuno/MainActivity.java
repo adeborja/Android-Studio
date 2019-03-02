@@ -98,18 +98,11 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
 
                 mainViewModel.setTablet(false);
             }
-
-            //desactivar botones
-            //btnCrear.setEnabled(false);
         }
         else
         {
-            //Navegacion nav = (Navegacion) getSupportFragmentManager().findFragmentByTag("Navegacion");
-
             bottomNavigationView.getMenu().getItem(1).setEnabled(true);
         }
-
-        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -123,42 +116,13 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
             {
                 case R.id.nav_lista_personajes:
 
-                    /*Navegacion frag = Navegacion.newInstance();
-
-                    if(contenedorPantallaCompleta == null)
-                    {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.barraImagenes, frag)
-                                .addToBackStack(null)
-                                .commit();
-                    }
-                    else
-                    {
-                        //Vuelve a la lista de personajes y borra el historial de vistas, haciendo
-                        //que el backstack del programa esté como cuando está recién ejecutado
-                        /*getSupportFragmentManager().popBackStack(getSupportFragmentManager()
-                                .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.contenedorPantallaCompleta, frag)
-                                .commit();*/
-
-                        /*iniciarListaPrincipal();
-                    }
-
-                    bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-                    bottomNavigationView.getMenu().getItem(1).setEnabled(false);
-                    bottomNavigationView.getMenu().getItem(2).setEnabled(false);
-                    bottomNavigationView.getMenu().getItem(3).setEnabled(false);
-                    bottomNavigationView.getMenu().getItem(4).setEnabled(false);*/
-
                         iniciarListaPrincipal();
 
                     break;
 
                 case R.id.nav_crear_personaje:
 
-                    CrearFragment frag2 = new CrearFragment();
+                    CrearFragment frag2 = CrearFragment.newInstance();
 
                     if(contenedorPantallaCompleta == null)
                     {
@@ -265,53 +229,14 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
                     break;
             }
 
-            //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
-
             return true;
         }
     };
 
-    /*@Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
-            case R.id.btnListar:
-
-                Navegacion frag = Navegacion.newInstance();
-
-                //btnCrear.setEnabled(true);
-                //btnListar.setEnabled(false);
-
-                if(contenedorPantallaCompleta == null)
-                {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.barraImagenes, frag)
-                            .addToBackStack(null)
-                            .commit();
-                }
-                else
-                {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.contenedorPantallaCompleta, frag)
-                            .addToBackStack(null)
-                            .commit();
-                }
-
-                //Vuelve a la lista de personajes y borra el historial de vistas, haciendo
-                //que el backstack del programa esté como cuando está. recién ejecutado
-                getSupportFragmentManager().popBackStack(getSupportFragmentManager()
-                        .getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-                break;
-        }
-    }*/
-
     @Override
     public void onBackStackChanged() {
-        /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_detalles);
-        Toast.makeText(getApplicationContext(),"onCreate", Toast.LENGTH_SHORT).show();*/
 
+        //TODO: revisar
         int i = getSupportFragmentManager().getBackStackEntryCount();
 
         if(i<1)
@@ -368,13 +293,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     {
         super.onBackPressed();
 
-        //if(!((MainViewModel) mainViewModel).isTablet() && lineaBotones.getVisibility()==View.GONE)
-        //{
-            //lineaBotones.setVisibility(View.VISIBLE);
         bottomNavigationView.setVisibility(View.VISIBLE);
-        //}
-
-        //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
 
 
@@ -482,13 +401,9 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     {
         Personaje p = new Personaje(nombre, alias, desc, retrato, imagenes, id);
 
-        //MainActivity.myBaseDatos.miDao().actualizarPersonaje(p);
         mainViewModel.update(p);
 
-        //finalizarObserverPersonajeLiveData(id);
-
         Toast.makeText(this,""+p.getAlias()+" ha sido actualizado", Toast.LENGTH_SHORT).show();
-
 
         bottomNavigationView.getMenu().getItem(0).setEnabled(true);
         bottomNavigationView.getMenu().getItem(1).setEnabled(false);
@@ -496,12 +411,6 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         bottomNavigationView.getMenu().getItem(3).setEnabled(false);
         bottomNavigationView.getMenu().getItem(4).setEnabled(false);
 
-        //TODO: temporal, hasta solucionar lo de que no se vea la lista principal tras editar
-        /*getSupportFragmentManager().popBackStack(getSupportFragmentManager()
-                .getBackStackEntryAt(1).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
-
         iniciarListaPrincipal();
-        //bottomNavigationView.setSelectedItemId(1);
-        //bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
 }

@@ -39,21 +39,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class CrearFragment extends Fragment
 {
-    //el valor asignado es su clave. Si dos parametros tienen la misma clave, se sobreescriben.
-    /*private static final String NOMBRE = "nombre";
-    private static final String ALIAS = "alias";
-    private static final String DESCRIPCION = "descripcion";
-    private static final String RETRATO = "retrato";
-    private static final String ID = "id";
-    private static final String NUMERO_IMAGENES = "numero_imagenes";
-
-    private static String nombre;
-    private static String alias;
-    private static String descripcion;
-    private static String retrato;
-    private static String id;
-    private static String numero_imagenes;*/
-    //private static final int PICK_IMAGE = 100;
 
     ImageView imgRetrato;
     File fRetrato = null;
@@ -87,18 +72,10 @@ public class CrearFragment extends Fragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_crear_personaje, container, false);
 
-        //ImageView imgRetrato = (ImageView)v.findViewById(R.id.imgRetratoDetalles);
         final EditText etxNombre = (EditText) v.findViewById(R.id.etxCrearNombre);
         final EditText etxAlias = (EditText)v.findViewById(R.id.etxCrearAlias);
         final EditText etxDesctipcion = (EditText)v.findViewById(R.id.etxCrearDesc);
 
-        //imgRetrato.setImageResource(Integer.parseInt(retrato));
-        /*txvNombre.setText(nombre);
-        txvAlias.setText(alias);
-        txvDesctipcion.setText(descripcion);*/
-
-        //Para que tenga scrollbar
-        //txvDesctipcion.setMovementMethod(new ScrollingMovementMethod());
 
         Button btnCrear = (Button)v.findViewById(R.id.btnCrearAceptar);
         Button btnRetrato = (Button) v.findViewById(R.id.btnElegirPerfil);
@@ -114,10 +91,9 @@ public class CrearFragment extends Fragment
             @Override
             public void onClick(View v) {
 
-                //Toast.makeText(getActivity(),"Has pulsado crear", Toast.LENGTH_SHORT).show();
-
                 Uri retrato = null;
 
+                //Si ocurre un error en el proceso de asignacion de la imagen seleccionada, se asigna una imagen generica
                 try
                 {
                     retrato = Uri.fromFile(fRetrato);
@@ -137,7 +113,6 @@ public class CrearFragment extends Fragment
 
                 if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                 {
-                    //pedirPermisoGaleria();
                     Utilidades.pedirPermisoGaleria(getActivity());
                 }
                 else
@@ -146,10 +121,6 @@ public class CrearFragment extends Fragment
 
                     startActivityForResult(intent, Utilidades.PICK_IMAGE);
                 }
-
-                    /*Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://media/internal/images/media"));
-
-                    startActivityForResult(intent, PICK_IMAGE);*/
             }
         });
 
@@ -177,6 +148,7 @@ public class CrearFragment extends Fragment
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(recyclerViewAdapter);
 
+        //Esto deshabilita el scroll de la vista principal cuando se interactua con la galeria de imagenes
         this.recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -185,6 +157,7 @@ public class CrearFragment extends Fragment
             }
         });
 
+        //Esto hace que al arrastrar hacia abajo un objeto de la galeria, este sea borrado
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
@@ -202,41 +175,12 @@ public class CrearFragment extends Fragment
         return v;
     }
 
-    /*private void pedirPermisoGaleria()
-    {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISO_LEER_GALERIA);
-    }*/
-
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == PERMISO_LEER_GALERIA)
-        {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED)
-            {
-                Toast.makeText(getActivity().getApplicationContext(), "Permiso denegado. No se podrá añadir una imagen.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }*/
 
     @Override
     public void onActivityCreated(Bundle b)
     {
         super.onActivityCreated(b);
-
-        /*if (getArguments() != null) {
-            nombre = getArguments().getString(NOMBRE);
-            alias = getArguments().getString(ALIAS);
-            descripcion = getArguments().getString(DESCRIPCION);
-            retrato = getArguments().getString(RETRATO);
-        }*/
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    /*public void onButtonPressed(View v) {
-        if (mListener != null) {
-            mListener.onDetFragmentInteraction(v);
-        }
-    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -269,6 +213,7 @@ public class CrearFragment extends Fragment
         void onCrearPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes);
     }
 
+    //Se sobreescribe este metodo para especificar que hacer al devolver la respuesta de preguntar si hay acceso para elegir una imagen del dispositivo
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -304,7 +249,6 @@ public class CrearFragment extends Fragment
                     break;
             }
         }
-
     }
 
 }

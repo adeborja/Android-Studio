@@ -31,28 +31,14 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditarFragment extends Fragment
 {
-    //el valor asignado es su clave. Si dos parametros tienen la misma clave, se sobreescriben.
-    /*private static final String NOMBRE = "nombre";
-    private static final String ALIAS = "alias";
-    private static final String DESCRIPCION = "descripcion";
-    private static final String RETRATO = "retrato";
-    private static final String ID = "id";
-    private static final String NUMERO_IMAGENES = "numero_imagenes";
-
-    private static String nombre;
-    private static String alias;
-    private static String descripcion;
-    private static String retrato;
-    private static String id;
-    private static String numero_imagenes;*/
 
     private static Personaje personajeEditable;
 
     private boolean retratoCambiado = false;
     private Uri retratoOriginal;
 
-    ImageView imgRetrato;
-    File fRetrato = null;
+    private ImageView imgRetrato;
+    private File fRetrato = null;
 
     private List<String> galeriaImagenes;
     private RecyclerViewAdapter recyclerViewAdapter;
@@ -171,6 +157,7 @@ public class EditarFragment extends Fragment
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(recyclerViewAdapter);
 
+        //Esto deshabilita el scroll de la vista principal cuando se interactua con la galeria de imagenes
         this.recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -179,6 +166,7 @@ public class EditarFragment extends Fragment
             }
         });
 
+        //Esto hace que al arrastrar hacia abajo un objeto de la galeria, este sea borrado
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
@@ -200,21 +188,7 @@ public class EditarFragment extends Fragment
     public void onActivityCreated(Bundle b)
     {
         super.onActivityCreated(b);
-
-        /*if (getArguments() != null) {
-            nombre = getArguments().getString(NOMBRE);
-            alias = getArguments().getString(ALIAS);
-            descripcion = getArguments().getString(DESCRIPCION);
-            retrato = getArguments().getString(RETRATO);
-        }*/
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    /*public void onButtonPressed(View v) {
-        if (mListener != null) {
-            mListener.onDetFragmentInteraction(v);
-        }
-    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -247,6 +221,7 @@ public class EditarFragment extends Fragment
         void onEditPersFragmentInteraction(String nombre, String alias, String desc, Uri retrato, List<String> imagenes, long id);
     }
 
+    //Se sobreescribe este metodo para especificar que hacer al devolver la respuesta de preguntar si hay acceso para elegir una imagen del dispositivo
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -284,6 +259,5 @@ public class EditarFragment extends Fragment
                     break;
             }
         }
-
     }
 }

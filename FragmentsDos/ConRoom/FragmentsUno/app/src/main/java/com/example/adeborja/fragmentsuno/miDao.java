@@ -16,22 +16,16 @@ public interface miDao
     @Insert
     public void anadirPersonaje(Personaje p);
 
-    /*@Query("select * from personajes")
-    public List<Personaje> obtenerPersonajes();*/
-
     @Delete
     public void borrarPersonaje(Personaje p);
 
     @Update
     public void actualizarPersonaje(Personaje p);
 
-    @Query("select count(*) from personajes")
-    public int obtenerCantidadPersonajes();
+    /*@Query("select count(*) from personajes")
+    public int obtenerCantidadPersonajes();*/
 
     @Query("select * from personajes")
     public LiveData<List<Personaje>> obtenerPersonajesLiveData();
-
-    @Query("select * from personajes where id = :id")
-    public LiveData<Personaje> obtenerPersonajePorId(long id);
 
 }
