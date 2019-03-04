@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
     public void onBackStackChanged() {
 
         //TODO: revisar
-        int i = getSupportFragmentManager().getBackStackEntryCount();
+        /*int i = getSupportFragmentManager().getBackStackEntryCount();
 
         if(i<1)
         {
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements Navegacion.OnFrag
         {
             bottomNavigationView.getMenu().getItem(1).setEnabled(true);
             //bottomNavigationView.getMenu().getItem(2).setEnabled(true);
-        }
+        }*/
 
         //aux.setText(String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
     }
